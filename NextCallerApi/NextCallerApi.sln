@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextCallerApi", "NextCallerApi\NextCallerApi.csproj", "{5C718A4F-EFC7-4620-99B6-DCBD2BEFAF83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextCallerApiSample", "NextCallerApiSample\NextCallerApiSample.csproj", "{8621DB18-AD57-4486-BC14-ED5BB7B02B65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextCallerApiTest", "NextCallerApiTest\NextCallerApiTest.csproj", "{80B240E9-0811-4194-83C6-EE2E9751670F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C718A4F-EFC7-4620-99B6-DCBD2BEFAF83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C718A4F-EFC7-4620-99B6-DCBD2BEFAF83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C718A4F-EFC7-4620-99B6-DCBD2BEFAF83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C718A4F-EFC7-4620-99B6-DCBD2BEFAF83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8621DB18-AD57-4486-BC14-ED5BB7B02B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8621DB18-AD57-4486-BC14-ED5BB7B02B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8621DB18-AD57-4486-BC14-ED5BB7B02B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8621DB18-AD57-4486-BC14-ED5BB7B02B65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B240E9-0811-4194-83C6-EE2E9751670F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B240E9-0811-4194-83C6-EE2E9751670F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B240E9-0811-4194-83C6-EE2E9751670F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B240E9-0811-4194-83C6-EE2E9751670F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
