@@ -1,7 +1,7 @@
 nextcaller-dotnet-api
 =====================
 
-[![Build status](https://ci.appveyor.com/api/projects/status/eyun4jwl6ivprb04/branch/master)](https://ci.appveyor.com/project/max_kudosh/test-736/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/ewpq1rs09lghcm08?svg=true)](https://ci.appveyor.com/project/Nextcaller/nextcaller-dotnet-api)
 
 This is a .net wrapper around the Nextcaller API.
 The library supports .net versions ≥ 3.5.
