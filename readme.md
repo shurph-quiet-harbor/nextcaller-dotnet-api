@@ -115,6 +115,12 @@ API Items
 *Returns*:
 
 	string response - server response content in json
+
+### Exceptions ###
+	
+	If the service response status code is not 2**,
+	NextCallerApi.HttpException that contains parsed 
+	response content (raw response content if parsing was failed) is thrown.
 	
 ### Nuget package ###
 
