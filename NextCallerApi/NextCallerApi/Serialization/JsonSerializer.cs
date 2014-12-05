@@ -5,63 +5,43 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using NextCallerApi.Entities;
+using NextCallerApi.Entities.Common;
 
 
 namespace NextCallerApi.Serialization
 {
-	internal static class JsonSerializer
+	public static class JsonSerializer
 	{
 
-		public static IList<Profile> ParseProfileList(string response)
+		public static IList<Profile> ParseProfileList(string json)
 		{
-			JObject json = JObject.Parse(response);
+			JObject jsonObject = JObject.Parse(json);
 
-			IList<JToken> profilesListJson = json["records"].Children().ToList();
+			IList<JToken> profilesListJson = jsonObject["records"].Children().ToList();
 
 			IList<Profile> profiles = new List<Profile>();
 
 			foreach (JToken profile in profilesListJson)
 			{
-				Profile deserializedProfile = ParseProfile(profile.ToString());
+				Profile deserializedProfile = Deserialize<Profile>(profile.ToString());
 				profiles.Add(deserializedProfile);
 			}
 
 			return profiles;
 		}
 
-		public static Profile ParseProfile(string response)
+		public static Error ParseError(string json)
 		{
-			return Deserialize<Profile>(response);
-		}
+			JObject jsonObject = JObject.Parse(json);
 
-		public static ErrorResponse ParseError(string response)
-		{
-			JObject json = JObject.Parse(response);
-
-			JToken errorJson = json["error"];
+			JToken errorJson = jsonObject["error"];
 
 			if (errorJson == null)
 			{
 				throw new JsonException();
 			}
 
-			ErrorResponse error = Deserialize<ErrorResponse>(errorJson.ToString());
-
-			return error;
-		}
-
-		public static PostErrorResponse ParsePostError(string response)
-		{
-			JObject json = JObject.Parse(response);
-
-			JToken errorJson = json["users"];
-
-			if (errorJson == null)
-			{
-				throw new JsonException();
-			}
-
-			PostErrorResponse error = Deserialize<PostErrorResponse>(errorJson.ToString());
+			Error error = Deserialize<Error>(errorJson.ToString());
 
 			return error;
 		}

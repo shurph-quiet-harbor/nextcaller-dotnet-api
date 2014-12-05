@@ -10,6 +10,8 @@ using NextCallerApi.Entities;
 using NextCallerApi.Exceptions;
 using NextCallerApi.Interfaces;
 
+using FormatException = NextCallerApi.Exceptions.FormatException;
+
 
 namespace NextCallerApi.Http
 {
@@ -29,7 +31,7 @@ namespace NextCallerApi.Http
 		public string Request(string url, ContentType contentType, string data = null)
 		{
 
-			HttpWebRequest request = GetWebRequest(url, contentType);
+			HttpWebRequest request = CreateWebRequest(url, contentType);
 
 			HttpWebResponse response = data == null ? Get(request) : Post(request, data);
 
@@ -45,36 +47,18 @@ namespace NextCallerApi.Http
 				return responseContent;
 			}
 
-			// Request was failed.
-			// HttpException has to be thrown.
-
-			string exceptionMessage;
+			Error requestError;
 
 			try
 			{
-				if (IsFailedPostRequest(response))
-				{
-					// Response might contain information about invalid data fields in POST request.
-					// So here is an attempt to parse response.
-					PostErrorResponse postError = TryParsePostError(responseContent);
-					exceptionMessage = postError.ToString();
-				}
-				else
-				{
-					// Response might contain information about reason of failure.
-					// So here is an attempt to parse response.
-					ErrorResponse error = TryParseError(responseContent);
-					exceptionMessage = error.ToString();
-				}
+				requestError = Serialization.JsonSerializer.ParseError(responseContent);
 			}
 			catch (JsonException)
 			{
-				// Failed to parse response.
-				// So using response content as an exception message.
-				exceptionMessage = responseContent;
+				throw new FormatException(request, response, responseContent);
 			}
 
-			throw new HttpException(response.StatusCode, response.StatusDescription, exceptionMessage);
+			throw new BadResponseException(request, response, responseContent, requestError);
 
 		}
 
@@ -111,7 +95,7 @@ namespace NextCallerApi.Http
 			}
 		}
 
-		private HttpWebRequest GetWebRequest(string url, ContentType contentType)
+		private HttpWebRequest CreateWebRequest(string url, ContentType contentType)
 		{
 			HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(url);
 
@@ -122,24 +106,9 @@ namespace NextCallerApi.Http
 			return webRequest;
 		}
 
-		private static PostErrorResponse TryParsePostError(string response)
-		{
-			return Serialization.JsonSerializer.ParsePostError(response);
-		}
-
-		private static ErrorResponse TryParseError(string response)
-		{
-			return Serialization.JsonSerializer.ParseError(response);
-		}
-
-		private static bool IsFailedPostRequest(HttpWebResponse response)
-		{
-			return response.Method.Equals(PostMethod, StringComparison.InvariantCultureIgnoreCase) && response.StatusCode == HttpStatusCode.BadRequest;
-		}
-
 		private static bool IsSuccessfulStatusCode(HttpStatusCode statusCode)
 		{
-			return (int) statusCode < 300;
+			return (int) statusCode < 400;
 		}
 
 		private static string GetHttpContentType(ContentType contentType)

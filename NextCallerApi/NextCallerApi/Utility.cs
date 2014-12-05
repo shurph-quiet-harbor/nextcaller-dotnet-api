@@ -39,5 +39,6 @@ namespace NextCallerApi
 
 			return attributes.Length > 0 ? attributes[0].Description : enumeration.ToString();
 		}
+
 	}
 }
