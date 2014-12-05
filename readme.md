@@ -22,38 +22,31 @@ Installation
 
 	$ nuget install NextCallerApi
 
-Code example
--------
-
-    string consumerKey = "XXXXX";
-    string consumerSecret = "YYYYY";
-    string profileId = "ZZZZZZZZZZ";
-    
-    Client client = new Client(consumerKey, consumerSecret);
-    Profile profile = client.GetProfileById(profileId);
-
+NextCallerClient
+=====================
 
 Client initialization
 -------------
 
-    string consumerKey = "XXXXX";
-    string consumerSecret = "YYYYY";
+    string username = "XXXXX";
+    string password = "YYYYY";
+	bool sandbox = true;
     
-    Client client = new Client(consumerKey, consumerSecret);
+    NextCallerClient client = new NextCallerClient(username, password, sandbox);
 
 *Parameters*:
 
-    string consumerKey - consumer key
-    string consumerSecret - consumer secret
+    string username - username
+    string password - password
+	bool sandbox - use sandbox or no
 
 API Items
 -------------
 
 ## Get profiles by phone ##
 
+	string number = "2020327123";
     IList<Profile> profiles = client.GetProfilesByPhone(number);
-	
-	string firstName = profiles[0].FirstName;
     
 *Parameters*:
     
@@ -65,9 +58,8 @@ API Items
 	
 ## Get profile by id ##
 
+	string profileId = "xxxx";
     Profile profile = client.GetProfileById(profileId);
-	
-	string firstName = profile.FirstName;
     
 *Parameters*:
     
@@ -77,50 +69,214 @@ API Items
 
 	Profile profile - profile with a specific id
 	
-### Update profile by id ###
+## Update profile by id ##
 
-	ProfilePostRequest postProfile = new ProfilePostRequest
+	string profileId = "xxxx";
+	ProfileToPost profile = new ProfileToPost
 	{
 		FirstName = "NewFirstName",
 		LastName = "NewLastName"
 	};
 	
-    client.PostProfile(postProfile, profileId);
+    client.UpdateProfileById(profileId, profile);
     
 *Parameters*:
 
-    ProfilePostRequest postProfile - profile to post
+    ProfileToPost profile - profile info to post
     string profileId - id of profile to update 
 
-### Get profiles by phone in json ###
+## Get fraud level ##
 
-    string responseInJson = client.GetProfilesByPhoneJson(number);
+	string phone = "xxxx";
+    FraudLevel fraudLevel= client.GetFraudLevel(phone);
+    
+*Parameters*:
+    
+    string phone - phone number to check
 	
+*Returns*:
+
+	FraudLevel fraudLevel - fraudLevel for give phone number
+	
+NextCallerPlatformClient
+=====================
+
+Client initialization
+-------------
+
+    string username = "XXXXX";
+    string password = "YYYYY";
+	bool sandbox = true;
+    
+    NextCallerPlatformClient client = new NextCallerPlatformClient(username, password, sandbox);
+
+*Parameters*:
+
+    string username - username
+    string password - password
+	bool sandbox - use sandbox or no
+
+API Items
+-------------
+
+## Get profiles by phone ##
+
+	string number = "2020327123";
+	string platformUsername = "xxxx";
+    IList<Profile> profiles = client.GetProfilesByPhone(number, platformUsername);
+    
 *Parameters*:
     
     string number - phone number
-
+	string platformUsername - platform username of a caller
+	
 *Returns*:
 
-	string response - server response content in json
+	IList<Profile> profiles - list of profiles, associated with a particular phone number
 	
-### Get profile by id in json ###
+## Get profile by id ##
 
-    string responseInJson = client.GetProfileByIdJson(profileId);
+	string profileId = "xxxx";
+	string platformUsername = "yyyyyy";
+    Profile profile = client.GetProfileById(profileId, platformUsername);
     
 *Parameters*:
     
     string profileId - id of a profile
+	string platformUsername - platform username of a caller
+
+*Returns*:
+
+	Profile profile - profile with a specific id
+	
+## Update profile by id ##
+
+	string profileId = "xxxx";
+	string platformUsername = "yyyyyy";
+	ProfileToPost profile = new ProfileToPost
+	{
+		FirstName = "NewFirstName",
+		LastName = "NewLastName"
+	};
+	
+    client.UpdateProfileById(profileId, profile, platformUsername);
+    
+*Parameters*:
+
+    ProfileToPost profile - profile info to post
+    string profileId - id of profile to update 
+	string platformUsername - platform username of a caller
+
+## Get fraud level ##
+
+	string phone = "xxxx";
+	string platformUsername = "platformUsername";
+    FraudLevel fraudLevel= client.GetFraudLevel(phone, platformUsername);
+    
+*Parameters*:
+    
+    string phone - phone number to check
+	string platformUsername - platform username of a caller
 	
 *Returns*:
 
-	string response - server response content in json
+	FraudLevel fraudLevel - fraudLevel for give phone number
+	
+## Get platform statistics ##
+
+    PlatformStatistics stats= client.GetPlatformStatistics();
+    
+*Parameters*:
+    
+	no parameters
+	
+*Returns*:
+
+	PlatformStatistics stats - platform statistics
+	
+## Get platform user ##
+
+	string platformUsername = "xxxx";
+    PlatformUser user = client.GetPlatformUser(platformUsername);
+    
+*Parameters*:
+    
+	string platformUsername - platform username of a user to get
+	
+*Returns*:
+
+	PlatformUser user - platform user info
+	
+## Update platform user ##
+
+	string platformUsername = "xxxx";
+	PlatformUserToPost user = new PlatformUserToPost
+				{
+					Email = "email@email.com",
+					FirstName = "fedor"
+				};
+    client.UpdatePlatformUser(platformUsername, user);
+    
+*Parameters*:
+    
+	string platformUsername - platform username of a user to update
+	PlatformUserToPost user - platform user info to post
+	
+### Json API ###
+
+	All API items can be used with raw json data;
 
 ### Exceptions ###
 	
-	If the service response status code is not 2**,
-	NextCallerApi.HttpException that contains parsed 
-	response content (raw response content if parsing was failed) is thrown.
+	## BadResponseException ##
+	
+	When the NextCallerApi call failed for some reason
+	and response was successfully parsed according to the 
+	https://nextcaller.com/documentation/#/errors/curl error response reference,
+	BadResponseException is thrown. It contains request, response,
+	response content as a string and error object.
+	
+	try
+	{
+		// NextCaller API call
+	}
+	catch (BadResponseException e)
+	{
+
+		HttpWebRequest request = e.Request;
+		HttpWebResponse response = e.Response;
+		string content = e.Content;
+		
+		Error parsedError = e.Error;
+		string errorMessage = parsedError.Code;
+		string errorCode = parsedError.Code;
+		string type = parsedError.Type;
+		Dictionary<string, string[]> description = parsedError.Description;
+
+		string emailErrorMessage = description["email"].FirstOrDefault();
+	}
+
+	
+	## FormatException ##
+	
+	When the NextCallerApi call failed for some reason
+	and response was not parsed according to the 
+	https://nextcaller.com/documentation/#/errors/curl error response reference,
+	FormatException is thrown. It contains request, response and
+	response content as a string.
+	
+	try
+	{
+		// NextCaller API call
+	}
+	catch (FormatException e)
+	{
+
+		HttpWebRequest request = e.Request;
+		HttpWebResponse response = e.Response;
+		string content = e.Content;
+
+	}
 	
 ### Nuget package ###
 
