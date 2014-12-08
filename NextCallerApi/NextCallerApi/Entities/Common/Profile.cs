@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 
 namespace NextCallerApi.Entities.Common
@@ -87,6 +88,12 @@ namespace NextCallerApi.Entities.Common
 
 		[DataMember(Name = "department")]
 		public string Department { get; set; }
+
+		[DataMember(Name = "resource_uri")]
+		public string ResourceUri { get; set; }
+
+		[DataMember(Name = "social_links")]
+		public Dictionary<string, object>[] SocialLinks { get; set; }
 
 	}
 }

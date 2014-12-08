@@ -15,6 +15,9 @@ namespace NextCallerApi.Entities.Common
 		[DataMember(Name = "number")]
 		public string Number { get; set; }
 
+		[DataMember(Name = "resource_uri")]
+		public string ResourceUri { get; set; }
+
 		/// <summary>
 		/// Validates phone number.
 		/// </summary>

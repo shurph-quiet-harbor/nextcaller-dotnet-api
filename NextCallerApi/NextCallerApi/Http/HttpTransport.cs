@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Text;
 
@@ -23,9 +22,9 @@ namespace NextCallerApi.Http
 
 		private readonly string authorizationToken;
 
-		public HttpTransport(string consumerKey, string consumerSecret)
+		public HttpTransport(string username, string password)
 		{
-			authorizationToken = BasicAuthorization.GetToken(consumerKey, consumerSecret);
+			authorizationToken = BasicAuthorization.GetToken(username, password);
 		}
 
 		public string Request(string url, ContentType contentType, string data = null)
@@ -58,7 +57,7 @@ namespace NextCallerApi.Http
 				throw new FormatException(request, response, responseContent);
 			}
 
-			throw new BadResponseException(request, response, responseContent, requestError);
+			throw new BadRequestException(request, response, responseContent, requestError);
 
 		}
 
@@ -99,7 +98,7 @@ namespace NextCallerApi.Http
 		{
 			HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(url);
 
-			webRequest.Accept = GetHttpContentType(ContentType.Json) + ';' + GetHttpContentType(ContentType.Xml);
+			webRequest.Accept = GetHttpContentType(ContentType.Json);
 			webRequest.ContentType = GetHttpContentType(contentType);
 			webRequest.Headers.Add(HttpRequestHeader.Authorization, authorizationToken);
 

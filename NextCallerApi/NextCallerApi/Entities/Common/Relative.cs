@@ -14,5 +14,8 @@ namespace NextCallerApi.Entities.Common
 
 		[DataMember(Name = "id")]
 		public string Id { get; set; }
+
+		[DataMember(Name = "resource_uri")]
+		public string ResourceUri { get; set; }
 	}
 }

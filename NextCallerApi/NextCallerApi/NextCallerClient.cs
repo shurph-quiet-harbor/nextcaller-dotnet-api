@@ -243,11 +243,6 @@ namespace NextCallerApi
 		/// Represent json content type.
 		/// </summary>
 		[Description("application/json")]
-		Json,
-		/// <summary>
-		/// Represents xml content type.
-		/// </summary>
-		[Description("application/xml")]
-		Xml
+		Json
 	}
 }
