@@ -1,7 +1,8 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 
-namespace NextCallerApi.Entities
+namespace NextCallerApi.Entities.Common
 {
 	/// <summary>
 	/// Represents Next Caller profile.
@@ -16,6 +17,9 @@ namespace NextCallerApi.Entities
 		[DataMember(Name = "first_name")]
 		public string FirstName { get; set; }
 
+		[DataMember(Name = "middle_name")]
+		public string MiddleName { get; set; }
+
 		[DataMember(Name = "last_name")]
 		public string LastName { get; set; }
 
@@ -24,12 +28,6 @@ namespace NextCallerApi.Entities
 
 		[DataMember(Name = "language")]
 		public string Language { get; set; }
-
-		[DataMember(Name = "fraud_threat")]
-		public string FraudThreat { get; set; }
-
-		[DataMember(Name = "spoof")]
-		public string Spoof { get; set; }
 
 		[DataMember(Name = "phone")]
 		public Phone[] Phones { get; set; }
@@ -45,6 +43,15 @@ namespace NextCallerApi.Entities
 
 		[DataMember(Name = "email")]
 		public string Email { get; set; }
+
+		[DataMember(Name = "linked_emails")]
+		public string[] LinkedEmails { get; set; }
+
+		[DataMember(Name = "relatives")]
+		public Relative[] Relatives { get; set; }
+
+		[DataMember(Name = "dob")]
+		public string DateOfBirth { get; set; }
 
 		[DataMember(Name = "age")]
 		public string Age { get; set; }
@@ -81,5 +88,12 @@ namespace NextCallerApi.Entities
 
 		[DataMember(Name = "department")]
 		public string Department { get; set; }
+
+		[DataMember(Name = "resource_uri")]
+		public string ResourceUri { get; set; }
+
+		[DataMember(Name = "social_links")]
+		public Dictionary<string, object>[] SocialLinks { get; set; }
+
 	}
 }

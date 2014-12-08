@@ -112,21 +112,36 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FormatUrlParameterName" xml:space="preserve">
     <value>format</value>
   </data>
-  <data name="PhoneUrl" xml:space="preserve">
-    <value>https://api.nextcaller.com/v2/records/</value>
+  <data name="FraudPath" xml:space="preserve">
+    <value>fraud/</value>
+  </data>
+  <data name="PhonePath" xml:space="preserve">
+    <value>records/</value>
   </data>
   <data name="PhoneUrlParameterName" xml:space="preserve">
     <value>phone</value>
   </data>
-  <data name="UsersUrl" xml:space="preserve">
-    <value>https://api.nextcaller.com/v2/users/</value>
+  <data name="PlatformPath" xml:space="preserve">
+    <value>platform_users/</value>
+  </data>
+  <data name="PlatformUsernameParameterName" xml:space="preserve">
+    <value>platform_username</value>
+  </data>
+  <data name="SandboxUrl" xml:space="preserve">
+    <value>https://api.sandbox.nextcaller.com/v2/</value>
+  </data>
+  <data name="UsersPath" xml:space="preserve">
+    <value>users/</value>
+  </data>
+  <data name="WorkingUrl" xml:space="preserve">
+    <value>https://api.nextcaller.com/v2/</value>
   </data>
 </root>

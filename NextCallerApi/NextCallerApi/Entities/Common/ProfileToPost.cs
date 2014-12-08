@@ -1,13 +1,13 @@
 ﻿using System.Runtime.Serialization;
 
 
-namespace NextCallerApi.Entities
+namespace NextCallerApi.Entities.Common
 {
 	/// <summary>
 	/// Represents profile, including information that might be posted to Next Caller service.
 	/// </summary>
 	[DataContract]
-	public class ProfilePostRequest
+	public class ProfileToPost
 	{
 
 		[DataMember(Name = "first_name")]

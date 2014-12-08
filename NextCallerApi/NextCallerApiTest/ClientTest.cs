@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using NextCallerApi;
-using NextCallerApi.Entities;
+using NextCallerApi.Entities.Common;
 using NextCallerApi.Interfaces;
 
 
@@ -19,17 +19,17 @@ namespace NextCallerApiTest
 		public void GetProfileByPhone_InvalidPhone_ArgumentExceptionThrown()
 		{
 			//Arrange
-			const string InvalidNumber = "#4sdasfasf";
+			const string InvalidNumber = "";
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
 
-			Client client = new Client(httpTransportMock.Object);
+			NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
 
 
 			try
 			{
 				//Action
-				IList<Profile> profiles = client.GetProfilesByPhone(InvalidNumber);
+				IList<Profile> profiles = client.GetByPhone(InvalidNumber);
 				Assert.Fail("An exception should have been thrown");
 			}
 			catch (ArgumentException argumentException)
@@ -48,13 +48,13 @@ namespace NextCallerApiTest
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
 
-			Client client = new Client(httpTransportMock.Object);
+			NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
 
 
 			try
 			{
 				//Action
-				Profile profile = client.GetProfileById(Id);
+				Profile profile = client.GetByProfileId(Id);
 				Assert.Fail("An exception should have been thrown");
 			}
 			catch (ArgumentException argumentException)
@@ -66,44 +66,22 @@ namespace NextCallerApiTest
 		}
 
 		[TestMethod]
-		public void CreatingClientInstance_EmptyConsumerKey_ArgumentExceptionThrown()
+		public void CreatingClientInstance_EmptyUsername_ArgumentExceptionThrown()
 		{
 			//Arrange
-			const string ConsumerKey = "";
-			const string ConsumerSecret = "adaSfaqwfasfasdasdfasfasfasd";
+			const string Username = "";
+			const string Password = "adaSfaqwfasfasdasdfasfasfasd";
 
 			try
 			{
 				//Action
-				Client client = new Client(ConsumerKey, ConsumerSecret);
+				NextCallerClient client = new NextCallerClient(Username, Password);
 				Assert.Fail("An exception should have been thrown");
 			}
 			catch (ArgumentException argumentException)
 			{
 				//Assert
-				Assert.AreEqual("consumerKey", argumentException.ParamName);
-			}
-
-		}
-
-		[TestMethod]
-		public void GetProfileById_SuccessfulRequestSuccessfullParsing_1Json()
-		{
-			//Arrange
-			const string ConsumerKey = "";
-			const string ConsumerSecret = "adaSfaqwfasfasdasdfasfasfasd";
-
-
-			try
-			{
-				//Action
-				Client client = new Client(ConsumerKey, ConsumerSecret);
-				Assert.Fail("An exception should have been thrown");
-			}
-			catch (ArgumentException argumentException)
-			{
-				//Assert
-				Assert.AreEqual("consumerKey", argumentException.ParamName);
+				Assert.AreEqual("username", argumentException.ParamName);
 			}
 
 		}
@@ -121,8 +99,8 @@ namespace NextCallerApiTest
 
 
 			//Action
-			Client client = new Client(httpTransportMock.Object);
-			string profile = client.GetProfileByIdJson(ProfileId);
+			NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
+			string profile = client.GetByProfileIdJson(ProfileId);
 
 			//Assert
 			httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), null), Times.Once);
@@ -144,8 +122,8 @@ namespace NextCallerApiTest
 
 
 			//Action
-			Client client = new Client(httpTransportMock.Object);
-			string profiles = client.GetProfilesByPhoneJson(PhoneNumber);
+			NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
+			string profiles = client.GetByPhoneJson(PhoneNumber);
 
 			//Assert
 			httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), null), Times.Once);
@@ -160,7 +138,7 @@ namespace NextCallerApiTest
 			//Arrange
 			const string ProfileId = "adaSfaqwfasfasdasdfasfasfasd";
 
-			ProfilePostRequest profile = new ProfilePostRequest
+			ProfileToPost profile = new ProfileToPost
 			{
 				FirstName = "NewFirstName",
 				LastName = "NewLastName"
@@ -172,8 +150,8 @@ namespace NextCallerApiTest
 
 
 			//Action
-			Client client = new Client(httpTransportMock.Object);
-			client.PostProfile(profile, ProfileId);
+			NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
+			client.UpdateByProfileId(ProfileId, profile);
 
 			//Assert
 			httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsAny<string>()), Times.Once);

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 
 
-namespace NextCallerApi.Entities
+namespace NextCallerApi.Entities.Common
 {
 	/// <summary>
 	/// Represents profile's address.

@@ -9,12 +9,12 @@ namespace NextCallerApi.Authorization
 
 		private const string TokenTemplate = "Basic {0}";
 
-		public static string GetToken(string consumerKey, string consumerSecret)
+		public static string GetToken(string username, string password)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(consumerKey), "consumerKey");
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(consumerSecret), "consumerSecret");
+			Utility.EnsureParameterValid(!string.IsNullOrEmpty(username), "username");
+			Utility.EnsureParameterValid(!string.IsNullOrEmpty(password), "password");
 
-			string tokenValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(consumerKey + ":" + consumerSecret));
+			string tokenValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + password));
 
 			return string.Format(TokenTemplate, tokenValue);
 		}
