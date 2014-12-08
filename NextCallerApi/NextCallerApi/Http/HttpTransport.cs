@@ -57,7 +57,7 @@ namespace NextCallerApi.Http
 				throw new FormatException(request, response, responseContent);
 			}
 
-			throw new BadRequestException(request, response, responseContent, requestError);
+			throw new BadResponseException(request, response, responseContent, requestError);
 
 		}
 

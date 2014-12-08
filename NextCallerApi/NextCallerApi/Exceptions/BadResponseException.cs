@@ -9,7 +9,7 @@ namespace NextCallerApi.Exceptions
 	/// <summary>
 	/// Thrown in case of failed request and parsed response error.
 	/// </summary>
-	public class BadRequestException : BaseException
+	public class BadResponseException : BaseException
 	{
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace NextCallerApi.Exceptions
 		/// <param name="response">Response.</param>
 		/// <param name="content">Response content.</param>
 		/// <param name="error"> Parsed response content.</param>
-		public BadRequestException(HttpWebRequest request, HttpWebResponse response, string content, Error error) : base(request, response, content)
+		public BadResponseException(HttpWebRequest request, HttpWebResponse response, string content, Error error) : base(request, response, content)
 		{
 			Error = error;
 		}
