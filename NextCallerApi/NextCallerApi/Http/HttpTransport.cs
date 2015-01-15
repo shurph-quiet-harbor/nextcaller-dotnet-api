@@ -19,12 +19,14 @@ namespace NextCallerApi.Http
 
 		private const string PostMethod = "POST";
 		private const string GetMethod = "GET";
+		private readonly string _paginationErrorCode;
 
-		private readonly string authorizationToken;
+		private readonly string _authorizationToken;
 
 		public HttpTransport(string username, string password)
 		{
-			authorizationToken = BasicAuthorization.GetToken(username, password);
+			_paginationErrorCode = Properties.Resources.PaginationExceptionCode;
+			_authorizationToken = BasicAuthorization.GetToken(username, password);
 		}
 
 		public string Request(string url, ContentType contentType, string data = null)
@@ -55,6 +57,11 @@ namespace NextCallerApi.Http
 			catch (JsonException)
 			{
 				throw new FormatException(request, response, responseContent);
+			}
+
+			if (requestError.Code == _paginationErrorCode)
+			{
+				throw new PaginationException(request, response, responseContent);
 			}
 
 			throw new BadResponseException(request, response, responseContent, requestError);
@@ -100,7 +107,7 @@ namespace NextCallerApi.Http
 
 			webRequest.Accept = GetHttpContentType(ContentType.Json);
 			webRequest.ContentType = GetHttpContentType(contentType);
-			webRequest.Headers.Add(HttpRequestHeader.Authorization, authorizationToken);
+			webRequest.Headers.Add(HttpRequestHeader.Authorization, _authorizationToken);
 
 			return webRequest;
 		}

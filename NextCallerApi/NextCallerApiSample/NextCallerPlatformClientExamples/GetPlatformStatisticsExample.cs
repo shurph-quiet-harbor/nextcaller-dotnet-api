@@ -18,13 +18,14 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 		{
 			const string Username = "";
 			const string Password = "";
+			const int page = 1;
 			const bool Sandbox = true;
 
 			NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
 			try
 			{
-				PlatformStatistics stats = client.GetPlatformStatistics();
+				PlatformStatistics stats = client.GetPlatformStatistics(page);
 
 				//stats.PlatformUsers = new []
 				//{

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Security.Policy;
 using NextCallerApi.Entities;
 using NextCallerApi.Entities.Common;
 using NextCallerApi.Entities.Platform;
@@ -18,11 +18,13 @@ namespace NextCallerApi
 	{
 		private readonly string platformUrl;
 		private readonly string platformUsernameParameterName;
+		protected readonly string pageParameterName;
 
 		internal NextCallerPlatformClient(IHttpTransport httpTransport) : base(httpTransport)
 		{
 			platformUrl = baseUrl + Properties.Resources.PlatformPath;
 			platformUsernameParameterName = Properties.Resources.PlatformUsernameParameterName;
+			pageParameterName = Properties.Resources.PageParameterName;
 		}
 
 		/// <summary>
@@ -35,6 +37,7 @@ namespace NextCallerApi
 		{
 			platformUrl = baseUrl + Properties.Resources.PlatformPath;
 			platformUsernameParameterName = Properties.Resources.PlatformUsernameParameterName;
+			pageParameterName = Properties.Resources.PageParameterName;
 		}
 
 		#region Api
@@ -56,9 +59,9 @@ namespace NextCallerApi
 		/// More information at: https://nextcaller.com/platform/documentation/get-summary/.
 		/// </summary>
 		/// <returns>Platform statistics</returns>
-		public PlatformStatistics GetPlatformStatistics()
+		public PlatformStatistics GetPlatformStatistics(int? page=null)
 		{
-			string response = GetPlatformStatisticsJson();
+			string response = GetPlatformStatisticsJson(page);
 			return JsonSerializer.Deserialize<PlatformStatistics>(response);
 		}
 
@@ -197,10 +200,17 @@ namespace NextCallerApi
 		/// Gets a summary of all API calls made and all users
 		/// More information at: https://nextcaller.com/platform/documentation/get-summary/.
 		/// </summary>
-		/// <returns>Platform statistics in json</returns>
-		public string GetPlatformStatisticsJson()
+		/// <param name="page">Pagination page number.</param>
+		/// <returns>Platform statistics in json.</returns>
+		public string GetPlatformStatisticsJson(int? page = null)
 		{
-			string url = BuildUrl(platformUrl, new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
+			var parameters = new List<UrlParameter> {new UrlParameter(formatParameterName, DefaultResponseType.ToString())};
+			if (page != null)
+			{
+				Utility.EnsureParameterValid(page >= 1, "page");
+				parameters.Add(new UrlParameter(pageParameterName, page.ToString()));
+			}
+			string url = BuildUrl(platformUrl, parameters.ToArray());
 
 			return httpTransport.Request(url, DefaultResponseType);
 		}
