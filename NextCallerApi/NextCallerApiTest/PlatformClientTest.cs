@@ -206,6 +206,33 @@ namespace NextCallerApiTest
 		}
 
 		[TestMethod]
+		public void GetPlatformStatistics_InvalidPageNumber_ArgumentExceptionThrown()
+		{
+			//Arrange
+			string jsonStats = Properties.Resources.JsonPlatformUser;
+			const int page = -10;
+
+			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
+			httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), null))
+				.Returns(jsonStats);
+			
+			NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
+
+			try
+			{
+				//Action
+				client.GetPlatformStatisticsJson(page);
+				Assert.Fail("An exception should have been thrown");
+			}
+			catch (ArgumentException argumentException)
+			{
+				//Assert
+				Assert.AreEqual("page", argumentException.ParamName);
+			}
+
+		}
+
+		[TestMethod]
 		public void PostProfile_ValidIdAndValidProfile_NoExceptionsThrown()
 		{
 			//Arrange
