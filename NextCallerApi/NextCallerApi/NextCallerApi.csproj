@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Common\FraudLevel.cs" />
+    <Compile Include="Entities\Common\NameAddress.cs" />
     <Compile Include="Entities\Error.cs" />
     <Compile Include="Entities\Platform\PlatformUser.cs" />
     <Compile Include="Entities\Platform\PlatformUserToPost.cs" />

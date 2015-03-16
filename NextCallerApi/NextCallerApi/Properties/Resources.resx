@@ -129,6 +129,24 @@
   <data name="PhoneUrlParameterName" xml:space="preserve">
     <value>phone</value>
   </data>
+  <data name="NameAddressFirstNameUrlParameterName" xml:space="preserve">
+    <value>first_name</value>
+  </data>
+  <data name="NameAddressLastNameUrlParameterName" xml:space="preserve">
+    <value>last_name</value>
+  </data>
+  <data name="NameAddressAddressUrlParameterName" xml:space="preserve">
+    <value>address</value>
+  </data>
+  <data name="NameAddressZipUrlParameterName" xml:space="preserve">
+    <value>zip_code</value>
+  </data>
+  <data name="NameAddressCityUrlParameterName" xml:space="preserve">
+    <value>city</value>
+  </data>
+  <data name="NameAddressStateUrlParameterName" xml:space="preserve">
+    <value>state</value>
+  </data>
   <data name="PlatformPath" xml:space="preserve">
     <value>platform_users/</value>
   </data>
@@ -136,7 +154,7 @@
     <value>platform_username</value>
   </data>
   <data name="SandboxUrl" xml:space="preserve">
-    <value>https://api.sandbox.nextcaller.com/v2/</value>
+    <value>https://api.sandbox.nextcaller.com/</value>
   </data>
   <data name="PageParameterName" xml:space="preserve">
     <value>page</value>
@@ -144,8 +162,11 @@
   <data name="UsersPath" xml:space="preserve">
     <value>users/</value>
   </data>
+  <data name="DefaultVersion" xml:space="preserve">
+    <value>2.1</value>
+  </data>
   <data name="WorkingUrl" xml:space="preserve">
-    <value>https://api.nextcaller.com/v2/</value>
+    <value>https://api.nextcaller.com/</value>
   </data>
   <data name="PaginationExceptionCode" xml:space="preserve">
     <value>559</value>
