@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Security.Policy;
 using NextCallerApi.Entities;
 using NextCallerApi.Entities.Common;
@@ -33,7 +36,8 @@ namespace NextCallerApi
 		/// <param name="username"> Username for authorization.</param>
 		/// <param name="password"> Password for authorization.</param>
 		/// <param name="sandbox"> Sandbox mode flag.</param>
-		public NextCallerPlatformClient(string username, string password, bool sandbox = false) : base(username, password, sandbox)
+        /// <param name="version">API version number</param>
+		public NextCallerPlatformClient(string username, string password, bool sandbox = false, string version = "") : base(username, password, sandbox, version)
 		{
 			platformUrl = baseUrl + Properties.Resources.PlatformPath;
 			platformUsernameParameterName = Properties.Resources.PlatformUsernameParameterName;
@@ -44,7 +48,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Gets detailed information about a specific user.
-		/// More information at: https://nextcaller.com/platform/documentation/get-platform-user/.
+		/// More information at: https://nextcaller.com/platform/documentation/v2.1/#/get-platform-user/curl.
 		/// </summary>
 		/// <param name="platformUsername">Platform username to get info about.</param>
 		/// <returns>Platform user, associated with a particular platform username.</returns>
@@ -56,7 +60,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Gets a summary of all API calls made and all users
-		/// More information at: https://nextcaller.com/platform/documentation/get-summary/.
+		/// More information at: https://nextcaller.com/platform/documentation/v2.1/#/get-summary/curl.
 		/// </summary>
 		/// <returns>Platform statistics</returns>
 		public PlatformStatistics GetPlatformStatistics(int? page=null)
@@ -67,7 +71,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Gets the profiles information Next Caller has for a number.
-		/// More information at: https://nextcaller.com/platform/documentation/get-profile/.
+		/// More information at: https://nextcaller.com/platform/documentation/v2.1/#/get-profile/curl.
 		/// </summary>
 		/// <param name="phone">Phone number</param>
 		/// <param name="platformUsername">Platfor username of the caller</param>
@@ -80,7 +84,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Get the profile associated with a particular user id.
-		/// More information at: https://nextcaller.com/platform/documentation/get-profile-id/.
+		/// More information at: https://nextcaller.com/platform/documentation/v2.1/#/get-profile-id/curl.
 		/// </summary>
 		/// <param name="id">Profile id</param>
 		/// <param name="platformUsername">Platform username of the caller</param>
@@ -91,9 +95,22 @@ namespace NextCallerApi
 			return JsonSerializer.Deserialize<Profile>(response);
 		}
 
+        /// <summary>
+        /// Gets list of profiles, associated with a particular name-address or name-zip pair.
+        /// Throws an exception if response status is 404.
+        /// </summary>
+        /// <param name="pair">Pair of name and address or name and zip code.</param>
+        /// <param name="platformUsername">Platform username of the caller</param>
+        /// <returns>Profiles, associated with a particular name-address or name-zip pair.</returns>
+        public IList<Profile> GetByNameAddress(NameAddress pair, string platformUsername)
+        {
+            string response = GetByNameAddressJson(pair, platformUsername);
+            return JsonSerializer.ParseProfileList(response);
+        }
+
 		/// <summary>
 		/// Gets fraud level for a particular phone number.
-		/// More info at: https://nextcaller.com/platform/documentation/get-fraud-level/.
+		/// More info at: https://nextcaller.com/platform/documentation/v2.1/#/get-fraud-level/curl.
 		/// </summary>
 		/// <param name="phone">Phone number</param>
 		/// <param name="platformUsername">Platform username of the caller</param>
@@ -106,7 +123,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Updates profile with given id.
-		/// More info at: https://nextcaller.com/platform/documentation/post-profile/.
+		/// More info at: https://nextcaller.com/platform/documentation/v2.1/#/post-profile/curl.
 		/// </summary>
 		/// <param name="data">Profile data to be updated.</param>
 		/// <param name="id">Id of the updated profile.</param>
@@ -121,7 +138,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Updates or creates platform user.
-		/// More info at:https://nextcaller.com/platform/documentation/post-platform-user/.
+		/// More info at:https://nextcaller.com/platform/documentation/v2.1/#/post-platform-user/curl.
 		/// </summary>
 		/// <param name="platformUsername">Platform username</param>
 		/// <param name="data">Plaftorm user information</param>
@@ -139,7 +156,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Get the profile associated with a particular user id.
-		/// More information at: https://nextcaller.com/platform/documentation/get-profile-id/.
+		/// More information at: https://nextcaller.com/platform/documentation/v2.1/#/get-profile/get-profile-id/curl.
 		/// </summary>
 		/// <param name="id">Profile id</param>
 		/// <param name="platformUsername">Platform username of the caller</param>
@@ -157,7 +174,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Gets the profiles information Next Caller has for a number.
-		/// More information at: https://nextcaller.com/platform/documentation/get-profile/.
+        /// More information at: https://nextcaller.com/platform/documentation/v2.1/#/get-profile/get-profile-phone/curl.
 		/// </summary>
 		/// <param name="phone">Phone number</param>
 		/// <param name="platformUsername">Platfor username of the caller</param>
@@ -177,9 +194,46 @@ namespace NextCallerApi
 			return httpTransport.Request(url, DefaultResponseType);
 		}
 
+        /// <summary>
+        /// Gets list of profiles, associated with a particular name-address or name-zip pair.
+        /// Throws an exception if response status is 404.
+        /// </summary>
+        /// <param name="pair">Pair of name and address or name and zip code.</param>
+        /// <param name="platformUsername">Platfor username of the caller</param>
+        /// <returns>Profiles, associated with a particular name-address or name-zip pair.</returns>
+        public string GetByNameAddressJson(NameAddress pair, string platformUsername)
+        {
+            Utility.EnsureParameterValid(!string.IsNullOrEmpty(platformUsername), "platformUsername");
+            ValidationResult nameAddressValidationResult = NameAddress.IsNameAddressValid(pair);
+            Utility.EnsureParameterValid(nameAddressValidationResult.IsValid, "name and address", nameAddressValidationResult.Message);
+
+            var parameters = new[]
+            {
+                new UrlParameter(nameAddressFirstNameParameterName, pair.FirstName),
+                new UrlParameter(nameAddressLastNameParameterName, pair.LastName),
+                new UrlParameter(nameAddressAddressParameterName, pair.AddressLine),
+                new UrlParameter(formatParameterName, DefaultResponseType.ToString()),
+                new UrlParameter(platformUsernameParameterName, platformUsername)
+            };
+            var additional = pair.ZipCode != 0
+                ? new[]
+                {
+                    new UrlParameter(nameAddressZipParameterName, pair.ZipCode.ToString(CultureInfo.InvariantCulture))
+                }
+                : new[]
+                {
+                    new UrlParameter(nameAddressCityParameterName, pair.City),
+                    new UrlParameter(nameAddressStateParameterName, pair.State)
+                };
+
+            string url = BuildUrl(phoneUrl, parameters.Concat(additional).ToArray());
+
+            return httpTransport.Request(url, DefaultResponseType);
+        }
+
 		/// <summary>
 		/// Gets fraud level for a particular phone number.
-		/// More info at: https://nextcaller.com/platform/documentation/get-fraud-level/.
+		/// More info at: https://nextcaller.com/platform/documentation/v2.1/#/get-fraud-level/curl.
 		/// </summary>
 		/// <param name="phone">Phone number</param>
 		/// <param name="platformUsername">Platform username of the caller</param>
@@ -198,7 +252,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Gets a summary of all API calls made and all users
-		/// More information at: https://nextcaller.com/platform/documentation/get-summary/.
+		/// More information at: https://nextcaller.com/platform/documentation/v2.1/#/get-summary/curl.
 		/// </summary>
 		/// <param name="page">Pagination page number.</param>
 		/// <returns>Platform statistics in json.</returns>
@@ -217,7 +271,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Gets detailed information about a specific user.
-		/// More information at: https://nextcaller.com/platform/documentation/get-platform-user/.
+		/// More information at: https://nextcaller.com/platform/documentation/v2.1/#/get-platform-user/curl.
 		/// </summary>
 		/// <param name="platformUsername">Platform username to get info about.</param>
 		/// <returns>Platform user, associated with a particular platform username, in json.</returns>
@@ -233,7 +287,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Updates or creates platform user.
-		/// More info at: https://nextcaller.com/platform/documentation/post-platform-user/.
+		/// More info at: https://nextcaller.com/platform/documentation/v2.1/#/post-platform-user/curl.
 		/// </summary>
 		/// <param name="platformUsername">Platform username</param>
 		/// <param name="data">Plaftorm user information in json</param>
@@ -249,7 +303,7 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Updates profile.
-		/// More info at: https://nextcaller.com/platform/documentation/post-profile/.
+		/// More info at: https://nextcaller.com/platform/documentation/v2.1/#/post-profile/curl.
 		/// </summary>
 		/// <param name="id">Profile id</param>
 		/// <param name="platformUsername">Platform username of the caller</param>

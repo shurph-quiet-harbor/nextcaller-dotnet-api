@@ -10,7 +10,7 @@ namespace NextCallerApi.Exceptions
 	public class PaginationException : BaseException
 	{
 		/// <summary>
-		/// Initializes FormatException
+		/// Initializes PaginationException
 		/// </summary>
 		/// <param name="request">Failed request</param>
 		/// <param name="response">Response</param>

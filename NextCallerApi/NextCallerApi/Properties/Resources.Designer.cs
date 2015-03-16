@@ -61,6 +61,15 @@ namespace NextCallerApi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 2.1.
+        /// </summary>
+        internal static string DefaultVersion {
+            get {
+                return ResourceManager.GetString("DefaultVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to format.
         /// </summary>
         internal static string FormatUrlParameterName {
@@ -75,6 +84,60 @@ namespace NextCallerApi.Properties {
         internal static string FraudPath {
             get {
                 return ResourceManager.GetString("FraudPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to address.
+        /// </summary>
+        internal static string NameAddressAddressUrlParameterName {
+            get {
+                return ResourceManager.GetString("NameAddressAddressUrlParameterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to city.
+        /// </summary>
+        internal static string NameAddressCityUrlParameterName {
+            get {
+                return ResourceManager.GetString("NameAddressCityUrlParameterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to first_name.
+        /// </summary>
+        internal static string NameAddressFirstNameUrlParameterName {
+            get {
+                return ResourceManager.GetString("NameAddressFirstNameUrlParameterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to last_name.
+        /// </summary>
+        internal static string NameAddressLastNameUrlParameterName {
+            get {
+                return ResourceManager.GetString("NameAddressLastNameUrlParameterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to state.
+        /// </summary>
+        internal static string NameAddressStateUrlParameterName {
+            get {
+                return ResourceManager.GetString("NameAddressStateUrlParameterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to zip_code.
+        /// </summary>
+        internal static string NameAddressZipUrlParameterName {
+            get {
+                return ResourceManager.GetString("NameAddressZipUrlParameterName", resourceCulture);
             }
         }
         
@@ -133,7 +196,7 @@ namespace NextCallerApi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://api.sandbox.nextcaller.com/v2/.
+        ///   Looks up a localized string similar to https://api.sandbox.nextcaller.com/.
         /// </summary>
         internal static string SandboxUrl {
             get {
@@ -151,7 +214,7 @@ namespace NextCallerApi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://api.nextcaller.com/v2/.
+        ///   Looks up a localized string similar to https://api.nextcaller.com/.
         /// </summary>
         internal static string WorkingUrl {
             get {
