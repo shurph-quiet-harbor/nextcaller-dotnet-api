@@ -1,5 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
+using System.IO;
 using System.Net;
+using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 
 using Newtonsoft.Json;
@@ -29,12 +35,18 @@ namespace NextCallerApi.Http
 			_authorizationToken = BasicAuthorization.GetToken(username, password);
 		}
 
-		public string Request(string url, ContentType contentType, string data = null)
+		public string Request(string url, ContentType contentType, string method = "GET", string data = null, IList<Entities.Common.Header> headers = null)
 		{
 
-			HttpWebRequest request = CreateWebRequest(url, contentType);
+			HttpWebRequest request = CreateWebRequest(url, contentType, headers);
 
-			HttpWebResponse response = data == null ? Get(request) : Post(request, data);
+		    MethodInfo methodInvoker = GetType().GetMethod(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(method.ToLower()));
+		    if (methodInvoker == null)
+		    {
+		        throw new BadMethodException(method);
+		    }
+
+		    HttpWebResponse response = methodInvoker.Invoke(this, new object[]{request, data, headers}) as HttpWebResponse;
 
 			string responseContent;
 
@@ -101,15 +113,20 @@ namespace NextCallerApi.Http
 			}
 		}
 
-		private HttpWebRequest CreateWebRequest(string url, ContentType contentType)
+        private HttpWebRequest CreateWebRequest(string url, ContentType contentType, IList<Entities.Common.Header> headers = null)
 		{
 			HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(url);
 
 			webRequest.Accept = GetHttpContentType(ContentType.Json);
 			webRequest.ContentType = GetHttpContentType(contentType);
 			webRequest.Headers.Add(HttpRequestHeader.Authorization, _authorizationToken);
+            if (headers == null) return webRequest;
+            foreach (var header in headers)
+            {
+                webRequest.Headers.Add(header.Name, header.Value);
+            }
 
-			return webRequest;
+            return webRequest;
 		}
 
 		private static bool IsSuccessfulStatusCode(HttpStatusCode statusCode)
