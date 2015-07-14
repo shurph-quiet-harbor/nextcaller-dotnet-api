@@ -298,7 +298,7 @@ namespace NextCallerApi
 
 			string url = BuildUrl(platformUrl + platformUsername, new UrlParameter(formatParameterName, PostContentType.ToString()));
 
-			httpTransport.Request(url, PostContentType, data);
+			httpTransport.Request(url, PostContentType, "POST", data);
 		}
 
 		/// <summary>
@@ -318,7 +318,7 @@ namespace NextCallerApi
 			string url = BuildUrl(usersUrl + id, new UrlParameter(platformUsernameParameterName, platformUsername),
 											   new UrlParameter(formatParameterName, PostContentType.ToString()));
 
-			httpTransport.Request(url, PostContentType, data);
+			httpTransport.Request(url, PostContentType, "POST", data);
 
 		}
 

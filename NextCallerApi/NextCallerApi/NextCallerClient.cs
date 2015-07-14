@@ -270,7 +270,7 @@ namespace NextCallerApi
 
 			string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, PostContentType.ToString()));
 
-			httpTransport.Request(url, PostContentType, data);
+			httpTransport.Request(url, PostContentType, "POST", data);
 
 		}
 

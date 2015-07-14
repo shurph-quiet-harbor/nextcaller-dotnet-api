@@ -16,6 +16,7 @@ using NextCallerApi.Exceptions;
 using NextCallerApi.Interfaces;
 
 using FormatException = NextCallerApi.Exceptions.FormatException;
+using Header = NextCallerApi.Entities.Common.Header;
 
 
 namespace NextCallerApi.Http
@@ -35,18 +36,18 @@ namespace NextCallerApi.Http
 			_authorizationToken = BasicAuthorization.GetToken(username, password);
 		}
 
-		public string Request(string url, ContentType contentType, string method = "GET", string data = null, IList<Entities.Common.Header> headers = null)
+		public string Request(string url, ContentType contentType, string method = "GET", string data = null, IEnumerable<Header> headers = null)
 		{
 
 			HttpWebRequest request = CreateWebRequest(url, contentType, headers);
 
-		    MethodInfo methodInvoker = GetType().GetMethod(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(method.ToLower()));
+            MethodInfo methodInvoker = GetType().GetMethod(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(method.ToLower()), BindingFlags.NonPublic | BindingFlags.Instance);
 		    if (methodInvoker == null)
 		    {
 		        throw new BadMethodException(method);
 		    }
 
-		    HttpWebResponse response = methodInvoker.Invoke(this, new object[]{request, data, headers}) as HttpWebResponse;
+		    HttpWebResponse response = methodInvoker.Invoke(this, new object[]{request, data}) as HttpWebResponse;
 
 			string responseContent;
 
@@ -100,7 +101,7 @@ namespace NextCallerApi.Http
 			}
 		}
 
-		private static HttpWebResponse Get(WebRequest request)
+		private static HttpWebResponse Get(WebRequest request, string data)
 		{
 			try
 			{
@@ -113,7 +114,7 @@ namespace NextCallerApi.Http
 			}
 		}
 
-        private HttpWebRequest CreateWebRequest(string url, ContentType contentType, IList<Entities.Common.Header> headers = null)
+        private HttpWebRequest CreateWebRequest(string url, ContentType contentType, IEnumerable<Header> headers = null)
 		{
 			HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(url);
 
