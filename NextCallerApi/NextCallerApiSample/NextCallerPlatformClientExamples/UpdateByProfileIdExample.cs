@@ -23,7 +23,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 			NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
 			const string ProfileId = "profileId";
-			const string PlatformUsername = "username";
+			const string AccountId = "username";
 
 			try
 			{
@@ -53,7 +53,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 					},
 				};
 
-				client.UpdateByProfileId(ProfileId, profile, PlatformUsername);
+				client.UpdateByProfileId(ProfileId, profile, AccountId);
 
 			}
 			catch (FormatException formatException)

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
@@ -41,13 +42,30 @@ namespace NextCallerApi.Http
 
 			HttpWebRequest request = CreateWebRequest(url, contentType, headers);
 
-            MethodInfo methodInvoker = GetType().GetMethod(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(method.ToLower()), BindingFlags.NonPublic | BindingFlags.Instance);
-		    if (methodInvoker == null)
+		    Func<HttpWebRequest, string, HttpWebResponse> methodFunc;
+
+		    switch (method)
 		    {
-		        throw new BadMethodException(method);
+		        case "GET":
+		            methodFunc = Get;
+		            break;
+                case "POST":
+		            methodFunc = Post;
+		            break;
+                default:
+		            methodFunc = Get;
+		            break;
 		    }
 
-		    HttpWebResponse response = methodInvoker.Invoke(this, new object[]{request, data}) as HttpWebResponse;
+//            MethodInfo methodInvoker = GetType().GetMethod(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(method.ToLower()), BindingFlags.NonPublic | BindingFlags.Instance);
+//		    if (methodInvoker == null)
+//		    {
+//		        throw new BadMethodException(method);
+//		    }
+//
+//		    HttpWebResponse response = methodInvoker.Invoke(this, new object[]{request, data}) as HttpWebResponse;
+
+		    var response = methodFunc(request, data);
 
 			string responseContent;
 
