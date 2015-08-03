@@ -32,11 +32,11 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
                 State = "NY"
             };
 
-            const string PlatformUsername = "username";
+            const string AccountId = "username";
 
             try
             {
-                IList<Profile> profiles = client.GetByNameAddress(nameAddress, PlatformUsername);
+                IList<Profile> profiles = client.GetByNameAddress(nameAddress, AccountId);
 
                 Profile profile = profiles.First();
 

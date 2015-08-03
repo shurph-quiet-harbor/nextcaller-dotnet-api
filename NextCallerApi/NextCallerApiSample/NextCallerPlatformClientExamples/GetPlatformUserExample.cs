@@ -22,11 +22,11 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 
 			NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
-			const string PlatformUsername = "username";
+			const string AccountId = "username";
 
 			try
 			{
-				PlatformUser user = client.GetPlatformUser(PlatformUsername);
+				PlatformUser user = client.GetPlatformUser(AccountId);
 
 					//user = new PlatformUser
 					//{
