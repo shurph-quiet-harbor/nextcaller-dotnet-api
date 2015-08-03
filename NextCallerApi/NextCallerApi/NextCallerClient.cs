@@ -22,7 +22,7 @@ namespace NextCallerApi
 	public class NextCallerClient
 	{
 
-		protected readonly string baseUrl;
+		protected string baseUrl;
 		protected readonly string usersUrl;
 		protected readonly string phoneUrl;
 		protected readonly string fraudUrl;
