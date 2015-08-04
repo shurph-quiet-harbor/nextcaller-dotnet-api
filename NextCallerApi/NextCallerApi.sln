@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextCallerApiSample", "Next
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextCallerApiTest", "NextCallerApiTest\NextCallerApiTest.csproj", "{80B240E9-0811-4194-83C6-EE2E9751670F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{F187EE26-6C78-440B-9F74-AA87B575A63B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{80B240E9-0811-4194-83C6-EE2E9751670F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80B240E9-0811-4194-83C6-EE2E9751670F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80B240E9-0811-4194-83C6-EE2E9751670F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F187EE26-6C78-440B-9F74-AA87B575A63B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F187EE26-6C78-440B-9F74-AA87B575A63B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F187EE26-6C78-440B-9F74-AA87B575A63B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F187EE26-6C78-440B-9F74-AA87B575A63B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
