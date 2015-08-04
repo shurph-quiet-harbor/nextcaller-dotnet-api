@@ -97,6 +97,15 @@ namespace NextCallerApi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to email.
+        /// </summary>
+        internal static string EmailUrlParameterName {
+            get {
+                return ResourceManager.GetString("EmailUrlParameterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to format.
         /// </summary>
         internal static string FormatUrlParameterName {

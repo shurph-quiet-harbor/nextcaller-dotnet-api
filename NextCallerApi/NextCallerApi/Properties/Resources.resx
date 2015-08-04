@@ -129,6 +129,9 @@
   <data name="PhoneUrlParameterName" xml:space="preserve">
     <value>phone</value>
   </data>
+  <data name="EmailUrlParameterName" xml:space="preserve">
+    <value>email</value>
+  </data>
   <data name="NameAddressFirstNameUrlParameterName" xml:space="preserve">
     <value>first_name</value>
   </data>

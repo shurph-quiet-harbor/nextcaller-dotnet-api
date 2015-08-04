@@ -21,7 +21,7 @@ namespace NextCallerApiTest
 		{
 			//Arrange
 			const string InvalidNumber = "";
-			const string PlatformUserName = "username";
+			const string AccountId = "username";
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
 
@@ -31,7 +31,7 @@ namespace NextCallerApiTest
 			try
 			{
 				//Action
-				IList<Profile> profiles = client.GetByPhone(InvalidNumber, PlatformUserName);
+				IList<Profile> profiles = client.GetByPhone(InvalidNumber, AccountId);
 				Assert.Fail("An exception should have been thrown");
 			}
 			catch (ArgumentException argumentException)
@@ -41,6 +41,54 @@ namespace NextCallerApiTest
 			}
 
 		}
+
+        [TestMethod]
+        public void GetProfileEmail_ValidEmail_ProfileReturned()
+        {
+            //Arrange
+            const string ValidEmail = "test@mail.com";
+            const string AccountId = "username";
+
+            var jsonProfile = Properties.Resources.JsonProfile;
+
+            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
+
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
+                .Returns(jsonProfile);
+
+            //Action
+            NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
+            string profile = client.GetByEmailJson(ValidEmail, AccountId);
+
+            //Assert
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
+
+            Assert.IsNotNull(profile);
+            Assert.AreEqual(profile, jsonProfile);
+        }
+
+        [TestMethod]
+        public void GetProfileEmail_EmptyEmail_ArgumentExceptionThrown()
+        {
+            //Arrange
+            const string Email = "";
+            const string AccountId = "username";
+
+            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
+            NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
+
+            try
+            {
+                //Action
+                client.GetByEmail(Email, AccountId);
+                Assert.Fail("An exception should have been thrown");
+            }
+            catch (ArgumentException argumentException)
+            {
+                //Assert
+                Assert.AreEqual("email", argumentException.ParamName);
+            }
+        }
 
         [TestMethod]
         public void GetProfilesByNameAddress_InvalidNA_ArgumentExceptionThrown()
@@ -53,7 +101,7 @@ namespace NextCallerApiTest
                 LastName = "Seinfeld",
                 State = "NY"
             };
-            const string PlatformUserName = "username";
+            const string AccountId = "username";
 
             Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
 
@@ -61,7 +109,7 @@ namespace NextCallerApiTest
             //Action
             try
             {
-                client.GetByNameAddressJson(nameAddress, PlatformUserName);
+                client.GetByNameAddressJson(nameAddress, AccountId);
                 Assert.Fail("An exception should have been thrown");
             }
             catch (ArgumentException argumentException)
@@ -83,7 +131,7 @@ namespace NextCallerApiTest
                 ZipCode = 1002
             };
 
-            const string PlatformUserName = "username";
+            const string AccountId = "username";
             
             Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
 
@@ -91,7 +139,7 @@ namespace NextCallerApiTest
             //Action
             try
             {
-                client.GetByNameAddressJson(nameAddress, PlatformUserName);
+                client.GetByNameAddressJson(nameAddress, AccountId);
                 Assert.Fail("An exception should have been thrown");
             }
             catch (ArgumentException argumentException)
@@ -102,29 +150,27 @@ namespace NextCallerApiTest
         }
 
 		[TestMethod]
-		public void GetProfileByPhone_InvalidPlatformUserName_ArgumentExceptionThrown()
+		public void GetProfileByPhone_EmptyAccountID_ProfilesReturned()
 		{
 			//Arrange
-			const string InvalidNumber = "2020327123";
-			const string PlatformUserName = "";
+			const string PhoneNumber = "2020327123";
+			const string AccountId = "";
+
+            string jsonProfiles = Properties.Resources.JsonProfiles;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
+                .Returns(jsonProfiles);
 
+            //Action
 			NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
+		    string profiles = client.GetByPhoneJson(PhoneNumber, AccountId);
 
+            //Assert
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
 
-			try
-			{
-				//Action
-				IList<Profile> profiles = client.GetByPhone(InvalidNumber, PlatformUserName);
-				Assert.Fail("An exception should have been thrown");
-			}
-			catch (ArgumentException argumentException)
-			{
-				//Assert
-				Assert.AreEqual("platformUsername", argumentException.ParamName);
-			}
-
+            Assert.IsNotNull(profiles);
+            Assert.AreEqual(jsonProfiles, profiles);
 		}
 
 		[TestMethod]
@@ -156,7 +202,7 @@ namespace NextCallerApiTest
 			string jsonProfile = Properties.Resources.JsonProfile;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-			httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null))
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
 				.Returns(jsonProfile);
 
 
@@ -165,14 +211,14 @@ namespace NextCallerApiTest
 			string profile = client.GetByProfileIdJson(ProfileId, AccountId);
 
 			//Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null), Times.Once);
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
 
 			Assert.IsNotNull(profile);
 			Assert.AreEqual(jsonProfile, profile);
 		}
 
 		[TestMethod]
-		public void GetProfilesByphone_ValidPhone_ProfilesReturned()
+		public void GetProfilesByPhone_ValidPhone_ProfilesReturned()
 		{
 			//Arrange
 			const string PhoneNumber = "2020327000";
@@ -180,7 +226,7 @@ namespace NextCallerApiTest
 			string jsonProfiles = Properties.Resources.JsonProfiles;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null))
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
 				.Returns(jsonProfiles);
 
 
@@ -189,7 +235,7 @@ namespace NextCallerApiTest
 			string profiles = client.GetByPhoneJson(PhoneNumber, AccountId);
 
 			//Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null), Times.Once);
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
 
 			Assert.IsNotNull(profiles);
 			Assert.AreEqual(jsonProfiles, profiles);
@@ -212,7 +258,7 @@ namespace NextCallerApiTest
             string jsonProfiles = Properties.Resources.JsonProfiles;
 
             Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null))
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(),  It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
                 .Returns(jsonProfiles);
 
 
@@ -221,7 +267,7 @@ namespace NextCallerApiTest
             string profiles = client.GetByNameAddressJson(nameAddress, AccountId);
 
             //Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null), Times.Once);
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
 
             Assert.IsNotNull(profiles);
             Assert.AreEqual(jsonProfiles, profiles);
@@ -236,7 +282,7 @@ namespace NextCallerApiTest
 			string jsonFraudLevel = Properties.Resources.JsonFraudLevel;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null))
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
 				.Returns(jsonFraudLevel);
 
 
@@ -245,7 +291,7 @@ namespace NextCallerApiTest
 			string fraudLevel = client.GetFraudLevelJson(PhoneNumber, AccountId);
 
 			//Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null), Times.Once);
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
 
 			Assert.IsNotNull(fraudLevel);
 			Assert.AreEqual(jsonFraudLevel, fraudLevel);
@@ -259,7 +305,7 @@ namespace NextCallerApiTest
 			string jsonUser = Properties.Resources.JsonPlatformUser;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null))
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(),  It.IsIn("GET", "POST"), null, null))
 				.Returns(jsonUser);
 
 
@@ -268,7 +314,7 @@ namespace NextCallerApiTest
 			string user = client.GetPlatformUserJson(AccountId);
 
 			//Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null), Times.Once);
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(),  It.IsIn("GET", "POST"), null, null), Times.Once);
 
 			Assert.IsNotNull(user);
 			Assert.AreEqual(jsonUser, user);
@@ -281,7 +327,7 @@ namespace NextCallerApiTest
 			string jsonStats = Properties.Resources.JsonPlatformUser;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null))
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(),  It.IsIn("GET", "POST"), null, null))
 				.Returns(jsonStats);
 
 
@@ -290,7 +336,7 @@ namespace NextCallerApiTest
 			string stats = client.GetPlatformStatisticsJson();
 
 			//Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null), Times.Once);
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(),  It.IsIn("GET", "POST"), null, null), Times.Once);
 
 			Assert.IsNotNull(stats);
 			Assert.AreEqual(jsonStats, stats);
@@ -304,7 +350,7 @@ namespace NextCallerApiTest
 			const int page = -10;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "GET", null, null))
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(),  It.IsIn("GET", "POST"), null, null))
 				.Returns(jsonStats);
 			
 			NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
@@ -337,7 +383,7 @@ namespace NextCallerApiTest
 			};
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-			httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), null))
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()))
 				.Returns(string.Empty);
 
 
@@ -346,7 +392,7 @@ namespace NextCallerApiTest
             client.UpdateByProfileId(ProfileId, profile, AccountId);
 
 			//Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), null), Times.Once);
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()), Times.Once);
 		}
 
 		[TestMethod]
@@ -364,7 +410,7 @@ namespace NextCallerApiTest
 			};
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), null))
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()))
 				.Returns(string.Empty);
 
 
@@ -373,7 +419,7 @@ namespace NextCallerApiTest
             client.UpdatePlatformUser(AccountId, user);
 
 			//Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), null), Times.Once);
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()), Times.Once);
 		}
 	}
 }
