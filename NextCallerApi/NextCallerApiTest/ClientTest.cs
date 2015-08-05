@@ -16,63 +16,6 @@ namespace NextCallerApiTest
 	public class ClientTest
 	{
 		[TestMethod]
-		public void GetProfileByPhone_InvalidPhone_ArgumentExceptionThrown()
-		{
-			//Arrange
-			const string InvalidNumber = "";
-
-			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-
-			NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
-
-
-			try
-			{
-				//Action
-				IList<Profile> profiles = client.GetByPhone(InvalidNumber);
-				Assert.Fail("An exception should have been thrown");
-			}
-			catch (ArgumentException argumentException)
-			{
-				//Assert
-				Assert.AreEqual("phone", argumentException.ParamName);
-			}
-
-		}
-
-        [TestMethod]
-        public void GetProfilesByNameAddress_InvalidNA_ArgumentExceptionThrown()
-        {
-            //Arrange
-            NameAddress nameAddress = new NameAddress
-            {
-                AddressLine = "129 West 81st Street",
-                FirstName = "Jerry",
-                LastName = "Seinfeld",
-                State = "NY"
-            };
-
-            string jsonProfiles = Properties.Resources.JsonProfiles;
-
-            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(),  It.IsIn("GET", "POST"), null, null))
-                .Returns(jsonProfiles);
-
-            NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
-            //Action
-            try
-            {
-                client.GetByNameAddressJson(nameAddress);
-                Assert.Fail("An exception should have been thrown");
-            }
-            catch (ArgumentException argumentException)
-            {
-                //Assert
-                Assert.AreEqual("name and address", argumentException.ParamName);
-            }
-        }
-
-        [TestMethod]
         public void GetProfileEmail_ValidEmail_ProfileReturned()
         {
             //Arrange
@@ -94,61 +37,7 @@ namespace NextCallerApiTest
             Assert.IsNotNull(profile);
             Assert.AreEqual(profile, jsonProfile);
         }
-
-        [TestMethod]
-        public void GetProfileEmail_EmptyEmail_ArgumentExceptionThrown()
-        {
-            //Arrange
-            const string EmptyEmail = "";
-
-            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
-
-            try
-            {
-                //Action
-                client.GetByEmail(EmptyEmail);
-                Assert.Fail("An exception should have been thrown");
-            }
-            catch (ArgumentException argumentException)
-            {
-                //Assert
-                Assert.AreEqual("email", argumentException.ParamName);
-            }
-        }
-
-        [TestMethod]
-        public void GetProfilesByNameAddress_InvalidNAZip_ArgumentExceptionThrown()
-        {
-            //Arrange
-            NameAddress nameAddress = new NameAddress
-            {
-                AddressLine = "129 West 81st Street",
-                FirstName = "Jerry",
-                LastName = "Seinfeld",
-                ZipCode = 1002
-            };
-
-            string jsonProfiles = Properties.Resources.JsonProfiles;
-
-            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
-                .Returns(jsonProfiles);
-
-            NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
-            //Action
-            try
-            {
-                client.GetByNameAddressJson(nameAddress);
-                Assert.Fail("An exception should have been thrown");
-            }
-            catch (ArgumentException argumentException)
-            {
-                //Assert
-                Assert.AreEqual("name and address", argumentException.ParamName);
-            }
-        }
-
+        
 		[TestMethod]
 		public void GetProfileById_EmptyId_ArgumentExceptionThrown()
 		{

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO.Ports;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 using NextCallerApi.Entities.Common;
 
 using UrlParameter = System.Collections.Generic.KeyValuePair<string, string>;
@@ -27,6 +28,8 @@ namespace NextCallerApi
 		protected readonly string phoneUrl;
 		protected readonly string fraudUrl;
         protected readonly string versionNumber;
+
+	    protected const string PhoneRegexPattern = @"[\(\)\-\s]";
 
 		protected readonly string formatParameterName;
 		protected readonly string phoneParameterName;
@@ -211,9 +214,9 @@ namespace NextCallerApi
         /// <returns>Profile associated with the particular email in Json format.</returns>
         public string GetByEmailJson(string email)
         {
-            Utility.EnsureParameterValid(!string.IsNullOrEmpty(email), "email");
+//            Utility.EnsureParameterValid(!string.IsNullOrEmpty(email), "email");
 
-            string url = BuildUrl(phoneUrl, new UrlParameter(emailParameterName, email)
+            string url = BuildUrl(phoneUrl, new UrlParameter(emailParameterName, email ?? "")
                 , new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 
             return httpTransport.Request(url, DefaultResponseType);
@@ -227,10 +230,13 @@ namespace NextCallerApi
 		/// <returns>Profiles in json format.</returns>
 		public string GetByPhoneJson(string phone)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
 
-			ValidationResult phoneValidationMessage = Phone.IsNumberValid(phone);
-			Utility.EnsureParameterValid(phoneValidationMessage.IsValid, "phone", phoneValidationMessage.Message);
+		    var phoneRegex = new Regex(PhoneRegexPattern, RegexOptions.CultureInvariant);
+//			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
+//
+//			ValidationResult phoneValidationMessage = Phone.IsNumberValid(phone);
+//			Utility.EnsureParameterValid(phoneValidationMessage.IsValid, "phone", phoneValidationMessage.Message);
+		    phone = phone == null ? "": phoneRegex.Replace(phone, "");
 
 			string url = BuildUrl(phoneUrl, new UrlParameter(phoneParameterName, phone), 
 										  new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
@@ -247,14 +253,14 @@ namespace NextCallerApi
         /// <returns>Profiles, associated with the particular name-address or name-zip pair.</returns>
         public string GetByNameAddressJson(NameAddress pair)
         {
-            ValidationResult nameAddressValidationResult = NameAddress.IsNameAddressValid(pair);
-            Utility.EnsureParameterValid(nameAddressValidationResult.IsValid, "name and address", nameAddressValidationResult.Message);
-
+//            ValidationResult nameAddressValidationResult = NameAddress.IsNameAddressValid(pair);
+//            Utility.EnsureParameterValid(nameAddressValidationResult.IsValid, "name and address", nameAddressValidationResult.Message);
+            Utility.EnsureParameterValid(!pair.Equals(null), "NameAddress");
             var parameters = new []
             {
-                new UrlParameter(nameAddressFirstNameParameterName, pair.FirstName),
-                new UrlParameter(nameAddressLastNameParameterName, pair.LastName),
-                new UrlParameter(nameAddressAddressParameterName, pair.AddressLine),
+                new UrlParameter(nameAddressFirstNameParameterName, pair.FirstName ?? ""),
+                new UrlParameter(nameAddressLastNameParameterName, pair.LastName ?? ""),
+                new UrlParameter(nameAddressAddressParameterName, pair.AddressLine ?? ""),
                 new UrlParameter(formatParameterName, DefaultResponseType.ToString())
             };
             var additional = pair.ZipCode != 0
@@ -264,8 +270,8 @@ namespace NextCallerApi
                 }
                 : new[]
                 {
-                    new UrlParameter(nameAddressCityParameterName, pair.City),
-                    new UrlParameter(nameAddressStateParameterName, pair.State)
+                    new UrlParameter(nameAddressCityParameterName, pair.City ?? ""),
+                    new UrlParameter(nameAddressStateParameterName, pair.State ?? "")
                 };
 
             string url = BuildUrl(phoneUrl, parameters.Concat(additional).ToArray());
@@ -281,7 +287,14 @@ namespace NextCallerApi
 		/// <returns>Fraud level for given phone number in json format.</returns>
 		public string GetFraudLevelJson(string phone)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
+//			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
+            
+            var phoneRegex = new Regex(PhoneRegexPattern, RegexOptions.CultureInvariant);
+            //			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
+            //
+            //			ValidationResult phoneValidationMessage = Phone.IsNumberValid(phone);
+            //			Utility.EnsureParameterValid(phoneValidationMessage.IsValid, "phone", phoneValidationMessage.Message);
+            phone = phone == null ? "" : phoneRegex.Replace(phone, "");
 
 			string url = BuildUrl(fraudUrl , new UrlParameter(phoneParameterName, phone), 
 										   new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
@@ -298,12 +311,12 @@ namespace NextCallerApi
 		public void UpdateByProfileId(string id, string data)
 		{
 
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(data), "data");
+//			Utility.EnsureParameterValid(!string.IsNullOrEmpty(data), "data");
 			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
 
 			string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, PostContentType.ToString()));
 
-			httpTransport.Request(url, PostContentType, "POST", data);
+			httpTransport.Request(url, PostContentType, "POST", data ?? "");
 
 		}
 

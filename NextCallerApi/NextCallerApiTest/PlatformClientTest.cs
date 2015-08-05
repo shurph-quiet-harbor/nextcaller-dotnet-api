@@ -16,32 +16,6 @@ namespace NextCallerApiTest
 	[TestClass]
 	public class PlatformClientTest
 	{
-		[TestMethod]
-		public void GetProfileByPhone_InvalidPhone_ArgumentExceptionThrown()
-		{
-			//Arrange
-			const string InvalidNumber = "";
-			const string AccountId = "username";
-
-			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-
-			NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
-
-
-			try
-			{
-				//Action
-				IList<Profile> profiles = client.GetByPhone(InvalidNumber, AccountId);
-				Assert.Fail("An exception should have been thrown");
-			}
-			catch (ArgumentException argumentException)
-			{
-				//Assert
-				Assert.AreEqual("phone", argumentException.ParamName);
-			}
-
-		}
-
         [TestMethod]
         public void GetProfileEmail_ValidEmail_ProfileReturned()
         {
@@ -65,88 +39,6 @@ namespace NextCallerApiTest
 
             Assert.IsNotNull(profile);
             Assert.AreEqual(profile, jsonProfile);
-        }
-
-        [TestMethod]
-        public void GetProfileEmail_EmptyEmail_ArgumentExceptionThrown()
-        {
-            //Arrange
-            const string Email = "";
-            const string AccountId = "username";
-
-            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
-
-            try
-            {
-                //Action
-                client.GetByEmail(Email, AccountId);
-                Assert.Fail("An exception should have been thrown");
-            }
-            catch (ArgumentException argumentException)
-            {
-                //Assert
-                Assert.AreEqual("email", argumentException.ParamName);
-            }
-        }
-
-        [TestMethod]
-        public void GetProfilesByNameAddress_InvalidNA_ArgumentExceptionThrown()
-        {
-            //Arrange
-            NameAddress nameAddress = new NameAddress
-            {
-                AddressLine = "129 West 81st Street",
-                FirstName = "Jerry",
-                LastName = "Seinfeld",
-                State = "NY"
-            };
-            const string AccountId = "username";
-
-            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-
-            NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
-            //Action
-            try
-            {
-                client.GetByNameAddressJson(nameAddress, AccountId);
-                Assert.Fail("An exception should have been thrown");
-            }
-            catch (ArgumentException argumentException)
-            {
-                //Assert
-                Assert.AreEqual("name and address", argumentException.ParamName);
-            }
-        }
-
-        [TestMethod]
-        public void GetProfilesByNameAddress_InvalidNAZip_ArgumentExceptionThrown()
-        {
-            //Arrange
-            NameAddress nameAddress = new NameAddress
-            {
-                AddressLine = "129 West 81st Street",
-                FirstName = "Jerry",
-                LastName = "Seinfeld",
-                ZipCode = 1002
-            };
-
-            const string AccountId = "username";
-            
-            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-
-            NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
-            //Action
-            try
-            {
-                client.GetByNameAddressJson(nameAddress, AccountId);
-                Assert.Fail("An exception should have been thrown");
-            }
-            catch (ArgumentException argumentException)
-            {
-                //Assert
-                Assert.AreEqual("name and address", argumentException.ParamName);
-            }
         }
 
 		[TestMethod]
