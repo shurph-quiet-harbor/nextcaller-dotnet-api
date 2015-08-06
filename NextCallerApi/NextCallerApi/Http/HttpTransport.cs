@@ -81,6 +81,11 @@ namespace NextCallerApi.Http
 
 			Error requestError;
 
+		    if ((int) response.StatusCode == 429)
+		    {
+                throw new RateLimitExceededException(request, response, responseContent);
+		    }
+
 			try
 			{
 				requestError = Serialization.JsonSerializer.ParseError(responseContent);

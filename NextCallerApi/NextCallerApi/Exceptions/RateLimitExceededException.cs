@@ -36,9 +36,12 @@ namespace NextCallerApi.Exceptions
             var limitReset = response.Headers["X-RateLimit-Reset"];
             var limitRemainig = response.Headers["X-RateLimit-Remaining"];
             var limitLimit = response.Headers["X-RateLimit-Limit"];
-            limitLimitValue = limitLimit == null ? limitLimitValue.GetValueOrDefault() : long.Parse(limitLimit);
-            limitResetValue = limitReset == null ? limitResetValue.GetValueOrDefault() : TimeSpan.FromMilliseconds(long.Parse(limitReset));
-            limitRemainigValue = limitRemainig == null ? limitRemainigValue.GetValueOrDefault() : long.Parse(limitRemainig);
+            limitLimitValue = null;
+            limitRemainigValue = null;
+            limitResetValue = null;
+            if (limitLimit != null) limitLimitValue = long.Parse(limitLimit);
+            if (limitReset != null) limitResetValue = TimeSpan.FromMilliseconds(long.Parse(limitReset));
+            if (limitRemainig != null) limitRemainigValue = long.Parse(limitRemainig);
         }
 
         public override string Message
@@ -53,8 +56,8 @@ namespace NextCallerApi.Exceptions
 		{
             string template = "Rate Limit Exceeded." 
                 + (limitLimitValue.HasValue ? " Current rate limit value is {0} per second;" : "")
-                + (limitRemainigValue.HasValue ? " number of requests left: {1}" : "")
-                + (limitResetUTCDate.HasValue ? "remaning window before rate limit resets: {2}" : "")
+                + (limitRemainigValue.HasValue ? " number of requests left: {1};" : "")
+                + (limitResetUTCDate.HasValue ? "remaning window before rate limit resets: {2};" : "")
                 + " {3}";
 
 			return string.Format(template, limitLimitValue, limitRemainigValue, limitResetUTCDate, Content);
