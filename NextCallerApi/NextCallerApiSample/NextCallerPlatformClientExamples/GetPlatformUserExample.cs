@@ -26,7 +26,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 
 			try
 			{
-				PlatformUser user = client.GetPlatformUser(AccountId);
+				PlatformAccount user = client.GetPlatformUser(AccountId);
 
 					//user = new PlatformUser
 					//{

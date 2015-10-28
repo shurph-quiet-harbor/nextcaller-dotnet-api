@@ -26,7 +26,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 
 			try
 			{
-				PlatformUserToPost user = new PlatformUserToPost
+				PlatformAccountToPost user = new PlatformAccountToPost
 				{
 					CompanyName = "platform_company1_name",
 					Email = "company_email@company1.com",

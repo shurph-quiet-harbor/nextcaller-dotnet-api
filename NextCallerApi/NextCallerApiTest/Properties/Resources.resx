@@ -138,79 +138,70 @@
 }</value>
   </data>
   <data name="JsonPlatformStatistics" xml:space="preserve">
-    <value>{ 
-    "platform_users": [ 
-        {  
-            "created_time": "2014­03­16T10:40:12", 
-            "number_of_operations": 1, 
-            "resource_uri": "/api/v2/platform_users/pl2_un2/", 
-            "total_calls": { 
-                "201405": 2 
-            }, 
-            "successful_calls": { 
-                "201405": 1 
-            }, 
-            "billable_calls": { }, 
-            "username": "pl2_un1" 
-        }, 
-        { 
-            "created_time": "2014­04­16T13:42:00", 
-            "number_of_operations": 24, 
-            "resource_uri": "/api/v2/platform_users/pl2_un1/", 
-            "total_calls": {
-                "201403": 7,
-                "201404": 12, 
-                "201405": 10 
-            }, 
-            "successful_calls": { 
-                "201403": 6, 
-                "201404": 10, 
-                "201405": 8 
-            }, 
-            "billable_calls": { 
-                "201404": 1, 
-                "201405": 1 
-            }, 
-            "username": "pl2_un2" 
-        } 
-    ], 
-    "total_platform_calls": { 
-        "201403": 7, 
-        "201404": 12, 
-        "201405": 2 
-    }, 
-    "successful_platform_calls": {  
-        "201403": 6, 
-        "201404": 10, 
-        "201405": 9 
-    }, 
-    "billable_platform_calls": { 
-        "201404": 1, 
-        "201405": 1 
-    } 
- }</value>
+    <value>{
+  "data": [
+    {
+      "id": "test_platform_username1",
+      "first_name": "John",
+      "last_name": "Doe",
+      "company_name": "NC*",
+      "email": "test1@test.com",
+      "number_of_operations": 5,
+      "total_operations": {
+        "2015-07": 5
+      },
+      "billed_operations": {
+        "2015-07": 5
+      },
+      "object": "account",
+      "resource_uri": "/api/v2.1/accounts/test_platform_username1/"
+    },
+    {
+      "id": "me",
+      "first_name": "",
+      "last_name": "",
+      "company_name": "",
+      "email": "",
+      "number_of_operations": 4,
+      "total_operations": {
+        "2015-07": 4
+      },
+      "billed_operations": {
+        "2015-07": 4
+      },
+      "object": "account",
+      "resource_uri": "/api/v2.1/accounts/me/"
+    }
+  ],
+  "page": 1,
+  "has_next": false,
+  "total_pages": 1,
+  "object": "page",
+  "billed_platform_operations": {
+    "2015-07": 59
+  },
+  "total_platform_operations": {
+    "2015-07": 59
+  }
+}</value>
   </data>
   <data name="JsonPlatformUser" xml:space="preserve">
     <value>{
-    "created_time": "2014­04­16T13:42:00", 
-    "number_of_operations": 24,  
-    "resource_uri": "/api/v2/platform_users/user12345/",  
-    "total_calls": {  
-        "201403": 7,  
-        "201404": 12,  
-        "201405": 10  
-    },  
-    "successful_calls": {  
-        "201403": 6,  
-        "201404": 10,  
-        "201405": 8  
-    },  
-    "billable_calls": {  
-        "201404": 1,  
-        "201405": 1  
-    },  
-    "username": "user12345"  
- }</value>
+      "id": "test_platform_username1",
+      "first_name": "John",
+      "last_name": "Doe",
+      "company_name": "NC*",
+      "email": "test1@test.com",
+      "number_of_operations": 5,
+      "total_operations": {
+        "2015-07": 5
+      },
+      "billed_operations": {
+        "2015-07": 5
+      },
+      "object": "account",
+      "resource_uri": "/api/v2.1/accounts/test_platform_username1/"
+    }</value>
   </data>
   <data name="JsonProfile" xml:space="preserve">
     <value>{

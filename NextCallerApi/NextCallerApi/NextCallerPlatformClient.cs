@@ -70,10 +70,10 @@ namespace NextCallerApi
 		/// </summary>
 		/// <param name="accountId">Platform user's account ID to get info about.</param>
 		/// <returns>Platform user, associated with the particular account ID.</returns>
-		public PlatformUser GetPlatformUser(string accountId)
+		public PlatformAccount GetPlatformUser(string accountId)
 		{
             string response = GetPlatformUserJson(accountId);
-			return JsonSerializer.Deserialize<PlatformUser>(response);
+			return JsonSerializer.Deserialize<PlatformAccount>(response);
 		}
 
 		/// <summary>
@@ -174,7 +174,7 @@ namespace NextCallerApi
 		/// </summary>
         /// <param name="accountId">Platform user's account ID</param>
 		/// <param name="data">Plaftorm user information</param>
-        public void UpdatePlatformUser(string accountId, PlatformUserToPost data)
+        public void UpdatePlatformUser(string accountId, PlatformAccountToPost data)
 		{
 			Utility.EnsureParameterValid(!data.Equals(null), "data");
             Utility.EnsureParameterValid(!String.IsNullOrEmpty(accountId), "accountId");

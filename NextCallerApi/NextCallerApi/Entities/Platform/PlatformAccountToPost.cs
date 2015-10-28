@@ -7,7 +7,7 @@ namespace NextCallerApi.Entities.Platform
 	/// Represents a user, that can be created or updated.
 	/// </summary>
 	[DataContract]
-	public class PlatformUserToPost
+	public class PlatformAccountToPost
 	{
 		[DataMember(Name = "first_name")]
 		public string FirstName { get; set; }

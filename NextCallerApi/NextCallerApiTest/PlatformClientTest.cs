@@ -293,7 +293,7 @@ namespace NextCallerApiTest
 			//Arrange
 			const string AccountId = "username";
 
-			PlatformUserToPost user = new PlatformUserToPost
+			PlatformAccountToPost user = new PlatformAccountToPost
 			{
 				FirstName = "NewFirstName",
 				LastName = "NewLastName",

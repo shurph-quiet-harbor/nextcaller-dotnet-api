@@ -50,8 +50,8 @@
     <Compile Include="Entities\Common\Header.cs" />
     <Compile Include="Entities\Common\NameAddress.cs" />
     <Compile Include="Entities\Error.cs" />
-    <Compile Include="Entities\Platform\PlatformUser.cs" />
-    <Compile Include="Entities\Platform\PlatformUserToPost.cs" />
+    <Compile Include="Entities\Platform\PlatformAccount.cs" />
+    <Compile Include="Entities\Platform\PlatformAccountToPost.cs" />
     <Compile Include="Entities\Common\Relative.cs" />
     <Compile Include="Entities\Platform\PlatformStatistics.cs" />
     <Compile Include="Exceptions\BadMethodException.cs" />
