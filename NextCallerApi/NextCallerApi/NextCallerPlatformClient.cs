@@ -72,8 +72,11 @@ namespace NextCallerApi
         /// <returns>Platform account, associated with the particular ID.</returns>
         public PlatformAccount GetPlatformAccount(string accountId)
 		{
+            Utility.EnsureParameterValid(!(accountId == null), "accountId");
+
             string response = GetPlatformAccountJson(accountId);
-			return JsonSerializer.Deserialize<PlatformAccount>(response);
+
+            return JsonSerializer.Deserialize<PlatformAccount>(response);
 		}
 
 		/// <summary>
@@ -83,8 +86,11 @@ namespace NextCallerApi
 		/// <returns>Platform statistics.</returns>
 		public PlatformStatistics GetPlatformStatistics(int? page = null)
 		{
-			string response = GetPlatformStatisticsJson(page);
-			return JsonSerializer.Deserialize<PlatformStatistics>(response);
+            Utility.EnsureParameterValid(page >= 1, "page");
+
+            string response = GetPlatformStatisticsJson(page);
+
+            return JsonSerializer.Deserialize<PlatformStatistics>(response);
 		}
 
 		/// <summary>
@@ -96,8 +102,11 @@ namespace NextCallerApi
 		/// <returns>List of profiles, associated with the given phone number.</returns>
 		public IList<Profile> GetByPhone(string phone, string accountId = null)
 		{
-			string response = GetByPhoneJson(phone, accountId);
-			return JsonSerializer.ParseProfileList(response);
+            Utility.EnsureParameterValid(!(phone == null), "phone");
+
+            string response = GetByPhoneJson(phone, accountId);
+
+            return JsonSerializer.ParseProfileList(response);
 		}
 
 		/// <summary>
@@ -109,8 +118,11 @@ namespace NextCallerApi
 		/// <returns>Profile, associated with the given profile ID.</returns>
 		public Profile GetByProfileId(string id, string accountId = null)
 		{
+            Utility.EnsureParameterValid(!(id == null), "id");
+
             string response = GetByProfileIdJson(id, accountId);
-			return JsonSerializer.Deserialize<Profile>(response);
+
+            return JsonSerializer.Deserialize<Profile>(response);
 		}
 
         /// <summary>
@@ -122,7 +134,10 @@ namespace NextCallerApi
         /// <returns>Profile, associated with the given email.</returns>
         public Profile GetByEmail(string email, string accountId = null)
         {
+            Utility.EnsureParameterValid(!(email == null), "email");
+
             string response = GetByEmailJson(email, accountId);
+
             return JsonSerializer.Deserialize<Profile>(response);
         }
 
@@ -136,7 +151,10 @@ namespace NextCallerApi
         /// <returns>Profiles, associated with the particular name-address or name-zip pair.</returns>
         public IList<Profile> GetByNameAddress(NameAddress pair, string accountId = null)
         {
+            Utility.EnsureParameterValid(!(pair == null), "pair");
+
             string response = GetByNameAddressJson(pair, accountId);
+
             return JsonSerializer.ParseProfileList(response);
         }
 
@@ -149,8 +167,11 @@ namespace NextCallerApi
 		/// <returns>Fraud level, associated with the given phone number.</returns>
         public FraudLevel GetFraudLevel(string phone, string accountId = null)
 		{
+            Utility.EnsureParameterValid(!(phone == null), "phone");
+
             string response = GetFraudLevelJson(phone, accountId);
-			return JsonSerializer.Deserialize<FraudLevel>(response);
+
+            return JsonSerializer.Deserialize<FraudLevel>(response);
 		}
 
 		/// <summary>
@@ -162,7 +183,8 @@ namespace NextCallerApi
         /// <param name="accountId">Platform account ID.</param>
         public void UpdateByProfileId(string id, ProfileToPost data, string accountId = null)
 		{
-			Utility.EnsureParameterValid(!data.Equals(null), "data");
+            Utility.EnsureParameterValid(!(id == null), "id");
+            Utility.EnsureParameterValid(!(data == null), "data");
 
 			string jsonData = JsonSerializer.Serialize(data);
             UpdateByProfileIdJson(id, jsonData, accountId);
@@ -175,7 +197,7 @@ namespace NextCallerApi
 		/// <param name="data">Plaftorm account information.</param>
         public void CreatePlatformAccount(PlatformAccountToPost data)
 		{
-			Utility.EnsureParameterValid(!data.Equals(null), "data");
+			Utility.EnsureParameterValid(!(data == null), "data");
 
 			string jsonData = JsonSerializer.Serialize(data);
             CreatePlatformAccountJson(jsonData);
@@ -189,8 +211,8 @@ namespace NextCallerApi
         /// <param name="data">Plaftorm account information.</param>
         public void UpdatePlatformAccount(PlatformAccountToPost data, string accountId)
         {
-            Utility.EnsureParameterValid(!data.Equals(null), "data");
-            Utility.EnsureParameterValid(!String.IsNullOrEmpty(accountId), "accountId");
+            Utility.EnsureParameterValid(!(data == null), "data");
+            Utility.EnsureParameterValid(!(accountId == null), "accountId");
 
             string jsonData = JsonSerializer.Serialize(data);
             UpdatePlatformAccountJson(jsonData, accountId);
@@ -209,8 +231,6 @@ namespace NextCallerApi
         /// <returns>Profile, associated with the given profile ID, in json.</returns>
         public string GetByProfileIdJson(string id, string accountId = null)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
-
             var headers = PrepareAccountIdHeader(accountId);
 
 			string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
@@ -245,12 +265,9 @@ namespace NextCallerApi
 		public string GetByPhoneJson(string phone, string accountId = null)
 		{
             var headers = PrepareAccountIdHeader(accountId);
-		    var phoneRegex = new Regex(PhoneRegexPattern, RegexOptions.CultureInvariant);
-
-		    phone = phone == null ? "" : phoneRegex.Replace(phone, "");
 
 			string url = BuildUrl(phoneUrl, new UrlParameter(phoneParameterName, phone),
-										  new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
+                new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 
 			return httpTransport.Request(url, DefaultResponseType, headers: headers);
 		}
@@ -264,11 +281,7 @@ namespace NextCallerApi
         /// <param name="accountId">Platform account ID.</param>
         /// <returns>Profiles, associated with the particular name-address or name-zip pair.</returns>
         public string GetByNameAddressJson(NameAddress pair, string accountId = null)
-        {
-//            ValidationResult nameAddressValidationResult = NameAddress.IsNameAddressValid(pair);
-//            Utility.EnsureParameterValid(nameAddressValidationResult.IsValid, "name and address", nameAddressValidationResult.Message);
-            Utility.EnsureParameterValid(!pair.Equals(null), "NameAddress");
-            
+        {           
             var headers = PrepareAccountIdHeader(accountId);
 
             var parameters = new[]
@@ -303,14 +316,10 @@ namespace NextCallerApi
 		/// <returns>Fraud level, associated with the given phone number, in json.</returns>
         public string GetFraudLevelJson(string phone, string accountId = null)
 		{
-            var phoneRegex = new Regex(PhoneRegexPattern, RegexOptions.CultureInvariant);
-
-            phone = phone == null ? "" : phoneRegex.Replace(phone, "");
-
-			string url = BuildUrl(fraudUrl, new UrlParameter(phoneParameterName, phone),
-										  new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
-
             var headers = PrepareAccountIdHeader(accountId);
+
+            string url = BuildUrl(fraudUrl, new UrlParameter(phoneParameterName, phone),
+										  new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 
 			return httpTransport.Request(url, DefaultResponseType, headers: headers);
 		}
@@ -326,7 +335,6 @@ namespace NextCallerApi
 			var parameters = new List<UrlParameter> {new UrlParameter(formatParameterName, DefaultResponseType.ToString())};
 			if (page != null)
 			{
-				Utility.EnsureParameterValid(page >= 1, "page");
 				parameters.Add(new UrlParameter(pageParameterName, page.ToString()));
 			}
 			string url = BuildUrl(platformUrl, parameters.ToArray());
@@ -342,10 +350,8 @@ namespace NextCallerApi
 		/// <returns>Platform account, associated with the particular account ID, in json.</returns>
 		public string GetPlatformAccountJson(string accountId)
 		{
-            Utility.EnsureParameterValid(!string.IsNullOrEmpty(accountId), "accountId");
-
             string url = BuildUrl(platformUrl + accountId,
-											 new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
+                new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 
 			return httpTransport.Request(url, DefaultResponseType);
 		}
@@ -370,8 +376,6 @@ namespace NextCallerApi
         /// <param name="data">Plaftorm account information in json.</param>
         public void UpdatePlatformAccountJson(string data, string accountId)
         {
-            Utility.EnsureParameterValid(!string.IsNullOrEmpty(accountId), "accountId");
-
             string url = BuildUrl(platformUrl + accountId, new UrlParameter(formatParameterName, PostContentType.ToString()));
 
             httpTransport.Request(url, PostContentType, "PUT", data ?? "");
@@ -386,9 +390,7 @@ namespace NextCallerApi
         /// <param name="data">Profile data to be updated in json.</param>
         public void UpdateByProfileIdJson(string id, string data, string accountId)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
-            
-		    var headers = PrepareAccountIdHeader(accountId);
+            var headers = PrepareAccountIdHeader(accountId);
 
 			string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, PostContentType.ToString()));
 

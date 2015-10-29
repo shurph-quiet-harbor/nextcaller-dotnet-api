@@ -66,10 +66,10 @@ namespace NextCallerApiTest
 		}
 
 		[TestMethod]
-		public void CreatingClientInstance_EmptyUsername_ArgumentExceptionThrown()
+		public void CreatingClientInstance_NullUsername_ArgumentExceptionThrown()
 		{
 			//Arrange
-			const string Username = "";
+			const string Username = null;
 			const string Password = "adaSfaqwfasfasdasdfasfasfasd";
 
 			try
@@ -85,6 +85,7 @@ namespace NextCallerApiTest
 			}
 
 		}
+
 		[TestMethod]
 		public void GetProfileById_ValidId_ProfileReturned()
 		{
@@ -250,7 +251,7 @@ namespace NextCallerApiTest
 			try
 			{
 				//Action
-				client.GetPlatformStatisticsJson(page);
+				client.GetPlatformStatistics(page);
 				Assert.Fail("An exception should have been thrown");
 			}
 			catch (ArgumentException argumentException)

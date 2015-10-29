@@ -9,7 +9,6 @@ namespace NextCallerApi.Entities.Common
 	[DataContract]
 	public class Phone
 	{
-
 		private const string EmptyNumberTemplate = "Phone number cannot be empty or null.";
 
 		[DataMember(Name = "number")]
@@ -17,31 +16,5 @@ namespace NextCallerApi.Entities.Common
 
 		[DataMember(Name = "resource_uri")]
 		public string ResourceUri { get; set; }
-
-		/// <summary>
-		/// Validates phone number.
-		/// </summary>
-		/// <returns>Object, representing validation status and message.</returns>
-		public ValidationResult IsValid()
-		{
-			return IsNumberValid(Number);
-		}
-
-		/// <summary>
-		/// Validates phone number.
-		/// </summary>
-		/// <param name="number">Phone number to validate.</param>
-		/// <returns>Object, representing validation status and message.</returns>
-		public static ValidationResult IsNumberValid(string number)
-		{
-			if (string.IsNullOrEmpty(number))
-			{
-				return new ValidationResult(false, EmptyNumberTemplate);
-			}
-
-			return new ValidationResult(true, null);
-		}
 	}
-
-	
 }

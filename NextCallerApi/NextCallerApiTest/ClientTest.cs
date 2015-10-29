@@ -39,10 +39,10 @@ namespace NextCallerApiTest
         }
         
 		[TestMethod]
-		public void GetProfileById_EmptyId_ArgumentExceptionThrown()
+		public void GetProfileById_NullId_ArgumentExceptionThrown()
 		{
 			//Arrange
-			const string Id = "";
+			const string Id = null;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
 
@@ -64,10 +64,10 @@ namespace NextCallerApiTest
 		}
 
 		[TestMethod]
-		public void CreatingClientInstance_EmptyUsername_ArgumentExceptionThrown()
+		public void CreatingClientInstance_NullUsername_ArgumentExceptionThrown()
 		{
 			//Arrange
-			const string Username = "";
+			const string Username = null;
 			const string Password = "adaSfaqwfasfasdasdfasfasfasd";
 
 			try

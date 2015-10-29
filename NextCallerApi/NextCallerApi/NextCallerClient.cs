@@ -29,8 +29,6 @@ namespace NextCallerApi
 		protected readonly string fraudUrl;
         protected readonly string versionNumber;
 
-	    protected const string PhoneRegexPattern = @"[\(\)\-\s]";
-
 		protected readonly string formatParameterName;
 		protected readonly string phoneParameterName;
         protected readonly string emailParameterName;
@@ -64,8 +62,8 @@ namespace NextCallerApi
 		public NextCallerClient(string username, string password, bool sandbox = false, string version = "")
 			: this(sandbox, version)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(username), "username");
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(password), "password");
+			Utility.EnsureParameterValid(!(username == null), "username");
+			Utility.EnsureParameterValid(!(password == null), "password");
 
 			httpTransport = new HttpTransport(username, password);
 		}
@@ -111,9 +109,11 @@ namespace NextCallerApi
 		/// <returns>Profiles, associated with the particular phone number.</returns>
 		public IList<Profile> GetByPhone(string phone)
 		{
-			string content = GetByPhoneJson(phone);
+            Utility.EnsureParameterValid(!(phone == null), "phone");
 
-			return JsonSerializer.ParseProfileList(content);
+            string content = GetByPhoneJson(phone);
+
+            return JsonSerializer.ParseProfileList(content);
 		}
 
         /// <summary>
@@ -124,6 +124,8 @@ namespace NextCallerApi
         /// <returns>Profiles, associated with the particular email.</returns>
         public Profile GetByEmail(string email)
         {
+            Utility.EnsureParameterValid(!(email == null), "email");
+
             string content = GetByEmailJson(email);
 
             return JsonSerializer.Deserialize<Profile>(content);
@@ -137,9 +139,11 @@ namespace NextCallerApi
 		/// <returns>Profile, associated with the particular id.</returns>
 		public Profile GetByProfileId(string id)
 		{
-			string content = GetByProfileIdJson(id);
+            Utility.EnsureParameterValid(!(id == null), "id");
 
-			return JsonSerializer.Deserialize<Profile>(content);
+            string content = GetByProfileIdJson(id);
+
+            return JsonSerializer.Deserialize<Profile>(content);
 		}
 
         /// <summary>
@@ -151,6 +155,8 @@ namespace NextCallerApi
         /// <returns>Profiles, associated with the particular name-address or name-zip pair.</returns>
         public IList<Profile> GetByNameAddress(NameAddress pair)
         {
+            Utility.EnsureParameterValid(!(pair == null), "pair");
+
             string content = GetByNameAddressJson(pair);
 
             return JsonSerializer.ParseProfileList(content);
@@ -164,9 +170,11 @@ namespace NextCallerApi
 		/// <returns>Fraud level for given phone number.</returns>
 		public FraudLevel GetFraudLevel(string phone)
 		{
-			string content = GetFraudLevelJson(phone);
+            Utility.EnsureParameterValid(!(phone == null), "phone");
 
-			return JsonSerializer.Deserialize<FraudLevel>(content);
+            string content = GetFraudLevelJson(phone);
+
+            return JsonSerializer.Deserialize<FraudLevel>(content);
 		}
 
 		/// <summary>
@@ -177,13 +185,11 @@ namespace NextCallerApi
 		/// <param name="id">Id of the updated profile.</param>
 		public void UpdateByProfileId(string id, ProfileToPost data)
 		{
+            Utility.EnsureParameterValid(!(id == null), "id");
+            Utility.EnsureParameterValid(!(data == null), "data");
 
-			Utility.EnsureParameterValid(!data.Equals(null), "data");
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
-
-			string jsonData = JsonSerializer.Serialize(data);
-
-			UpdateByProfileId(id ,jsonData);
+            string jsonData = JsonSerializer.Serialize(data);
+			UpdateByProfileIdJson(id ,jsonData);
 
 		}
 
@@ -199,10 +205,7 @@ namespace NextCallerApi
 		/// <returns>Profile in Json format.</returns>
 		public  string GetByProfileIdJson(string id)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
-
 			string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
-
 			return httpTransport.Request(url, DefaultResponseType);
 		}
 
@@ -214,10 +217,8 @@ namespace NextCallerApi
         /// <returns>Profile associated with the particular email in Json format.</returns>
         public string GetByEmailJson(string email)
         {
-//            Utility.EnsureParameterValid(!string.IsNullOrEmpty(email), "email");
-
-            string url = BuildUrl(phoneUrl, new UrlParameter(emailParameterName, email ?? "")
-                , new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
+            string url = BuildUrl(phoneUrl, new UrlParameter(emailParameterName, email ?? ""),
+                new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 
             return httpTransport.Request(url, DefaultResponseType);
         }
@@ -230,18 +231,10 @@ namespace NextCallerApi
 		/// <returns>Profiles in json format.</returns>
 		public string GetByPhoneJson(string phone)
 		{
-
-		    var phoneRegex = new Regex(PhoneRegexPattern, RegexOptions.CultureInvariant);
-//			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
-//
-//			ValidationResult phoneValidationMessage = Phone.IsNumberValid(phone);
-//			Utility.EnsureParameterValid(phoneValidationMessage.IsValid, "phone", phoneValidationMessage.Message);
-		    phone = phone == null ? "": phoneRegex.Replace(phone, "");
-
 			string url = BuildUrl(phoneUrl, new UrlParameter(phoneParameterName, phone), 
-										  new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
+                new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 
-			return httpTransport.Request(url, DefaultResponseType);
+            return httpTransport.Request(url, DefaultResponseType);
 		}
 
         /// <summary>
@@ -253,9 +246,6 @@ namespace NextCallerApi
         /// <returns>Profiles, associated with the particular name-address or name-zip pair.</returns>
         public string GetByNameAddressJson(NameAddress pair)
         {
-//            ValidationResult nameAddressValidationResult = NameAddress.IsNameAddressValid(pair);
-//            Utility.EnsureParameterValid(nameAddressValidationResult.IsValid, "name and address", nameAddressValidationResult.Message);
-            Utility.EnsureParameterValid(!pair.Equals(null), "NameAddress");
             var parameters = new []
             {
                 new UrlParameter(nameAddressFirstNameParameterName, pair.FirstName ?? ""),
@@ -287,17 +277,8 @@ namespace NextCallerApi
 		/// <returns>Fraud level for given phone number in json format.</returns>
 		public string GetFraudLevelJson(string phone)
 		{
-//			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
-            
-            var phoneRegex = new Regex(PhoneRegexPattern, RegexOptions.CultureInvariant);
-            //			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
-            //
-            //			ValidationResult phoneValidationMessage = Phone.IsNumberValid(phone);
-            //			Utility.EnsureParameterValid(phoneValidationMessage.IsValid, "phone", phoneValidationMessage.Message);
-            phone = phone == null ? "" : phoneRegex.Replace(phone, "");
-
 			string url = BuildUrl(fraudUrl , new UrlParameter(phoneParameterName, phone), 
-										   new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
+                new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 
 			return httpTransport.Request(url, DefaultResponseType);
 		}
@@ -308,14 +289,9 @@ namespace NextCallerApi
 		/// </summary>
 		/// <param name="data">Profile data to be updated in Json.</param>
 		/// <param name="id">Id of the updated profile.</param>
-		public void UpdateByProfileId(string id, string data)
+		public void UpdateByProfileIdJson(string id, string data)
 		{
-
-//			Utility.EnsureParameterValid(!string.IsNullOrEmpty(data), "data");
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
-
-			string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, PostContentType.ToString()));
-
+            string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, PostContentType.ToString()));
 			httpTransport.Request(url, PostContentType, "POST", data ?? "");
 
 		}
