@@ -32,7 +32,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
                 State = "NY"
             };
 
-            const string AccountId = "username";
+            const string AccountId = "TestUser1";
 
             try
             {

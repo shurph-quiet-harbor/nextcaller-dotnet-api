@@ -21,7 +21,7 @@ namespace NextCallerApiTest
         {
             //Arrange
             const string ValidEmail = "test@mail.com";
-            const string AccountId = "username";
+            const string AccountId = "TestUser1";
 
             var jsonProfile = Properties.Resources.JsonProfile;
 
@@ -89,7 +89,7 @@ namespace NextCallerApiTest
 		public void GetProfileById_ValidId_ProfileReturned()
 		{
 			//Arrange
-			const string AccountId = "username";
+			const string AccountId = "TestUser1";
 			const string ProfileId = "adaSfaqwfasfasdasdfasfasfasd";
 			string jsonProfile = Properties.Resources.JsonProfile;
 
@@ -114,7 +114,7 @@ namespace NextCallerApiTest
 		{
 			//Arrange
 			const string PhoneNumber = "2020327000";
-			const string AccountId = "username";
+			const string AccountId = "TestUser1";
 			string jsonProfiles = Properties.Resources.JsonProfiles;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
@@ -145,7 +145,7 @@ namespace NextCallerApiTest
                 City = "New York",
                 State = "NY"
             };
-            const string AccountId = "username";
+            const string AccountId = "TestUser1";
 
             string jsonProfiles = Properties.Resources.JsonProfiles;
 
@@ -170,7 +170,7 @@ namespace NextCallerApiTest
 		{
 			//Arrange
 			const string PhoneNumber = "2020327000";
-			const string AccountId = "username";
+			const string AccountId = "TestUser1";
 			string jsonFraudLevel = Properties.Resources.JsonFraudLevel;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
@@ -190,10 +190,10 @@ namespace NextCallerApiTest
 		}
 
 		[TestMethod]
-		public void GetPlatformUser_ValidUsername_AccountIdReturned()
+		public void GetPlatformAccount_ValidUsername_AccountIdReturned()
 		{
 			//Arrange
-			const string AccountId = "username";
+			const string AccountId = "TestUser1";
 			string jsonUser = Properties.Resources.JsonPlatformUser;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
@@ -203,7 +203,7 @@ namespace NextCallerApiTest
 
 			//Action
 			NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
-			string user = client.GetPlatformUserJson(AccountId);
+			string user = client.GetPlatformAccountJson(AccountId);
 
 			//Assert
             httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(),  It.IsIn("GET", "POST"), null, null), Times.Once);
@@ -266,7 +266,7 @@ namespace NextCallerApiTest
 		{
 			//Arrange
 			const string ProfileId = "adaSfaqwfasfasdasdfasfasfasd";
-            const string AccountId = "username";
+            const string AccountId = "TestUser1";
 
 			ProfileToPost profile = new ProfileToPost
 			{
@@ -288,10 +288,10 @@ namespace NextCallerApiTest
 		}
 
 		[TestMethod]
-		public void PostPlatformUser_ValidUsernameAndValidUser_NoExceptionsThrown()
+		public void PostPlatformAccount_ValidUsernameAndValidUser_NoExceptionsThrown()
 		{
 			//Arrange
-			const string AccountId = "username";
+			const string AccountId = "TestUser1";
 
 			PlatformAccountToPost user = new PlatformAccountToPost
 			{
@@ -308,7 +308,7 @@ namespace NextCallerApiTest
 
 			//Action
 			NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
-            client.UpdatePlatformUser(AccountId, user);
+            client.UpdatePlatformAccount(user, AccountId);
 
 			//Assert
             httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()), Times.Once);

@@ -23,7 +23,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 			NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
 			const string Phone = "1234567890";
-			const string AccountId = "username";
+			const string AccountId = "TestUser1";
 
 			try
 			{
