@@ -54,7 +54,7 @@ namespace NextCallerApi
 		/// <param name="sandbox"> Sandbox mode flag.</param>
         /// <param name="version">API version number.</param>
 		public NextCallerPlatformClient(string username, string password, bool sandbox = false, string version = "")
-            : base(username, password, sandbox, String.IsNullOrEmpty(version) ? Properties.Resources.DefaultPlatformVersion : version)
+            : base(username, password, sandbox)
 		{
 			platformUrl = baseUrl + Properties.Resources.PlatformPath;
             accountIdHeaderName = Properties.Resources.AccountIdHeaderName;

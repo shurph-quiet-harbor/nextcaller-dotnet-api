@@ -58,9 +58,8 @@ namespace NextCallerApi
 		/// <param name="username"> Username for authorization.</param>
 		/// <param name="password"> Password for authorization.</param>
 		/// <param name="sandbox"> Sandbox mode flag.</param>
-        /// <param name="version">API version number</param>
-		public NextCallerClient(string username, string password, bool sandbox = false, string version = "")
-			: this(sandbox, version)
+		public NextCallerClient(string username, string password, bool sandbox = false)
+			: this(sandbox)
 		{
 			Utility.EnsureParameterValid(!(username == null), "username");
 			Utility.EnsureParameterValid(!(password == null), "password");
@@ -72,16 +71,12 @@ namespace NextCallerApi
 		/// Initializes NextCaller client private fields.
 		/// </summary>
 		/// <param name="sandbox">Sandbox mode flag</param>
-        /// <param name="version">API version number</param>
-        protected NextCallerClient(bool sandbox = false, string version = "")
+        protected NextCallerClient(bool sandbox = false)
 		{
 			isSandboxOn = sandbox;
+		    versionNumber = Properties.Resources.DefaultAPIVersion;
 
-		    versionNumber = String.IsNullOrEmpty(version) ? Properties.Resources.DefaultVersion : version;
-
-			baseUrl = isSandboxOn ? Properties.Resources.SandboxUrl 
-								  : Properties.Resources.WorkingUrl;
-
+			baseUrl = isSandboxOn ? Properties.Resources.SandboxUrl  : Properties.Resources.WorkingUrl;
 		    baseUrl += ("v" + versionNumber + "/");
 
 			usersUrl = baseUrl + Properties.Resources.UsersPath;

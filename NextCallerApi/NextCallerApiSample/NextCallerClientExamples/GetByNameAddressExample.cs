@@ -20,9 +20,8 @@ namespace NextCallerApiSample.NextCallerClientExamples
             const string Username = "";
             const string Password = "";
             const bool Sandbox = true;
-            const string Version = "2.1";
 
-            NextCallerClient client = new NextCallerClient(Username, Password, Sandbox, Version);
+            NextCallerClient client = new NextCallerClient(Username, Password, Sandbox);
 
             NameAddress nameAddress = new NameAddress
             {

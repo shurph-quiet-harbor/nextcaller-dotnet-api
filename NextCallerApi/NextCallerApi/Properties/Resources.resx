@@ -168,11 +168,8 @@
   <data name="UsersPath" xml:space="preserve">
     <value>users/</value>
   </data>
-  <data name="DefaultVersion" xml:space="preserve">
+  <data name="DefaultAPIVersion" xml:space="preserve">
     <value>2.1</value>
-  </data>
-  <data name="DefaultPlatformVersion" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="WorkingUrl" xml:space="preserve">
     <value>http://api.devel.nextcaller.com/</value>
