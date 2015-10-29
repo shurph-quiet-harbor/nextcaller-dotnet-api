@@ -169,31 +169,44 @@ namespace NextCallerApi
 		}
 
 		/// <summary>
-		/// Updates or creates platform account.
+		/// Creates platform account.
 		/// More info at:https://nextcaller.com/platform/documentation/v2.1/#/accounts/post-platform-account/curl.
 		/// </summary>
-        /// <param name="accountId">Platform account ID to be created or updated.</param>
 		/// <param name="data">Plaftorm account information.</param>
-        public void UpdatePlatformAccount(PlatformAccountToPost data, string accountId)
+        public void CreatePlatformAccount(PlatformAccountToPost data)
 		{
 			Utility.EnsureParameterValid(!data.Equals(null), "data");
-            Utility.EnsureParameterValid(!String.IsNullOrEmpty(accountId), "accountId");
 
 			string jsonData = JsonSerializer.Serialize(data);
-            UpdatePlatformAccountJson(jsonData, accountId);
+            CreatePlatformAccountJson(jsonData);
 		}
 
-		#endregion Api
+        /// <summary>
+        /// Updates platform account.
+        /// More info at:https://nextcaller.com/platform/documentation/v2.1/#/accounts/put-platform-account/curl.
+        /// </summary>
+        /// <param name="accountId">Platform account ID to be updated.</param>
+        /// <param name="data">Plaftorm account information.</param>
+        public void UpdatePlatformAccount(PlatformAccountToPost data, string accountId)
+        {
+            Utility.EnsureParameterValid(!data.Equals(null), "data");
+            Utility.EnsureParameterValid(!String.IsNullOrEmpty(accountId), "accountId");
 
-		#region RawApi
+            string jsonData = JsonSerializer.Serialize(data);
+            UpdatePlatformAccountJson(jsonData, accountId);
+        }
 
-		/// <summary>
-		/// Get the profile associated with the particular user ID.
-		/// More information at: https://nextcaller.com/platform/documentation/v2.1/#/profiles/get-profile-id/curl.
-		/// </summary>
-		/// <param name="id">Profile ID.</param>
+        #endregion Api
+
+        #region RawApi
+
+        /// <summary>
+        /// Get the profile associated with the particular user ID.
+        /// More information at: https://nextcaller.com/platform/documentation/v2.1/#/profiles/get-profile-id/curl.
+        /// </summary>
+        /// <param name="id">Profile ID.</param>
         /// <param name="accountId">Platform account ID.</param>
-		/// <returns>Profile, associated with the given profile ID, in json.</returns>
+        /// <returns>Profile, associated with the given profile ID, in json.</returns>
         public string GetByProfileIdJson(string id, string accountId = null)
 		{
 			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
@@ -338,19 +351,31 @@ namespace NextCallerApi
 		}
 
 		/// <summary>
-		/// Updates or creates platform account.
+		/// Creates platform account.
         /// More info at: https://nextcaller.com/platform/documentation/v2.1/#/accounts/post-platform-account/curl.
 		/// </summary>
-        /// <param name="accountId">Platform account ID to be created or updated.</param>
 		/// <param name="data">Plaftorm account information in json.</param>
-        public void UpdatePlatformAccountJson(string data, string accountId)
+        public void CreatePlatformAccountJson(string data)
 		{
+            string url = BuildUrl(platformUrl, new UrlParameter(formatParameterName, PostContentType.ToString()));
+
+			httpTransport.Request(url, PostContentType, "POST", data ?? "");
+		}
+
+        /// <summary>
+        /// Updates platform account.
+        /// More info at: https://nextcaller.com/platform/documentation/v2.1/#/accounts/put-platform-account/curl.
+        /// </summary>
+        /// <param name="accountId">Platform account ID to be updated.</param>
+        /// <param name="data">Plaftorm account information in json.</param>
+        public void UpdatePlatformAccountJson(string data, string accountId)
+        {
             Utility.EnsureParameterValid(!string.IsNullOrEmpty(accountId), "accountId");
 
             string url = BuildUrl(platformUrl + accountId, new UrlParameter(formatParameterName, PostContentType.ToString()));
 
-			httpTransport.Request(url, PostContentType, "POST", data ?? "");
-		}
+            httpTransport.Request(url, PostContentType, "PUT", data ?? "");
+        }
 
         /// <summary>
         /// Updates profile.

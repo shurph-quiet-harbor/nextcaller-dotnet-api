@@ -288,15 +288,14 @@ namespace NextCallerApiTest
 		}
 
 		[TestMethod]
-		public void PostPlatformAccount_ValidUsernameAndValidUser_NoExceptionsThrown()
+		public void CreatePlatformAccount_ValidUsernameAndValidUser_NoExceptionsThrown()
 		{
 			//Arrange
-			const string AccountId = "TestUser1";
-
 			PlatformAccountToPost user = new PlatformAccountToPost
 			{
-				FirstName = "NewFirstName",
-				LastName = "NewLastName",
+                Id = "TestUser1",
+                FirstName = "FirstName",
+				LastName = "LastName",
 				Email = "email@email.com",
 				CompanyName = "Malibu"
 			};
@@ -305,13 +304,40 @@ namespace NextCallerApiTest
             httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()))
 				.Returns(string.Empty);
 
-
 			//Action
 			NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
-            client.UpdatePlatformAccount(user, AccountId);
+            client.CreatePlatformAccount(user);
 
 			//Assert
             httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "POST", It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()), Times.Once);
 		}
-	}
+
+        [TestMethod]
+        public void UpdatePlatformAccount_ValidUsernameAndValidUser_NoExceptionsThrown()
+        {
+            //Arrange
+            const string AccountId = "TestUser1";
+
+            PlatformAccountToPost user = new PlatformAccountToPost
+            {
+                Id = "NewTestUser1",
+                FirstName = "NewFirstName",
+                LastName = "NewLastName",
+                Email = "email@email.com",
+                CompanyName = "Malibu"
+            };
+
+            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "PUT", It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()))
+                .Returns(string.Empty);
+
+
+            //Action
+            NextCallerPlatformClient client = new NextCallerPlatformClient(httpTransportMock.Object);
+            client.UpdatePlatformAccount(user, AccountId);
+
+            //Assert
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), "PUT", It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()), Times.Once);
+        }
+    }
 }

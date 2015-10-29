@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NextCallerClientExamples\GetByNameAddressExample.cs" />
+    <Compile Include="NextCallerPlatformClientExamples\CreatePlatformAccount.Example.cs" />
     <Compile Include="NextCallerPlatformClientExamples\GetByNameAddressExample.cs" />
     <Compile Include="NextCallerPlatformClientExamples\GetFraudLevelExample.cs" />
     <Compile Include="NextCallerClientExamples\GetByPhoneExample.cs" />
