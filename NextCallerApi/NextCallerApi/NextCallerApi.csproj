@@ -73,7 +73,7 @@
     <Compile Include="Entities\Common\Phone.cs" />
     <Compile Include="Entities\Common\ProfileToPost.cs" />
     <Compile Include="Entities\Common\Profile.cs" />
-    <Compile Include="Exceptions\BadResponseException.cs" />
+    <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Http\HttpTransport.cs" />
     <Compile Include="Interfaces\IHttpTransport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

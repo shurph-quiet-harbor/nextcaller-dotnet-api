@@ -104,7 +104,7 @@ namespace NextCallerApi.Http
 				throw new PaginationException(request, response, responseContent);
 			}
 
-			throw new BadResponseException(request, response, responseContent, requestError);
+			throw new BadRequestException(request, response, responseContent, requestError);
 
 		}
 

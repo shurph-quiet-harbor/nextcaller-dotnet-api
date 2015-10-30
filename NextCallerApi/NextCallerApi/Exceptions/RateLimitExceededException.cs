@@ -27,15 +27,15 @@ namespace NextCallerApi.Exceptions
         /// <summary>
         /// Initializes RateLimitExceededException
         /// </summary>
-        /// <param name="request">Failed request</param>
-        /// <param name="response">Response</param>
-        /// <param name="content">Response content</param>
+        /// <param name="request">Failed request.</param>
+        /// <param name="response">Response.</param>
+        /// <param name="content">Response content.</param>
         public RateLimitExceededException(HttpWebRequest request, HttpWebResponse response, string content)
             : base(request, response, content)
         {
-            var limitReset = response.Headers["X-RateLimit-Reset"];
-            var limitRemainig = response.Headers["X-RateLimit-Remaining"];
-            var limitLimit = response.Headers["X-RateLimit-Limit"];
+            var limitReset = response.Headers["X-Rate-Limit-Reset"];
+            var limitRemainig = response.Headers["X-Rate-Limit-Remaining"];
+            var limitLimit = response.Headers["X-Rate-Limit-Limit"];
             limitLimitValue = null;
             limitRemainigValue = null;
             limitResetValue = null;
