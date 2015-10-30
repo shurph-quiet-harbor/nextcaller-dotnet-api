@@ -111,26 +111,26 @@ namespace NextCallerApi
 		}
 
         /// <summary>
-        /// Gets a profile associated with the particular email.
+        /// Gets list of profiles associated with the particular email.
         /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/retrieve-profile-email/curl.
         /// </summary>
         /// <param name="email">Email to search by.</param>
         /// <returns>Profiles, associated with the particular email.</returns>
-        public Profile GetByEmail(string email)
+        public IList<Profile> GetByEmail(string email)
         {
             Utility.EnsureParameterValid(!(email == null), "email");
 
             string content = GetByEmailJson(email);
 
-            return JsonSerializer.Deserialize<Profile>(content);
+            return JsonSerializer.ParseProfileList(content);
         }
 
 		/// <summary>
-		/// Gets profile, associated with the particular id.
+		/// Gets profile, associated with the particular ID.
         /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/get-profile-id/curl.
 		/// </summary>
 		/// <param name="id">Profile id.</param>
-		/// <returns>Profile, associated with the particular id.</returns>
+		/// <returns>Profile, associated with the particular ID.</returns>
 		public Profile GetByProfileId(string id)
 		{
             Utility.EnsureParameterValid(!(id == null), "id");
@@ -203,28 +203,28 @@ namespace NextCallerApi
 
 		}
 
-		#endregion Api
+        #endregion Api
 
-		#region RawApi
+        #region RawApi
 
-		/// <summary>
-		/// Gets profile, associated with the particular id, in json format.
-		/// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/get-profile-id/curl.
-		/// </summary>
-		/// <param name="id">Profile id.</param>
-		/// <returns>Profile in Json format.</returns>
-		public  string GetByProfileIdJson(string id)
+        /// <summary>
+        /// Gets profile, associated with the particular ID, in json format.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/get-profile-id/curl.
+        /// </summary>
+        /// <param name="id">Profile id.</param>
+        /// <returns>Profile, associated with the particular ID.</returns>
+        public string GetByProfileIdJson(string id)
 		{
 			string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 			return httpTransport.Request(url, DefaultResponseType);
 		}
 
         /// <summary>
-        /// Gets profile, associated with the particular email, in json format.
+        /// Gets list of profiles, associated with the particular email, in json format.
         /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/retrieve-profile-email/curl.
         /// </summary>
         /// <param name="email">Email to search by.</param>
-        /// <returns>Profile associated with the particular email in Json format.</returns>
+        /// <returns>Profiles, associated with the particular email.</returns>
         public string GetByEmailJson(string email)
         {
             string url = BuildUrl(phoneUrl, new UrlParameter(emailParameterName, email ?? ""),
@@ -233,13 +233,13 @@ namespace NextCallerApi
             return httpTransport.Request(url, DefaultResponseType);
         }
 
-		/// <summary>
-		/// Gets profile, associated with the particular phone, in json format.
-		/// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/get-profile-phone/curl.
-		/// </summary>
-		/// <param name="phone">Phone number.</param>
-		/// <returns>Profiles in json format.</returns>
-		public string GetByPhoneJson(string phone)
+        /// <summary>
+        /// Gets list of profiles, associated with the particular phone, in json format.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/get-profile-phone/curl.
+        /// </summary>
+        /// <param name="phone">Phone number.</param>
+        /// <returns>Profiles, associated with the particular phone.</returns>
+        public string GetByPhoneJson(string phone)
 		{
 			string url = BuildUrl(phoneUrl, new UrlParameter(phoneParameterName, phone), 
                 new UrlParameter(formatParameterName, DefaultResponseType.ToString()));

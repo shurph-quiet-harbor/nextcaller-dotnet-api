@@ -60,6 +60,7 @@
     <Compile Include="Exceptions\FormatException.cs" />
     <Compile Include="Exceptions\PaginationException.cs" />
     <Compile Include="Exceptions\RateLimitExceededException.cs" />
+    <Compile Include="Interfaces\INextCallerClient.cs" />
     <Compile Include="NextCallerPlatformClient.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

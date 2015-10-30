@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Linq;
 
 using NextCallerApi;
 using NextCallerApi.Entities;
@@ -26,7 +27,9 @@ namespace NextCallerApiSample.NextCallerClientExamples
 
             try
             {
-                Profile profile = client.GetByEmail(Email);
+                IList<Profile> profiles = client.GetByEmail(Email);
+
+                Profile profile = profiles.First();
 
                 //profile.Id = "97d949a413f4ea8b85e9586e1f2d9a";
                 //profile.FirstName = "Jerry";

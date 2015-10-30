@@ -122,19 +122,19 @@ namespace NextCallerApi
 		}
 
         /// <summary>
-        /// Get the profile associated with the particular email.
+        /// Gets list of profiles, associated with the particular email.
         /// More information at: https://nextcaller.com/platform/documentation/v2.1/#/profiles/get-profile-email/curl.
         /// </summary>
         /// <param name="email">Email to search by.</param>
         /// <param name="accountId">Platform account ID.</param>
-        /// <returns>Profile, associated with the given email.</returns>
-        public Profile GetByEmail(string email, string accountId = null)
+        /// <returns>Profiles, associated with the given email.</returns>
+        public IList<Profile> GetByEmail(string email, string accountId = null)
         {
             Utility.EnsureParameterValid(!(email == null), "email");
 
             string response = GetByEmailJson(email, accountId);
 
-            return JsonSerializer.Deserialize<Profile>(response);
+            return JsonSerializer.ParseProfileList(response);
         }
 
         /// <summary>
@@ -252,12 +252,12 @@ namespace NextCallerApi
 		}
 
         /// <summary>
-        /// Get the profile associated with the particular email.
+        /// Gets list of profiles, associated with the particular email.
         /// More information at: https://nextcaller.com/platform/documentation/v2.1/#/profiles/get-profile-email/curl.
         /// </summary>
         /// <param name="email">Email to search by.</param>
         /// <param name="accountId">Platform account ID.</param>
-        /// <returns>Profile, associated with the given email, in json.</returns>
+        /// <returns>Profiles, associated with the given email, in json.</returns>
         public string GetByEmailJson(string email, string accountId = null)
         {
             var headers = PrepareAccountIdHeader(accountId);

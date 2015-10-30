@@ -20,22 +20,22 @@ namespace NextCallerApiTest
         {
             //Arrange
             const string ValidEmail = "test@mail.com";
-            var jsonProfile = Properties.Resources.JsonProfile;
+            var jsonProfiles = Properties.Resources.JsonProfiles;
 
             Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
 
             httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
-                .Returns(jsonProfile);
+                .Returns(jsonProfiles);
 
             //Action
             NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
-            string profile = client.GetByEmailJson(ValidEmail);
+            string profiles = client.GetByEmailJson(ValidEmail);
 
             //Assert
             httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
 
-            Assert.IsNotNull(profile);
-            Assert.AreEqual(profile, jsonProfile);
+            Assert.IsNotNull(profiles);
+            Assert.AreEqual(profiles, jsonProfiles);
         }
         
 		[TestMethod]
