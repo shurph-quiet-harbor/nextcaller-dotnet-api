@@ -58,7 +58,7 @@ namespace NextCallerApiTest
 			catch (ArgumentException argumentException)
 			{
 				//Assert
-				Assert.AreEqual("id", argumentException.ParamName);
+				Assert.AreEqual("profileId", argumentException.ParamName);
 			}
 
 		}
