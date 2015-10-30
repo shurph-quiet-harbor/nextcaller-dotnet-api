@@ -148,26 +148,19 @@ namespace NextCallerApiTest.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///    &quot;id&quot;: &quot;97d949a413f4ea8b85e9586e1f2d9a&quot;,
-        ///    &quot;first_name&quot;: &quot;Jerry&quot;,
-        ///    &quot;last_name&quot;: &quot;Seinfeld&quot;,
-        ///    &quot;name&quot;: &quot;Jerry Seinfeld&quot;,
-        ///    &quot;language&quot;: &quot;English&quot;,
-        ///    &quot;fraud_threat&quot;: &quot;low&quot;,
-        ///    &quot;spoof&quot;: &quot;false&quot;,
-        ///    &quot;phone&quot;: [
-        ///        {
-        ///            &quot;number&quot;: &quot;2125558383&quot;
-        ///        }
-        ///    ],
-        ///    &quot;carrier&quot;: &quot;Verizon Wireless&quot;,
-        ///    &quot;line_type&quot;: &quot;LAN&quot;,
-        ///    &quot;address&quot;: [
-        ///        {
-        ///            &quot;city&quot;: &quot;New York&quot;,
-        ///            &quot;extended_zip&quot;: &quot;&quot;,
-        ///            &quot;country&quot;: &quot;USA&quot;,
-        ///            &quot;line2&quot;: &quot;Apt 5 [rest of string was truncated]&quot;;.
+        ///            &quot;id&quot;: &quot;97d949a413f4ea8b85e9586e1f2d9a&quot;,
+        ///            &quot;first_name&quot;: &quot;Jerry&quot;,
+        ///            &quot;first_pronounced&quot;: &quot;JER-ee&quot;,
+        ///            &quot;middle_name&quot;: &quot;Allen&quot;,
+        ///            &quot;last_name&quot;: &quot;Seinfeld&quot;,
+        ///            &quot;name&quot;: &quot;Jerry Allen Seinfeld&quot;,
+        ///            &quot;phone&quot;: [
+        ///                {
+        ///                    &quot;number&quot;: &quot;2125558383&quot;,
+        ///                    &quot;line_type&quot;: &quot;Mobile&quot;,
+        ///                    &quot;carrier&quot;: &quot;Verizon Wireless&quot;,
+        ///                    &quot;resource_uri&quot;: &quot;/v2.1/records/2125558383/&quot;
+        ///         [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string JsonProfile {
             get {
@@ -181,19 +174,16 @@ namespace NextCallerApiTest.Properties {
         ///        {
         ///            &quot;id&quot;: &quot;97d949a413f4ea8b85e9586e1f2d9a&quot;,
         ///            &quot;first_name&quot;: &quot;Jerry&quot;,
+        ///            &quot;first_pronounced&quot;: &quot;JER-ee&quot;,
+        ///            &quot;middle_name&quot;: &quot;Allen&quot;,
         ///            &quot;last_name&quot;: &quot;Seinfeld&quot;,
-        ///            &quot;name&quot;: &quot;Jerry Seinfeld&quot;,
-        ///            &quot;language&quot;: &quot;English&quot;,
-        ///            &quot;fraud_threat&quot;: &quot;low&quot;,
-        ///            &quot;spoof&quot;: &quot;false&quot;,
+        ///            &quot;name&quot;: &quot;Jerry Allen Seinfeld&quot;,
         ///            &quot;phone&quot;: [
         ///                {
-        ///                    &quot;number&quot;: &quot;2125558383&quot;
-        ///                }
-        ///            ], 
-        ///            &quot;carrier&quot;: &quot;Verizon Wireless&quot;,
-        ///            &quot;line_type&quot;: &quot;LAN&quot;,
-        ///            [rest of string was truncated]&quot;;.
+        ///                    &quot;number&quot;: &quot;2125558383&quot;,
+        ///                    &quot;line_type&quot;: &quot;Mobile&quot;,
+        ///                    &quot;carrier&quot;: &quot;Verizon Wireless&quot;,
+        ///                    &quot;resource_uri&quot;: &quot;/v2.1/r [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string JsonProfiles {
             get {
@@ -202,22 +192,20 @@ namespace NextCallerApiTest.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;response&gt;
-        ///    &lt;records&gt;
-        ///        &lt;object&gt;
-        ///            &lt;id&gt;97d949a413f4ea8b85e9586e1f2d9a&lt;/id&gt;
-        ///            &lt;first_name&gt;Jerry&lt;/first_name&gt;
-        ///            &lt;last_name&gt;Seinfeld&lt;/last_name&gt;
-        ///            &lt;name&gt;Jerry Seinfeld&lt;/name&gt;
-        ///            &lt;language&gt;English&lt;/language&gt;
-        ///            &lt;fraud_threat&gt;low&lt;/fraud_threat&gt;
-        ///            &lt;spoof&gt;false&lt;/spoof&gt;
-        ///            &lt;phone&gt;
-        ///                &lt;object&gt;
-        ///                    &lt;number&gt;2125558383&lt;/number&gt;
-        ///                &lt;/object&gt;
-        ///            &lt;/phone&gt;
-        ///            &lt;carr [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;records&gt;
+        ///    &lt;list-item&gt;
+        ///        &lt;id&gt;97d949a413f4ea8b85e9586e1f2d9a&lt;/id&gt;
+        ///        &lt;first_name&gt;Jerry&lt;/first_name&gt;
+        ///        &lt;first_pronounced&gt;JER-ee&lt;/first_pronounced&gt;
+        ///        &lt;middle_name&gt;Allen&lt;/middle_name&gt;
+        ///        &lt;last_name&gt;Seinfeld&lt;/last_name&gt;
+        ///        &lt;name&gt;Jerry Allen Seinfeld&lt;/name&gt;
+        ///        &lt;phone&gt;
+        ///            &lt;list-item&gt;
+        ///                &lt;number&gt;2125558383&lt;/number&gt;
+        ///                &lt;line_type&gt;Mobile&lt;/line_type&gt;
+        ///                &lt;carrier&gt;Verizon Wireless&lt;/carrier&gt;
+        ///                &lt;resource_uri [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string XmlResponse {
             get {

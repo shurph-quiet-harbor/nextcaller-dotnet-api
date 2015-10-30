@@ -32,10 +32,10 @@ namespace NextCallerApiTest
 
 			Assert.AreEqual("Jerry", profiles[0].FirstName);
 			Assert.AreEqual("Seinfeld", profiles[0].LastName);
-			Assert.AreEqual("demo@nextcaller.com", profiles[0].Email);
+			Assert.AreEqual("jerry@example.org", profiles[0].Email);
 
 			Assert.IsNotNull(profiles[0].Addresses);
-			Assert.AreEqual(1, profiles[0].Addresses.Length);
+			Assert.AreEqual(2, profiles[0].Addresses.Length);
 			Assert.AreEqual("USA", profiles[0].Addresses[0].Country);
 
 			Assert.IsNotNull(profiles[0].Phones);
@@ -59,10 +59,10 @@ namespace NextCallerApiTest
 
 			Assert.AreEqual("Jerry", profile.FirstName);
 			Assert.AreEqual("Seinfeld", profile.LastName);
-			Assert.AreEqual("demo@nextcaller.com", profile.Email);
+			Assert.AreEqual("jerry@example.org", profile.Email);
 
 			Assert.IsNotNull(profile.Addresses);
-			Assert.AreEqual(1, profile.Addresses.Length);
+			Assert.AreEqual(2, profile.Addresses.Length);
 			Assert.AreEqual("USA", profile.Addresses[0].Country);
 
 			Assert.IsNotNull(profile.Phones);

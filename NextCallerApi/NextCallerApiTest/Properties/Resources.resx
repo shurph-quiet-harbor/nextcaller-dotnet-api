@@ -205,45 +205,92 @@
   </data>
   <data name="JsonProfile" xml:space="preserve">
     <value>{
-    "id": "97d949a413f4ea8b85e9586e1f2d9a",
-    "first_name": "Jerry",
-    "last_name": "Seinfeld",
-    "name": "Jerry Seinfeld",
-    "language": "English",
-    "fraud_threat": "low",
-    "spoof": "false",
-    "phone": [
-        {
-            "number": "2125558383"
-        }
-    ],
-    "carrier": "Verizon Wireless",
-    "line_type": "LAN",
-    "address": [
-        {
-            "city": "New York",
-            "extended_zip": "",
-            "country": "USA",
-            "line2": "Apt 5a",
-            "line1": "129 West 81st Street",
-            "state": "NY",
-            "zip_code": "10024"
-        }
-    ],
-    "email": "demo@nextcaller.com",
-    "age": "45-54",
-    "gender": "Male",
-    "household_income": "50k-75k",
-    "marital_status": "Single",
-    "presence_of_children": "No",
-    "home_owner_status": "Rent",
-    "market_value": "350k-500k",
-    "length_of_residence": "12 Years",
-    "high_net_worth": "No",
-    "occupation": "Entertainer",
-    "education": "Completed College",
-    "department": "not specified"
-}</value>
+            "id": "97d949a413f4ea8b85e9586e1f2d9a",
+            "first_name": "Jerry",
+            "first_pronounced": "JER-ee",
+            "middle_name": "Allen",
+            "last_name": "Seinfeld",
+            "name": "Jerry Allen Seinfeld",
+            "phone": [
+                {
+                    "number": "2125558383",
+                    "line_type": "Mobile",
+                    "carrier": "Verizon Wireless",
+                    "resource_uri": "/v2.1/records/2125558383/"
+                }
+            ],
+            "address": [
+                {
+                    "city": "New York",
+                    "extended_zip": "2344",
+                    "country": "USA",
+                    "line1": "129 West 81st Street",
+                    "line2": "Apt 5A",
+                    "state": "NY",
+                    "zip_code": "10024"
+                },
+                {
+                    "city": "New York",
+                    "extended_zip": "2345",
+                    "country": "USA",
+                    "line1": "129 West 81st Street",
+                    "line2": "Apt 5B",
+                    "state": "NY",
+                    "zip_code": "10024"
+                }
+            ],
+            "relatives": [
+                {
+                    "id": "30400c6a0567b3a5168c9812ed617c",
+                    "name": "Morty Seinfeld",
+                    "resource_uri": "/v2.1/users/30400c6a0567b3a5168c9812ed617c/"
+                },
+                {
+                    "id": "6d342b76b2b9b00c63324a0d0fcca8",
+                    "name": "Helen Seinfeld",
+                    "resource_uri": "/v2.1/users/6d342b76b2b9b00c63324a0d0fcca8/"
+                }
+            ],
+            "email": "jerry@example.org",
+            "linked_emails": [
+                "jerry@example.org",
+                "badman@example.org",
+                "domainmaster@example.org",
+                "hellooooooo@example.org",
+                "jaseinfeld@example.org",
+                "jerry_seinfeld@example.org",
+                "puffyshirt@example.org",
+                "seinfeld4@example.org"
+            ],
+            "social_links": [
+                {
+                    "type": "twitter",
+                    "url": "https://twitter.com/jerryseinfeld",
+                    "followers": 26700
+                },
+                {
+                    "type": "facebook",
+                    "url": "https://www.facebook.com/JerrySeinfeld",
+                    "followers": 6584
+                },
+                {
+                    "type": "linkedin",
+                    "url": "https://www.linkedin.com/pub/jerry-seinfeld"
+                }
+            ],
+            "age": "45-54",
+            "education": "Completed College",
+            "gender": "Male",
+            "high_net_worth": "Yes",
+            "home_owner_status": "Rent",
+            "household_income": "50k-75k",
+            "length_of_residence": "10 Years",
+            "marital_status": "Single",
+            "market_value": "500k-1mm",
+            "occupation": "White Collar Worker",
+            "presence_of_children": "No",
+            "resource_uri": "/v2.1/users/97d949a413f4ea8b85e9586e1f2d9a/"
+        }</value>
   </data>
   <data name="JsonProfiles" xml:space="preserve">
     <value>{
@@ -251,90 +298,182 @@
         {
             "id": "97d949a413f4ea8b85e9586e1f2d9a",
             "first_name": "Jerry",
+            "first_pronounced": "JER-ee",
+            "middle_name": "Allen",
             "last_name": "Seinfeld",
-            "name": "Jerry Seinfeld",
-            "language": "English",
-            "fraud_threat": "low",
-            "spoof": "false",
+            "name": "Jerry Allen Seinfeld",
             "phone": [
                 {
-                    "number": "2125558383"
+                    "number": "2125558383",
+                    "line_type": "Mobile",
+                    "carrier": "Verizon Wireless",
+                    "resource_uri": "/v2.1/records/2125558383/"
                 }
-            ], 
-            "carrier": "Verizon Wireless",
-            "line_type": "LAN",
+            ],
             "address": [
                 {
                     "city": "New York",
-                    "extended_zip": "",
+                    "extended_zip": "2344",
                     "country": "USA",
-                    "line2": "Apt 5a",
                     "line1": "129 West 81st Street",
+                    "line2": "Apt 5A",
+                    "state": "NY",
+                    "zip_code": "10024"
+                },
+                {
+                    "city": "New York",
+                    "extended_zip": "2345",
+                    "country": "USA",
+                    "line1": "129 West 81st Street",
+                    "line2": "Apt 5B",
                     "state": "NY",
                     "zip_code": "10024"
                 }
             ],
-            "email": "demo@nextcaller.com",
+            "relatives": [
+                {
+                    "id": "30400c6a0567b3a5168c9812ed617c",
+                    "name": "Morty Seinfeld",
+                    "resource_uri": "/v2.1/users/30400c6a0567b3a5168c9812ed617c/"
+                },
+                {
+                    "id": "6d342b76b2b9b00c63324a0d0fcca8",
+                    "name": "Helen Seinfeld",
+                    "resource_uri": "/v2.1/users/6d342b76b2b9b00c63324a0d0fcca8/"
+                }
+            ],
+            "email": "jerry@example.org",
+            "linked_emails": [
+                "jerry@example.org",
+                "badman@example.org",
+                "domainmaster@example.org",
+                "hellooooooo@example.org",
+                "jaseinfeld@example.org",
+                "jerry_seinfeld@example.org",
+                "puffyshirt@example.org",
+                "seinfeld4@example.org"
+            ],
+            "social_links": [
+                {
+                    "type": "twitter",
+                    "url": "https://twitter.com/jerryseinfeld",
+                    "followers": 26700
+                },
+                {
+                    "type": "facebook",
+                    "url": "https://www.facebook.com/JerrySeinfeld",
+                    "followers": 6584
+                },
+                {
+                    "type": "linkedin",
+                    "url": "https://www.linkedin.com/pub/jerry-seinfeld"
+                }
+            ],
             "age": "45-54",
-            "gender": "Male",
-            "household_income": "50k-75k",
-            "marital_status": "Single",
-            "presence_of_children": "No",
-            "home_owner_status": "Rent",
-            "market_value": "350k-500k",
-            "length_of_residence": "12 Years",
-            "high_net_worth": "No",
-            "occupation": "Entertainer",
             "education": "Completed College",
-            "department": "not specified",
+            "gender": "Male",
+            "high_net_worth": "Yes",
+            "home_owner_status": "Rent",
+            "household_income": "50k-75k",
+            "length_of_residence": "10 Years",
+            "marital_status": "Single",
+            "market_value": "500k-1mm",
+            "occupation": "White Collar Worker",
+            "presence_of_children": "No",
+            "resource_uri": "/v2.1/users/97d949a413f4ea8b85e9586e1f2d9a/"
         }
     ]
 }</value>
   </data>
   <data name="XmlResponse" xml:space="preserve">
-    <value>&lt;response&gt;
-    &lt;records&gt;
-        &lt;object&gt;
-            &lt;id&gt;97d949a413f4ea8b85e9586e1f2d9a&lt;/id&gt;
-            &lt;first_name&gt;Jerry&lt;/first_name&gt;
-            &lt;last_name&gt;Seinfeld&lt;/last_name&gt;
-            &lt;name&gt;Jerry Seinfeld&lt;/name&gt;
-            &lt;language&gt;English&lt;/language&gt;
-            &lt;fraud_threat&gt;low&lt;/fraud_threat&gt;
-            &lt;spoof&gt;false&lt;/spoof&gt;
-            &lt;phone&gt;
-                &lt;object&gt;
-                    &lt;number&gt;2125558383&lt;/number&gt;
-                &lt;/object&gt;
-            &lt;/phone&gt;
-            &lt;carrier&gt;Verizon Wireless&lt;/carrier&gt;
-            &lt;line_type&gt;LAN&lt;/line_type&gt;
-            &lt;address&gt;
-                &lt;object&gt;
-                    &lt;line1&gt;129 West 81st Street&lt;/line1&gt;
-                    &lt;line2&gt;Apt 5a&lt;/line2&gt;
-                    &lt;city&gt;New York&lt;/city&gt;
-                    &lt;state&gt;NY&lt;/state&gt;
-                    &lt;zip_code&gt;10024&lt;/zip_code&gt;
-                    &lt;extended_zip/&gt;
-                    &lt;country&gt;USA&lt;/country&gt;
-                &lt;/object&gt;
-            &lt;/address&gt;
-            &lt;email&gt;demo@nextcaller.com&lt;/email&gt;
-            &lt;age&gt;45-54&lt;/age&gt;
-            &lt;gender&gt;Male&lt;/gender&gt;
-            &lt;household_income&gt;50k-75k&lt;/household_income&gt;
-            &lt;marital_status&gt;Single&lt;/marital_status&gt;
-            &lt;presence_of_children&gt;No&lt;/presence_of_children&gt;
-            &lt;home_owner_status&gt;Rent&lt;/home_owner_status&gt;
-            &lt;market_value&gt;350k-500k&lt;/market_value&gt;
-            &lt;length_of_residence&gt;12 Years&lt;/length_of_residence&gt;
-            &lt;high_net_worth&gt;No&lt;/high_net_worth&gt;
-            &lt;occupation&gt;Entertainer&lt;/occupation&gt;
-            &lt;education&gt;Completed College&lt;/education&gt;
-            &lt;department&gt;not specified&lt;/department&gt;
-        &lt;/object&gt;
-    &lt;/records&gt;
-&lt;/response&gt;</value>
+    <value>&lt;records&gt;
+    &lt;list-item&gt;
+        &lt;id&gt;97d949a413f4ea8b85e9586e1f2d9a&lt;/id&gt;
+        &lt;first_name&gt;Jerry&lt;/first_name&gt;
+        &lt;first_pronounced&gt;JER-ee&lt;/first_pronounced&gt;
+        &lt;middle_name&gt;Allen&lt;/middle_name&gt;
+        &lt;last_name&gt;Seinfeld&lt;/last_name&gt;
+        &lt;name&gt;Jerry Allen Seinfeld&lt;/name&gt;
+        &lt;phone&gt;
+            &lt;list-item&gt;
+                &lt;number&gt;2125558383&lt;/number&gt;
+                &lt;line_type&gt;Mobile&lt;/line_type&gt;
+                &lt;carrier&gt;Verizon Wireless&lt;/carrier&gt;
+                &lt;resource_uri&gt;/v2.1/records/2125558383/&lt;/resource_uri&gt;
+            &lt;/list-item&gt;
+        &lt;/phone&gt;
+        &lt;address&gt;
+            &lt;list-item&gt;
+                &lt;city&gt;New York&lt;/city&gt;
+                &lt;extended_zip&gt;2344&lt;/extended_zip&gt;
+                &lt;country&gt;USA&lt;/country&gt;
+                &lt;line1&gt;129 West 81st Street&lt;/line1&gt;
+                &lt;line2&gt;Apt 5A&lt;/line2&gt;
+                &lt;state&gt;NY&lt;/state&gt;
+                &lt;zip_code&gt;10024&lt;/zip_code&gt;
+            &lt;/list-item&gt;
+            &lt;list-item&gt;
+                &lt;city&gt;New York&lt;/city&gt;
+                &lt;extended_zip&gt;2345&lt;/extended_zip&gt;
+                &lt;country&gt;USA&lt;/country&gt;
+                &lt;line1&gt;129 West 81st Street&lt;/line1&gt;
+                &lt;line2&gt;Apt 5B&lt;/line2&gt;
+                &lt;state&gt;NY&lt;/state&gt;
+                &lt;zip_code&gt;10024&lt;/zip_code&gt;
+            &lt;/list-item&gt;
+        &lt;/address&gt;
+        &lt;relatives&gt;
+            &lt;list-item&gt;
+                &lt;id&gt;30400c6a0567b3a5168c9812ed617c&lt;/id&gt;
+                &lt;name&gt;Morty Seinfeld&lt;/name&gt;
+                &lt;resource_uri&gt;/v2.1/users/30400c6a0567b3a5168c9812ed617c/&lt;/resource_uri&gt;
+            &lt;/list-item&gt;
+            &lt;list-item&gt;
+                &lt;id&gt;6d342b76b2b9b00c63324a0d0fcca8&lt;/id&gt;
+                &lt;name&gt;Helen Seinfeld&lt;/name&gt;
+                &lt;resource_uri&gt;/v2.1/users/6d342b76b2b9b00c63324a0d0fcca8/&lt;/resource_uri&gt;
+            &lt;/list-item&gt;
+        &lt;/relatives&gt;
+        &lt;email&gt;jerry@example.org&lt;/email&gt;
+        &lt;linked_emails&gt;
+            &lt;list-item&gt;jerry@example.org&lt;/list-item&gt;
+            &lt;list-item&gt;badman@example.org&lt;/list-item&gt;
+            &lt;list-item&gt;domainmaster@example.org&lt;/list-item&gt;
+            &lt;list-item&gt;hellooooooo@example.org&lt;/list-item&gt;
+            &lt;list-item&gt;jaseinfeld@example.org&lt;/list-item&gt;
+            &lt;list-item&gt;jerry_seinfeld@example.org&lt;/list-item&gt;
+            &lt;list-item&gt;puffyshirt@example.org&lt;/list-item&gt;
+            &lt;list-item&gt;seinfeld4@example.org&lt;/list-item&gt;
+        &lt;/linked_emails&gt;
+        &lt;social_links&gt;
+            &lt;list-item&gt;
+                &lt;type&gt;twitter&lt;/type&gt;
+                &lt;url&gt;https://twitter.com/jerryseinfeld&lt;/url&gt;
+                &lt;followers&gt;26700&lt;/followers&gt;
+            &lt;/list-item&gt;
+            &lt;list-item&gt;
+                &lt;type&gt;facebook&lt;/type&gt;
+                &lt;url&gt;https://www.facebook.com/JerrySeinfeld&lt;/url&gt;
+                &lt;followers&gt;6584&lt;/followers&gt;
+            &lt;/list-item&gt;
+            &lt;list-item&gt;
+                &lt;type&gt;linkedin&lt;/type&gt;
+                &lt;url&gt;https://www.linkedin.com/pub/jerry-seinfeld&lt;/url&gt;
+            &lt;/list-item&gt;
+        &lt;/social_links&gt;
+        &lt;age&gt;45-54&lt;/age&gt;
+        &lt;education&gt;Completed College&lt;/education&gt;
+        &lt;gender&gt;Male&lt;/gender&gt;
+        &lt;high_net_worth&gt;Yes&lt;/high_net_worth&gt;
+        &lt;home_owner_status&gt;Rent&lt;/home_owner_status&gt;
+        &lt;household_income&gt;50k-75k&lt;/household_income&gt;
+        &lt;length_of_residence&gt;10 Years&lt;/length_of_residence&gt;
+        &lt;marital_status&gt;Single&lt;/marital_status&gt;
+        &lt;market_value&gt;500k-1mm&lt;/market_value&gt;
+        &lt;occupation&gt;White Collar Worker&lt;/occupation&gt;
+        &lt;presence_of_children&gt;No&lt;/presence_of_children&gt;
+        &lt;resource_uri&gt;/v2.1/users/97d949a413f4ea8b85e9586e1f2d9a/&lt;/resource_uri&gt;
+    &lt;/list-item&gt;
+&lt;/records&gt;</value>
   </data>
 </root>
