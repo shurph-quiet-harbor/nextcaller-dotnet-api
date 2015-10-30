@@ -79,6 +79,15 @@ namespace NextCallerApi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to analyze/.
+        /// </summary>
+        internal static string AnalyzePath {
+            get {
+                return ResourceManager.GetString("AnalyzePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 2.1.
         /// </summary>
         internal static string DefaultAPIVersion {

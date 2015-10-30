@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Common\FraudLevel.cs" />
+    <Compile Include="Entities\Common\AnalyzeCallData.cs" />
     <Compile Include="Entities\Common\Header.cs" />
     <Compile Include="Entities\Common\NameAddress.cs" />
     <Compile Include="Entities\Error.cs" />

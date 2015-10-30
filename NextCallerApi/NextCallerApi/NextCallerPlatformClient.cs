@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Security.Policy;
-using System.Text.RegularExpressions;
-using NextCallerApi.Entities;
 using NextCallerApi.Entities.Common;
 using NextCallerApi.Entities.Platform;
 using NextCallerApi.Interfaces;
@@ -174,12 +170,29 @@ namespace NextCallerApi
             return JsonSerializer.Deserialize<FraudLevel>(response);
 		}
 
-		/// <summary>
-		/// Updates profile with given ID.
-		/// More info at: https://nextcaller.com/platform/documentation/v2.1/#/profiles/post-profile/curl.
-		/// </summary>
-		/// <param name="data">Profile data to be updated.</param>
-		/// <param name="id">ID of the profile to be updated.</param>
+        /// <summary>
+        /// Retrives fraud level for given call data.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/fraud-levels/curl.
+        /// </summary>
+        /// <param name="data">Call data to be posted.</param>
+        /// <param name="accountId">Platform account ID.</param>
+        /// <returns>Fraud level for given call data.</returns>
+        public FraudLevel AnalyzeCall(AnalyzeCallData data, string accountId = null)
+        {
+            Utility.EnsureParameterValid(!(data == null), "data");
+
+            string jsonData = JsonSerializer.Serialize(data);
+            string content = AnalyzeCallJson(jsonData);
+
+            return JsonSerializer.Deserialize<FraudLevel>(content);
+        }
+
+        /// <summary>
+        /// Updates profile with given ID.
+        /// More info at: https://nextcaller.com/platform/documentation/v2.1/#/profiles/post-profile/curl.
+        /// </summary>
+        /// <param name="data">Profile data to be updated.</param>
+        /// <param name="id">ID of the profile to be updated.</param>
         /// <param name="accountId">Platform account ID.</param>
         public void UpdateByProfileId(string id, ProfileToPost data, string accountId = null)
 		{
@@ -324,13 +337,29 @@ namespace NextCallerApi
 			return httpTransport.Request(url, DefaultResponseType, headers: headers);
 		}
 
-		/// <summary>
-		/// Gets a summary of all API calls made and all users
+        /// <summary>
+        /// Retrives fraud level for given call data in json format.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/fraud-levels/curl.
+        /// </summary>
+        /// <param name="data">Call data to be posted.</param>
+        /// <param name="accountId">Platform account ID.</param>
+        /// <returns>Fraud level for given call data in json format.</returns>
+        public string AnalyzeCallJson(string data, string accountId = null)
+        {
+            var headers = PrepareAccountIdHeader(accountId);
+
+            string url = BuildUrl(analyzeUrl, new UrlParameter(formatParameterName, PostContentType.ToString()));
+
+            return httpTransport.Request(url, PostContentType, "POST", data ?? "", headers);
+        }
+
+        /// <summary>
+        /// Gets a summary of all API calls made and all users
         /// More information at: https://nextcaller.com/platform/documentation/v2.1/#/accounts/get-summary/curl.
-		/// </summary>
-		/// <param name="page">Pagination page number.</param>
-		/// <returns>Platform statistics in json.</returns>
-		public string GetPlatformStatisticsJson(int? page = null)
+        /// </summary>
+        /// <param name="page">Pagination page number.</param>
+        /// <returns>Platform statistics in json.</returns>
+        public string GetPlatformStatisticsJson(int? page = null)
 		{
 			var parameters = new List<UrlParameter> {new UrlParameter(formatParameterName, DefaultResponseType.ToString())};
 			if (page != null)
