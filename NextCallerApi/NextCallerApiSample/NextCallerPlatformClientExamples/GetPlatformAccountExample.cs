@@ -12,7 +12,7 @@ using FormatException = NextCallerApi.Exceptions.FormatException;
 
 namespace NextCallerApiSample.NextCallerPlatformClientExamples
 {
-	public static class UpdatePlatformUser
+	public static class GetPlatformAccountExample
 	{
 		public static void Run()
 		{
@@ -22,19 +22,37 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 
 			NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
-			const string AccountId = "username";
+			const string AccountId = "TestUser1";
 
 			try
 			{
-				PlatformUserToPost user = new PlatformUserToPost
-				{
-					CompanyName = "platform_company1_name",
-					Email = "company_email@company1.com",
-					FirstName = "platform_user1_fname",
-					LastName = "platform_user1_lname"
-				};
+				PlatformAccount user = client.GetPlatformAccount(AccountId);
 
-				client.UpdatePlatformUser(AccountId, user);
+					//user = new PlatformUser
+					//{
+					//	CreatedTime = "2014­04­16T13:42:00",
+					//	NumberOfOperations = 24,
+					//	ResourceUri = "/api/v2/platform_users/pl2_un1/",
+					//	Username = "pl2_un2",
+					//	TotalCalls = new Dictionary<string, int>
+					//	{
+					//		{ "201403", 7 },
+					//		{ "201404", 7 },
+					//		{ "201405", 7 }
+					//	},
+					//	SuccessfulCalls = new Dictionary<string, int>
+					//	{
+					//		{ "201403", 7 },
+					//		{ "201404", 7 },
+					//		{ "201405", 7 }
+					//	},
+					//	BillableCalls = new Dictionary<string, int>
+					//	{
+					//		{ "201403", 7 },
+					//		{ "201404", 7 },
+					//		{ "201405", 7 }
+					//	}
+					//};
 
 			}
 			catch (FormatException formatException)
@@ -53,7 +71,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 				Console.WriteLine("Content : {0}", responseContent);
 
 			}
-			catch (BadResponseException badRequestException)
+			catch (BadRequestException badRequestException)
 			{
 
 				HttpWebRequest request = badRequestException.Request;

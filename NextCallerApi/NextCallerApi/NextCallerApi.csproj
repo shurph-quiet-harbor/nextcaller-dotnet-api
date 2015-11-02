@@ -47,11 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Common\FraudLevel.cs" />
+    <Compile Include="Entities\Common\AnalyzeCallData.cs" />
     <Compile Include="Entities\Common\Header.cs" />
     <Compile Include="Entities\Common\NameAddress.cs" />
     <Compile Include="Entities\Error.cs" />
-    <Compile Include="Entities\Platform\PlatformUser.cs" />
-    <Compile Include="Entities\Platform\PlatformUserToPost.cs" />
+    <Compile Include="Entities\Platform\PlatformAccount.cs" />
+    <Compile Include="Entities\Platform\PlatformAccountToPost.cs" />
     <Compile Include="Entities\Common\Relative.cs" />
     <Compile Include="Entities\Platform\PlatformStatistics.cs" />
     <Compile Include="Exceptions\BadMethodException.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Exceptions\FormatException.cs" />
     <Compile Include="Exceptions\PaginationException.cs" />
     <Compile Include="Exceptions\RateLimitExceededException.cs" />
+    <Compile Include="Interfaces\INextCallerClient.cs" />
     <Compile Include="NextCallerPlatformClient.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -72,8 +74,7 @@
     <Compile Include="Entities\Common\Phone.cs" />
     <Compile Include="Entities\Common\ProfileToPost.cs" />
     <Compile Include="Entities\Common\Profile.cs" />
-    <Compile Include="Entities\ValidationMessage.cs" />
-    <Compile Include="Exceptions\BadResponseException.cs" />
+    <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Http\HttpTransport.cs" />
     <Compile Include="Interfaces\IHttpTransport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

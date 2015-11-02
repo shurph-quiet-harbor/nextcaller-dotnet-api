@@ -8,7 +8,7 @@ using Moq;
 using NextCallerApi;
 using NextCallerApi.Entities.Common;
 using NextCallerApi.Interfaces;
-
+using NextCallerApi.Serialization;
 
 namespace NextCallerApiTest
 {
@@ -20,29 +20,29 @@ namespace NextCallerApiTest
         {
             //Arrange
             const string ValidEmail = "test@mail.com";
-            var jsonProfile = Properties.Resources.JsonProfile;
+            var jsonProfiles = Properties.Resources.JsonProfiles;
 
             Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
 
             httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
-                .Returns(jsonProfile);
+                .Returns(jsonProfiles);
 
             //Action
             NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
-            string profile = client.GetByEmailJson(ValidEmail);
+            string profiles = client.GetByEmailJson(ValidEmail);
 
             //Assert
             httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
 
-            Assert.IsNotNull(profile);
-            Assert.AreEqual(profile, jsonProfile);
+            Assert.IsNotNull(profiles);
+            Assert.AreEqual(profiles, jsonProfiles);
         }
         
 		[TestMethod]
-		public void GetProfileById_EmptyId_ArgumentExceptionThrown()
+		public void GetProfileById_NullId_ArgumentExceptionThrown()
 		{
 			//Arrange
-			const string Id = "";
+			const string Id = null;
 
 			Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
 
@@ -58,16 +58,16 @@ namespace NextCallerApiTest
 			catch (ArgumentException argumentException)
 			{
 				//Assert
-				Assert.AreEqual("id", argumentException.ParamName);
+				Assert.AreEqual("profileId", argumentException.ParamName);
 			}
 
 		}
 
 		[TestMethod]
-		public void CreatingClientInstance_EmptyUsername_ArgumentExceptionThrown()
+		public void CreatingClientInstance_NullUsername_ArgumentExceptionThrown()
 		{
 			//Arrange
-			const string Username = "";
+			const string Username = null;
 			const string Password = "adaSfaqwfasfasdasdfasfasfasd";
 
 			try
@@ -161,7 +161,70 @@ namespace NextCallerApiTest
             Assert.AreEqual(jsonProfiles, profiles);
         }
 
-		[TestMethod]
+        [TestMethod]
+        public void GetFraudLevel_ValidPhone_FraudLevelReturned()
+        {
+            //Arrange
+            const string PhoneNumber = "2020327000";
+            string jsonFraudLevel = Properties.Resources.JsonFraudLevel;
+
+            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
+                .Returns(jsonFraudLevel);
+
+
+            //Action
+            NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
+            string fraudLevel = client.GetFraudLevelJson(PhoneNumber);
+
+            //Assert
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
+
+            Assert.IsNotNull(fraudLevel);
+            Assert.AreEqual(jsonFraudLevel, fraudLevel);
+        }
+
+        [TestMethod]
+        public void AnalyzeCall_ValidData_FraudLevelReturned()
+        {
+            //Arrange
+            string jsonFraudLevel = Properties.Resources.JsonFraudLevel;
+
+            AnalyzeCallData data = new AnalyzeCallData
+            {
+                Ani = "12125551212",
+                Dnis = "18005551212",
+                Headers = new Dictionary<string, object>
+                {
+                    { "from", "\"John Smith\" <sip:12125551212@example.com>" },
+                    { "via", new List<string> { "SIP/2.0//UDP 1.1.1.1:5060;branch=z9hG4bK3fe1.9a945462b4c1880c5f6fdc0214a205ca.1"} }
+                },
+                Meta = new Dictionary<string, string>
+                {
+                    { "caller_id", "12125551212" },
+                    { "charge_number", "12125551212" },
+                    { "ani2", "0" },
+                    { "private", "true" }
+                }
+            };
+
+            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
+            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()))
+                .Returns(jsonFraudLevel);
+
+            //Action
+            NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
+            string jsonData = JsonSerializer.Serialize(data);
+            string fraudLevel = client.AnalyzeCallJson(jsonData);
+
+            //Assert
+            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()), Times.Once);
+
+            Assert.IsNotNull(fraudLevel);
+            Assert.AreEqual(jsonFraudLevel, fraudLevel);
+        }
+
+        [TestMethod]
 		public void PostProfile_ValidIdAndValidProfile_NoExceptionsThrown()
 		{
 			//Arrange

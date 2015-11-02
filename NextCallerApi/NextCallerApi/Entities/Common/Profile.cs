@@ -26,17 +26,8 @@ namespace NextCallerApi.Entities.Common
 		[DataMember(Name = "name")]
 		public string Name { get; set; }
 
-		[DataMember(Name = "language")]
-		public string Language { get; set; }
-
 		[DataMember(Name = "phone")]
 		public Phone[] Phones { get; set; }
-
-		[DataMember(Name = "carrier")]
-		public string Carrier { get; set; }
-
-		[DataMember(Name = "line_type")]
-		public string LineType { get; set; }
 
 		[DataMember(Name = "address")]
 		public Address[] Addresses { get; set; }
@@ -85,9 +76,6 @@ namespace NextCallerApi.Entities.Common
 
 		[DataMember(Name = "education")]
 		public string Education { get; set; }
-
-		[DataMember(Name = "department")]
-		public string Department { get; set; }
 
 		[DataMember(Name = "resource_uri")]
 		public string ResourceUri { get; set; }

@@ -25,9 +25,10 @@ namespace NextCallerApi.Http
 	internal class HttpTransport : IHttpTransport
 	{
 
-		private const string PostMethod = "POST";
-		private const string GetMethod = "GET";
-		private readonly string _paginationErrorCode;
+        private const string GetMethod = "GET";
+        private const string PostMethod = "POST";
+        private const string PutMethod = "PUT";
+        private readonly string _paginationErrorCode;
 
 		private readonly string _authorizationToken;
 
@@ -52,6 +53,9 @@ namespace NextCallerApi.Http
                 case "POST":
 		            methodFunc = Post;
 		            break;
+                case "PUT":
+                    methodFunc = Put;
+                    break;
                 default:
 		            methodFunc = Get;
 		            break;
@@ -100,7 +104,7 @@ namespace NextCallerApi.Http
 				throw new PaginationException(request, response, responseContent);
 			}
 
-			throw new BadResponseException(request, response, responseContent, requestError);
+			throw new BadRequestException(request, response, responseContent, requestError);
 
 		}
 
@@ -124,7 +128,27 @@ namespace NextCallerApi.Http
 			}
 		}
 
-		private static HttpWebResponse Get(WebRequest request, string data)
+        private static HttpWebResponse Put(WebRequest request, string data)
+        {
+
+            request.Method = PutMethod;
+            byte[] bytes = Encoding.UTF8.GetBytes(data);
+            request.ContentLength = bytes.Length;
+
+            try
+            {
+                Stream requestStream = request.GetRequestStream();
+                requestStream.Write(bytes, 0, bytes.Length);
+
+                return (HttpWebResponse)request.GetResponse();
+            }
+            catch (WebException e)
+            {
+                return (HttpWebResponse)e.Response;
+            }
+        }
+
+        private static HttpWebResponse Get(WebRequest request, string data)
 		{
 			try
 			{

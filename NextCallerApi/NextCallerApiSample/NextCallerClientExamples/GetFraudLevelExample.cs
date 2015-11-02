@@ -48,7 +48,7 @@ namespace NextCallerApiSample.NextCallerClientExamples
 				Console.WriteLine("Content : {0}", responseContent);
 
 			}
-			catch (BadResponseException badRequestException)
+			catch (BadRequestException badRequestException)
 			{
 
 				HttpWebRequest request = badRequestException.Request;

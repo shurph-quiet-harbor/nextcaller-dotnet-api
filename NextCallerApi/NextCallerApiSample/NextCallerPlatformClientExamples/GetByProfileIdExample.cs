@@ -23,7 +23,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 			NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
 			const string ProfileId = "profileId";
-			const string AccountId = "username";
+			const string AccountId = "TestUser1";
 
 			try
 			{
@@ -102,7 +102,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 				Console.WriteLine("Content : {0}", responseContent);
 
 			}
-			catch (BadResponseException badRequestException)
+			catch (BadRequestException badRequestException)
 			{
 
 				HttpWebRequest request = badRequestException.Request;
