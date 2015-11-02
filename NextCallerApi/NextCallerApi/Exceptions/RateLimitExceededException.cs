@@ -3,7 +3,10 @@ using System.Net;
 
 namespace NextCallerApi.Exceptions
 {
-    class RateLimitExceededException : BaseException
+    /// <summary>
+	/// Thrown when "429 Too Many Requests" error occured.
+	/// </summary>
+    public class RateLimitExceededException : BaseException
     {
         public long? limitLimitValue;
         public long? limitRemainigValue;
@@ -19,7 +22,7 @@ namespace NextCallerApi.Exceptions
             if (!limitResetValue.Value.Equals(null))
             {
                 var unixTimeEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-                return unixTimeEpoch.AddMilliseconds(limitResetValue.Value.TotalMilliseconds);
+                return unixTimeEpoch.Add(limitResetValue.Value);
             }
             return null;
         }
@@ -40,27 +43,27 @@ namespace NextCallerApi.Exceptions
             limitRemainigValue = null;
             limitResetValue = null;
             if (limitLimit != null) limitLimitValue = long.Parse(limitLimit);
-            if (limitReset != null) limitResetValue = TimeSpan.FromMilliseconds(long.Parse(limitReset));
+            if (limitReset != null) limitResetValue = TimeSpan.FromSeconds(long.Parse(limitReset));
             if (limitRemainig != null) limitRemainigValue = long.Parse(limitRemainig);
         }
 
         public override string Message
-		{
-			get
-			{
-				return ToString();
-			}
-		}
+        {
+            get
+            {
+                return ToString();
+            }
+        }
 
-		public override string ToString()
-		{
-            string template = "Rate Limit Exceeded." 
+        public override string ToString()
+        {
+            string template = "Rate Limit Exceeded."
                 + (limitLimitValue.HasValue ? " Current rate limit value is {0} per second;" : "")
                 + (limitRemainigValue.HasValue ? " number of requests left: {1};" : "")
-                + (limitResetUTCDate.HasValue ? "remaning window before rate limit resets: {2};" : "")
+                + (limitResetUTCDate.HasValue ? " remaning window before rate limit resets: {2};" : "")
                 + " {3}";
 
-			return string.Format(template, limitLimitValue, limitRemainigValue, limitResetUTCDate, Content);
-		}
+            return string.Format(template, limitLimitValue, limitRemainigValue, limitResetUTCDate, Content);
+        }
     }
 }
