@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
+using System.Linq;
 
 using NextCallerApi;
 using NextCallerApi.Entities;
@@ -11,9 +11,9 @@ using NextCallerApi.Exceptions;
 using FormatException = NextCallerApi.Exceptions.FormatException;
 
 
-namespace NextCallerApiSample.NextCallerClientExamples
+namespace NextCallerApiSample.NextCallerPlatformClientExamples
 {
-    public static class GetByNameAddressExample
+    public static class GetByEmailExample
     {
         public static void Run()
         {
@@ -21,20 +21,14 @@ namespace NextCallerApiSample.NextCallerClientExamples
             const string Password = "";
             const bool Sandbox = true;
 
-            NextCallerClient client = new NextCallerClient(Username, Password, Sandbox);
+            NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
-            NameAddress nameAddress = new NameAddress
-            {
-                AddressLine = "129 West 81st Street",
-                FirstName = "Jerry",
-                LastName = "Seinfeld",
-                City = "New York",
-                State = "NY"
-            };
+            const string Email = "demo@nextcaller.com";
+            const string AccountId = "TestUser1";
 
             try
             {
-                IList<Profile> profiles = client.GetByNameAddress(nameAddress);
+                IList<Profile> profiles = client.GetByEmail(Email, AccountId);
 
                 Profile profile = profiles.First();
 
@@ -124,6 +118,7 @@ namespace NextCallerApiSample.NextCallerClientExamples
                 string type = parsedError.Type;
 
                 Dictionary<string, string[]> description = parsedError.Description;
+                //
 
                 Console.WriteLine(parsedError.ToString());
 

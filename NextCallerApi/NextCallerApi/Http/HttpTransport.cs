@@ -1,5 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
+using System.IO;
 using System.Net;
+using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 
 using Newtonsoft.Json;
@@ -10,6 +17,7 @@ using NextCallerApi.Exceptions;
 using NextCallerApi.Interfaces;
 
 using FormatException = NextCallerApi.Exceptions.FormatException;
+using Header = NextCallerApi.Entities.Common.Header;
 
 
 namespace NextCallerApi.Http
@@ -17,9 +25,10 @@ namespace NextCallerApi.Http
 	internal class HttpTransport : IHttpTransport
 	{
 
-		private const string PostMethod = "POST";
-		private const string GetMethod = "GET";
-		private readonly string _paginationErrorCode;
+        private const string GetMethod = "GET";
+        private const string PostMethod = "POST";
+        private const string PutMethod = "PUT";
+        private readonly string _paginationErrorCode;
 
 		private readonly string _authorizationToken;
 
@@ -29,12 +38,38 @@ namespace NextCallerApi.Http
 			_authorizationToken = BasicAuthorization.GetToken(username, password);
 		}
 
-		public string Request(string url, ContentType contentType, string data = null)
+		public string Request(string url, ContentType contentType, string method = "GET", string data = null, IEnumerable<Header> headers = null)
 		{
 
-			HttpWebRequest request = CreateWebRequest(url, contentType);
+			HttpWebRequest request = CreateWebRequest(url, contentType, headers);
 
-			HttpWebResponse response = data == null ? Get(request) : Post(request, data);
+		    Func<HttpWebRequest, string, HttpWebResponse> methodFunc;
+
+		    switch (method)
+		    {
+		        case "GET":
+		            methodFunc = Get;
+		            break;
+                case "POST":
+		            methodFunc = Post;
+		            break;
+                case "PUT":
+                    methodFunc = Put;
+                    break;
+                default:
+		            methodFunc = Get;
+		            break;
+		    }
+
+//            MethodInfo methodInvoker = GetType().GetMethod(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(method.ToLower()), BindingFlags.NonPublic | BindingFlags.Instance);
+//		    if (methodInvoker == null)
+//		    {
+//		        throw new BadMethodException(method);
+//		    }
+//
+//		    HttpWebResponse response = methodInvoker.Invoke(this, new object[]{request, data}) as HttpWebResponse;
+
+		    var response = methodFunc(request, data);
 
 			string responseContent;
 
@@ -50,6 +85,11 @@ namespace NextCallerApi.Http
 
 			Error requestError;
 
+		    if ((int) response.StatusCode == 429)
+		    {
+                throw new RateLimitExceededException(request, response, responseContent);
+		    }
+
 			try
 			{
 				requestError = Serialization.JsonSerializer.ParseError(responseContent);
@@ -64,7 +104,7 @@ namespace NextCallerApi.Http
 				throw new PaginationException(request, response, responseContent);
 			}
 
-			throw new BadResponseException(request, response, responseContent, requestError);
+			throw new BadRequestException(request, response, responseContent, requestError);
 
 		}
 
@@ -88,7 +128,27 @@ namespace NextCallerApi.Http
 			}
 		}
 
-		private static HttpWebResponse Get(WebRequest request)
+        private static HttpWebResponse Put(WebRequest request, string data)
+        {
+
+            request.Method = PutMethod;
+            byte[] bytes = Encoding.UTF8.GetBytes(data);
+            request.ContentLength = bytes.Length;
+
+            try
+            {
+                Stream requestStream = request.GetRequestStream();
+                requestStream.Write(bytes, 0, bytes.Length);
+
+                return (HttpWebResponse)request.GetResponse();
+            }
+            catch (WebException e)
+            {
+                return (HttpWebResponse)e.Response;
+            }
+        }
+
+        private static HttpWebResponse Get(WebRequest request, string data)
 		{
 			try
 			{
@@ -101,15 +161,20 @@ namespace NextCallerApi.Http
 			}
 		}
 
-		private HttpWebRequest CreateWebRequest(string url, ContentType contentType)
+        private HttpWebRequest CreateWebRequest(string url, ContentType contentType, IEnumerable<Header> headers = null)
 		{
 			HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(url);
 
 			webRequest.Accept = GetHttpContentType(ContentType.Json);
 			webRequest.ContentType = GetHttpContentType(contentType);
 			webRequest.Headers.Add(HttpRequestHeader.Authorization, _authorizationToken);
+            if (headers == null) return webRequest;
+            foreach (var header in headers)
+            {
+                webRequest.Headers.Add(header.Name, header.Value);
+            }
 
-			return webRequest;
+            return webRequest;
 		}
 
 		private static bool IsSuccessfulStatusCode(HttpStatusCode statusCode)

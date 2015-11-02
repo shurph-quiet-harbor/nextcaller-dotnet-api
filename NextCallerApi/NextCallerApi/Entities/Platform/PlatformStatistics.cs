@@ -10,16 +10,14 @@ namespace NextCallerApi.Entities.Platform
 	[DataContract]
 	public class PlatformStatistics
 	{
-		[DataMember(Name = "platform_users")]
-		public PlatformUser[] PlatformUsers { get; set; }
+		[DataMember(Name = "data")]
+		public PlatformAccount[] PlatformAccounts { get; set; }
 
-		[DataMember(Name = "total_platform_calls")]
-		public Dictionary<string, int> TotalPlatformCalls { get; set; }
+		[DataMember(Name = "total_platform_operations")]
+		public Dictionary<string, int> TotalPlatformOperations { get; set; }
 
-		[DataMember(Name = "successful_platform_calls")]
-		public Dictionary<string, int> SuccessfulPlatformCalls { get; set; }
+		[DataMember(Name = "billed_platform_operations")]
+		public Dictionary<string, int> BilledPlatformOperations { get; set; }
 
-		[DataMember(Name = "billable_platform_calls")]
-		public Dictionary<string, int> BillablePlatformCalls { get; set; }
 	}
 }

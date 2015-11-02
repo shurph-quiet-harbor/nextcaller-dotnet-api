@@ -9,39 +9,16 @@ namespace NextCallerApi.Entities.Common
 	[DataContract]
 	public class Phone
 	{
+        [DataMember(Name = "number")]
+        public string Number { get; set; }
 
-		private const string EmptyNumberTemplate = "Phone number cannot be empty or null.";
+        [DataMember(Name = "resource_uri")]
+        public string ResourceUri { get; set; }
 
-		[DataMember(Name = "number")]
-		public string Number { get; set; }
+        [DataMember(Name = "carrier")]
+        public string Carrier { get; set; }
 
-		[DataMember(Name = "resource_uri")]
-		public string ResourceUri { get; set; }
-
-		/// <summary>
-		/// Validates phone number.
-		/// </summary>
-		/// <returns>Object, representing validation status and message.</returns>
-		public ValidationResult IsValid()
-		{
-			return IsNumberValid(Number);
-		}
-
-		/// <summary>
-		/// Validates phone number.
-		/// </summary>
-		/// <param name="number">Phone number to validate.</param>
-		/// <returns>Object, representing validation status and message.</returns>
-		public static ValidationResult IsNumberValid(string number)
-		{
-			if (string.IsNullOrEmpty(number))
-			{
-				return new ValidationResult(false, EmptyNumberTemplate);
-			}
-
-			return new ValidationResult(true, null);
-		}
-	}
-
-	
+        [DataMember(Name = "line_type")]
+        public string LineType { get; set; }
+    }
 }

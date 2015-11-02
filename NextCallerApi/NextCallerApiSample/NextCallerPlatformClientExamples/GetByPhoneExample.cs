@@ -24,11 +24,11 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 			NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
 			const string Phone = "1234567890";
-			const string PlatformUsername = "username";
+			const string AccountId = "TestUser1";
 
 			try
 			{
-				IList<Profile> profiles = client.GetByPhone(Phone, PlatformUsername);
+				IList<Profile> profiles = client.GetByPhone(Phone, AccountId);
 
 				Profile profile = profiles.First();
 
@@ -105,7 +105,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 				Console.WriteLine("Content : {0}", responseContent);
 
 			}
-			catch (BadResponseException badRequestException)
+			catch (BadRequestException badRequestException)
 			{
 
 				HttpWebRequest request = badRequestException.Request;

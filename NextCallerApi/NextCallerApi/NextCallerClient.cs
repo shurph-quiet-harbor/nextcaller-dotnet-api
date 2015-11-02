@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-
 using NextCallerApi.Entities.Common;
 
 using UrlParameter = System.Collections.Generic.KeyValuePair<string, string>;
 
-using NextCallerApi.Entities;
 using NextCallerApi.Http;
 using NextCallerApi.Interfaces;
 using NextCallerApi.Serialization;
@@ -19,17 +17,19 @@ namespace NextCallerApi
 	/// <summary>
 	/// Contains access methods to Next Caller service.
 	/// </summary>
-	public class NextCallerClient
+	public class NextCallerClient : INextCallerClient
 	{
 
-		protected readonly string baseUrl;
+		protected string baseUrl;
 		protected readonly string usersUrl;
 		protected readonly string phoneUrl;
 		protected readonly string fraudUrl;
+        protected readonly string analyzeUrl;
         protected readonly string versionNumber;
 
 		protected readonly string formatParameterName;
 		protected readonly string phoneParameterName;
+        protected readonly string emailParameterName;
 
         protected readonly string nameAddressFirstNameParameterName;
         protected readonly string nameAddressLastNameParameterName;
@@ -56,12 +56,11 @@ namespace NextCallerApi
 		/// <param name="username"> Username for authorization.</param>
 		/// <param name="password"> Password for authorization.</param>
 		/// <param name="sandbox"> Sandbox mode flag.</param>
-        /// <param name="version">API version number</param>
-		public NextCallerClient(string username, string password, bool sandbox = false, string version = "")
-			: this(sandbox, version)
+		public NextCallerClient(string username, string password, bool sandbox = false)
+			: this(sandbox)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(username), "username");
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(password), "password");
+			Utility.EnsureParameterValid(!(username == null), "username");
+			Utility.EnsureParameterValid(!(password == null), "password");
 
 			httpTransport = new HttpTransport(username, password);
 		}
@@ -70,24 +69,22 @@ namespace NextCallerApi
 		/// Initializes NextCaller client private fields.
 		/// </summary>
 		/// <param name="sandbox">Sandbox mode flag</param>
-        /// <param name="version">API version number</param>
-        protected NextCallerClient(bool sandbox = false, string version = "")
+        protected NextCallerClient(bool sandbox = false)
 		{
 			isSandboxOn = sandbox;
+		    versionNumber = Properties.Resources.DefaultAPIVersion;
 
-		    versionNumber = String.IsNullOrEmpty(version) ? Properties.Resources.DefaultVersion : version;
-
-			baseUrl = isSandboxOn ? Properties.Resources.SandboxUrl 
-								  : Properties.Resources.WorkingUrl;
-
+			baseUrl = isSandboxOn ? Properties.Resources.SandboxUrl  : Properties.Resources.WorkingUrl;
 		    baseUrl += ("v" + versionNumber + "/");
 
 			usersUrl = baseUrl + Properties.Resources.UsersPath;
 			phoneUrl = baseUrl + Properties.Resources.PhonePath;
 			fraudUrl = baseUrl + Properties.Resources.FraudPath;
+            analyzeUrl = baseUrl + Properties.Resources.AnalyzePath;
 
 			formatParameterName = Properties.Resources.FormatUrlParameterName;
 			phoneParameterName = Properties.Resources.PhoneUrlParameterName;
+            emailParameterName = Properties.Resources.EmailUrlParameterName;
 		    nameAddressFirstNameParameterName = Properties.Resources.NameAddressFirstNameUrlParameterName;
             nameAddressLastNameParameterName = Properties.Resources.NameAddressLastNameUrlParameterName;
             nameAddressAddressParameterName = Properties.Resources.NameAddressAddressUrlParameterName;
@@ -99,140 +96,182 @@ namespace NextCallerApi
 		#region Api
 
 		/// <summary>
-		/// Gets list of profiles, associated with a particular phone number.
-        /// More information at: https://nextcaller.com/documentation/v2.1/#/get-profile/get-profile-phone/curl.
+		/// Gets list of profiles, associated with the particular phone number.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/get-profile-phone/curl.
 		/// </summary>
 		/// <param name="phone">Phone number.</param>
-		/// <returns>Profiles, associated with a particular phone number.</returns>
+		/// <returns>Profiles, associated with the particular phone number.</returns>
 		public IList<Profile> GetByPhone(string phone)
 		{
-			string content = GetByPhoneJson(phone);
+            Utility.EnsureParameterValid(!(phone == null), "phone");
 
-			return JsonSerializer.ParseProfileList(content);
-		}
+            string content = GetByPhoneJson(phone);
 
-		/// <summary>
-		/// Gets profile, associated with a particular id.
-		/// More information at: https://nextcaller.com/documentation/v2.1/#/get-profile/get-profile-id/curl.
-		/// </summary>
-		/// <param name="id">Profile id.</param>
-		/// <returns>Profile, associated with a particular id.</returns>
-		public Profile GetByProfileId(string id)
-		{
-			string content = GetByProfileIdJson(id);
-
-			return JsonSerializer.Deserialize<Profile>(content);
+            return JsonSerializer.ParseProfileList(content);
 		}
 
         /// <summary>
-        /// Gets list of profiles, associated with a particular name-address or name-zip pair.
-        /// Throws an exception if response status is 404.
+        /// Gets list of profiles associated with the particular email.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/retrieve-profile-email/curl.
         /// </summary>
-        /// <param name="pair">Pair of name and address or name and zip code.</param>
-        /// <returns>Profiles, associated with a particular name-address or name-zip pair.</returns>
-        public IList<Profile> GetByNameAddress(NameAddress pair)
+        /// <param name="email">Email to search by.</param>
+        /// <returns>Profiles, associated with the particular email.</returns>
+        public IList<Profile> GetByEmail(string email)
         {
-            string content = GetByNameAddressJson(pair);
+            Utility.EnsureParameterValid(!(email == null), "email");
+
+            string content = GetByEmailJson(email);
+
+            return JsonSerializer.ParseProfileList(content);
+        }
+
+		/// <summary>
+		/// Gets profile, associated with the particular ID.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/get-profile-id/curl.
+		/// </summary>
+		/// <param name="profileId">Profile id.</param>
+		/// <returns>Profile, associated with the particular ID.</returns>
+		public Profile GetByProfileId(string profileId)
+		{
+            Utility.EnsureParameterValid(!(profileId == null), "profileId");
+
+            string content = GetByProfileIdJson(profileId);
+
+            return JsonSerializer.Deserialize<Profile>(content);
+		}
+
+        /// <summary>
+        /// Gets list of profiles, associated with the particular name-address or name-zip pair.
+        /// Throws an exception if response status is 404.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/retreive-profile-name-address/curl.
+        /// </summary>
+        /// <param name="nameAddressData">Pair of name and address or name and zip code.</param>
+        /// <returns>Profiles, associated with the particular name-address or name-zip pair.</returns>
+        public IList<Profile> GetByNameAddress(NameAddress nameAddressData)
+        {
+            Utility.EnsureParameterValid(!(nameAddressData == null), "nameAddressData");
+
+            string content = GetByNameAddressJson(nameAddressData);
 
             return JsonSerializer.ParseProfileList(content);
         }
 
 		/// <summary>
 		/// Gets fraud level for given phone number.
-		/// More information at: https://nextcaller.com/documentation/v2.1/#/get-fraud-level/curl.
+		/// More information at: https://nextcaller.com/documentation/v2.1/#/fraud-levels/curl.
 		/// </summary>
 		/// <param name="phone">Phone number.</param>
 		/// <returns>Fraud level for given phone number.</returns>
 		public FraudLevel GetFraudLevel(string phone)
 		{
-			string content = GetFraudLevelJson(phone);
+            Utility.EnsureParameterValid(!(phone == null), "phone");
 
-			return JsonSerializer.Deserialize<FraudLevel>(content);
+            string content = GetFraudLevelJson(phone);
+
+            return JsonSerializer.Deserialize<FraudLevel>(content);
 		}
 
-		/// <summary>
-		/// Updates profile with given id.
-		/// More information at: https://nextcaller.com/documentation/v2.1/#/post-profile/curl
-		/// </summary>
-		/// <param name="data">Profile data to be updated.</param>
-		/// <param name="id">Id of the updated profile.</param>
-		public void UpdateByProfileId(string id, ProfileToPost data)
+        /// <summary>
+        /// Retrives fraud level for given call data.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/fraud-levels/curl.
+        /// </summary>
+        /// <param name="callData">Call data to be posted.</param>
+        /// <returns>Fraud level for given call data.</returns>
+        public FraudLevel AnalyzeCall(AnalyzeCallData callData)
+        {
+            Utility.EnsureParameterValid(!(callData == null), "callData");
+
+            string jsonData = JsonSerializer.Serialize(callData);
+            string content = AnalyzeCallJson(jsonData);
+
+            return JsonSerializer.Deserialize<FraudLevel>(content);
+        }
+
+        /// <summary>
+        /// Updates profile with given id.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/post-profile/curl
+        /// </summary>
+        /// <param name="profileData">Profile data to be updated.</param>
+        /// <param name="profileId">Id of the updated profile.</param>
+        public void UpdateByProfileId(string profileId, ProfileToPost profileData)
 		{
+            Utility.EnsureParameterValid(!(profileId == null), "profileId");
+            Utility.EnsureParameterValid(!(profileData == null), "profileData");
 
-			Utility.EnsureParameterValid(!data.Equals(null), "data");
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
-
-			string jsonData = JsonSerializer.Serialize(data);
-
-			UpdateByProfileId(id ,jsonData);
+            string jsonData = JsonSerializer.Serialize(profileData);
+			UpdateByProfileIdJson(profileId, jsonData);
 
 		}
 
-		#endregion Api
+        #endregion Api
 
-		#region RawApi
+        #region RawApi
 
-		/// <summary>
-		/// Gets profile, associated with a particular id, in json format.
-		/// More information at: https://nextcaller.com/documentation/v2.1/#/get-profile/curl.
-		/// </summary>
-		/// <param name="id">Profile id.</param>
-		/// <returns>Profile in Json format.</returns>
-		public  string GetByProfileIdJson(string id)
+        /// <summary>
+        /// Gets profile, associated with the particular ID, in json format.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/get-profile-id/curl.
+        /// </summary>
+        /// <param name="profileId">Profile id.</param>
+        /// <returns>Profile, associated with the particular ID.</returns>
+        public string GetByProfileIdJson(string profileId)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
-
-			string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
-
-			return httpTransport.Request(url, DefaultResponseType);
-		}
-
-		/// <summary>
-		/// Gets profile, associated with a particular phone, in json format.
-		/// More information at: https://nextcaller.com/documentation/v2.1/#/get-profile/curl.
-		/// </summary>
-		/// <param name="phone">Phone number.</param>
-		/// <returns>Profiles in json format.</returns>
-		public string GetByPhoneJson(string phone)
-		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
-
-			ValidationResult phoneValidationMessage = Phone.IsNumberValid(phone);
-			Utility.EnsureParameterValid(phoneValidationMessage.IsValid, "phone", phoneValidationMessage.Message);
-
-			string url = BuildUrl(phoneUrl, new UrlParameter(phoneParameterName, phone), 
-										  new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
-
+			string url = BuildUrl(usersUrl + profileId, new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 			return httpTransport.Request(url, DefaultResponseType);
 		}
 
         /// <summary>
-        /// Gets list of profiles, associated with a particular name-address or name-zip pair.
-        /// Throws an exception if response status is 404.
+        /// Gets list of profiles, associated with the particular email, in json format.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/retrieve-profile-email/curl.
         /// </summary>
-        /// <param name="pair">Pair of name and address or name and zip code.</param>
-        /// <returns>Profiles, associated with a particular name-address or name-zip pair.</returns>
-        public string GetByNameAddressJson(NameAddress pair)
+        /// <param name="email">Email to search by.</param>
+        /// <returns>Profiles, associated with the particular email.</returns>
+        public string GetByEmailJson(string email)
         {
-            ValidationResult nameAddressValidationResult = NameAddress.IsNameAddressValid(pair);
-            Utility.EnsureParameterValid(nameAddressValidationResult.IsValid, "name and address", nameAddressValidationResult.Message);
+            string url = BuildUrl(phoneUrl, new UrlParameter(emailParameterName, email ?? ""),
+                new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 
+            return httpTransport.Request(url, DefaultResponseType);
+        }
+
+        /// <summary>
+        /// Gets list of profiles, associated with the particular phone, in json format.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/get-profile-phone/curl.
+        /// </summary>
+        /// <param name="phone">Phone number.</param>
+        /// <returns>Profiles, associated with the particular phone.</returns>
+        public string GetByPhoneJson(string phone)
+		{
+			string url = BuildUrl(phoneUrl, new UrlParameter(phoneParameterName, phone), 
+                new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
+
+            return httpTransport.Request(url, DefaultResponseType);
+		}
+
+        /// <summary>
+        /// Gets list of profiles, associated with the particular name-address or name-zip pair.
+        /// Throws an exception if response status is 404.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/retrieve-profile-name-address/curl.
+        /// </summary>
+        /// <param name="nameAddressData">Pair of name and address or name and zip code.</param>
+        /// <returns>Profiles, associated with the particular name-address or name-zip pair.</returns>
+        public string GetByNameAddressJson(NameAddress nameAddressData)
+        {
             var parameters = new []
             {
-                new UrlParameter(nameAddressFirstNameParameterName, pair.FirstName),
-                new UrlParameter(nameAddressLastNameParameterName, pair.LastName),
-                new UrlParameter(nameAddressAddressParameterName, pair.AddressLine),
+                new UrlParameter(nameAddressFirstNameParameterName, nameAddressData.FirstName ?? ""),
+                new UrlParameter(nameAddressLastNameParameterName, nameAddressData.LastName ?? ""),
+                new UrlParameter(nameAddressAddressParameterName, nameAddressData.AddressLine ?? ""),
                 new UrlParameter(formatParameterName, DefaultResponseType.ToString())
             };
-            var additional = pair.ZipCode != 0
+            var additional = nameAddressData.ZipCode != 0
                 ? new[]
                 {
-                    new UrlParameter(nameAddressZipParameterName, pair.ZipCode.ToString(CultureInfo.InvariantCulture))
+                    new UrlParameter(nameAddressZipParameterName, nameAddressData.ZipCode.ToString(CultureInfo.InvariantCulture))
                 }
                 : new[]
                 {
-                    new UrlParameter(nameAddressCityParameterName, pair.City),
-                    new UrlParameter(nameAddressStateParameterName, pair.State)
+                    new UrlParameter(nameAddressCityParameterName, nameAddressData.City ?? ""),
+                    new UrlParameter(nameAddressStateParameterName, nameAddressData.State ?? "")
                 };
 
             string url = BuildUrl(phoneUrl, parameters.Concat(additional).ToArray());
@@ -242,35 +281,40 @@ namespace NextCallerApi
 
 		/// <summary>
 		/// Gets fraud level for given phone number in json format.
-		/// More information at: https://nextcaller.com/documentation/v2.1/#/get-fraud-level/curl.
+		/// More information at: https://nextcaller.com/documentation/v2.1/#/fraud-levels/curl.
 		/// </summary>
 		/// <param name="phone">Phone number.</param>
 		/// <returns>Fraud level for given phone number in json format.</returns>
 		public string GetFraudLevelJson(string phone)
 		{
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(phone), "phone");
-
 			string url = BuildUrl(fraudUrl , new UrlParameter(phoneParameterName, phone), 
-										   new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
+                new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
 
 			return httpTransport.Request(url, DefaultResponseType);
 		}
 
-		/// <summary>
-		/// Updates profile with given id.
-		/// More information at: https://nextcaller.com/documentation/v2.1/#/post-profile/curl.
-		/// </summary>
-		/// <param name="data">Profile data to be updated in Json.</param>
-		/// <param name="id">Id of the updated profile.</param>
-		public void UpdateByProfileId(string id, string data)
+        /// <summary>
+        /// Retrives fraud level for given call data in json format.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/fraud-levels/curl.
+        /// </summary>
+        /// <param name="callData">Call data to be posted.</param>
+        /// <returns>Fraud level for given call data in json format.</returns>
+        public string AnalyzeCallJson(string callData)
+        {
+            string url = BuildUrl(analyzeUrl, new UrlParameter(formatParameterName, PostContentType.ToString()));
+            return httpTransport.Request(url, PostContentType, "POST", callData ?? "");
+        }
+
+        /// <summary>
+        /// Updates profile with given id.
+        /// More information at: https://nextcaller.com/documentation/v2.1/#/profiles/post-profile/curl.
+        /// </summary>
+        /// <param name="profileData">Profile data to be updated in Json.</param>
+        /// <param name="profileId">Id of the updated profile.</param>
+        public void UpdateByProfileIdJson(string profileId, string profileData)
 		{
-
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(data), "data");
-			Utility.EnsureParameterValid(!string.IsNullOrEmpty(id), "id");
-
-			string url = BuildUrl(usersUrl + id, new UrlParameter(formatParameterName, PostContentType.ToString()));
-
-			httpTransport.Request(url, PostContentType, data);
+            string url = BuildUrl(usersUrl + profileId, new UrlParameter(formatParameterName, PostContentType.ToString()));
+			httpTransport.Request(url, PostContentType, "POST", profileData ?? "");
 
 		}
 

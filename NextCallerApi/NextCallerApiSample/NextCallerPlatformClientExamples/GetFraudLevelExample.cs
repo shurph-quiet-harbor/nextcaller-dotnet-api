@@ -23,11 +23,11 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 			NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
 			const string Phone = "1234567890";
-			const string PlatformUsername = "username";
+			const string AccountId = "TestUser1";
 
 			try
 			{
-				FraudLevel fraudLevel = client.GetFraudLevel(Phone, PlatformUsername);
+				FraudLevel fraudLevel = client.GetFraudLevel(Phone, AccountId);
 
 				//fraudLevel.FraudRisk = "low";
 				//fraudLevel.Spoofed = "no";
@@ -49,7 +49,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 				Console.WriteLine("Content : {0}", responseContent);
 
 			}
-			catch (BadResponseException badRequestException)
+			catch (BadRequestException badRequestException)
 			{
 
 				HttpWebRequest request = badRequestException.Request;
