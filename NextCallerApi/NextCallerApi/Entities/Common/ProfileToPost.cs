@@ -19,15 +19,6 @@ namespace NextCallerApi.Entities.Common
 		[DataMember(Name = "email")]
 		public string Email { get; set; }
 
-		[DataMember(Name = "phone1")]
-		public string Phone1 { get; set; }
-
-		[DataMember(Name = "phone2")]
-		public string Phone2 { get; set; }
-
-		[DataMember(Name = "phone3")]
-		public string Phone3 { get; set; }
-
 		[DataMember(Name = "shipping_address1")]
 		public Address PrimaryAddress { get; set; }
 
