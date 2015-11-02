@@ -32,11 +32,11 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
                 State = "NY"
             };
 
-            const string PlatformUsername = "username";
+            const string AccountId = "TestUser1";
 
             try
             {
-                IList<Profile> profiles = client.GetByNameAddress(nameAddress, PlatformUsername);
+                IList<Profile> profiles = client.GetByNameAddress(nameAddress, AccountId);
 
                 Profile profile = profiles.First();
 
@@ -113,7 +113,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
                 Console.WriteLine("Content : {0}", responseContent);
 
             }
-            catch (BadResponseException badRequestException)
+            catch (BadRequestException badRequestException)
             {
 
                 HttpWebRequest request = badRequestException.Request;

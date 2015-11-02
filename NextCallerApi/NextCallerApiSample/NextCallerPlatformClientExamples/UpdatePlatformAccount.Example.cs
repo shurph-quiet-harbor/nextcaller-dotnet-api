@@ -12,7 +12,7 @@ using FormatException = NextCallerApi.Exceptions.FormatException;
 
 namespace NextCallerApiSample.NextCallerPlatformClientExamples
 {
-	public static class GetPlatformUserExample
+	public static class UpdatePlatformAccount
 	{
 		public static void Run()
 		{
@@ -22,37 +22,20 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 
 			NextCallerPlatformClient client = new NextCallerPlatformClient(Username, Password, Sandbox);
 
-			const string PlatformUsername = "username";
+			const string AccountId = "TestUser1";
 
 			try
 			{
-				PlatformUser user = client.GetPlatformUser(PlatformUsername);
+				PlatformAccountToPost user = new PlatformAccountToPost
+				{
+                    Id = "NewTestUser1",
+                    CompanyName = "new_platform_company1_name",
+					Email = "new_company_email@company1.com",
+					FirstName = "new_platform_user1_fname",
+					LastName = "new_platform_user1_lname"
+				};
 
-					//user = new PlatformUser
-					//{
-					//	CreatedTime = "2014­04­16T13:42:00",
-					//	NumberOfOperations = 24,
-					//	ResourceUri = "/api/v2/platform_users/pl2_un1/",
-					//	Username = "pl2_un2",
-					//	TotalCalls = new Dictionary<string, int>
-					//	{
-					//		{ "201403", 7 },
-					//		{ "201404", 7 },
-					//		{ "201405", 7 }
-					//	},
-					//	SuccessfulCalls = new Dictionary<string, int>
-					//	{
-					//		{ "201403", 7 },
-					//		{ "201404", 7 },
-					//		{ "201405", 7 }
-					//	},
-					//	BillableCalls = new Dictionary<string, int>
-					//	{
-					//		{ "201403", 7 },
-					//		{ "201404", 7 },
-					//		{ "201405", 7 }
-					//	}
-					//};
+				client.UpdatePlatformAccount(user, AccountId);
 
 			}
 			catch (FormatException formatException)
@@ -71,7 +54,7 @@ namespace NextCallerApiSample.NextCallerPlatformClientExamples
 				Console.WriteLine("Content : {0}", responseContent);
 
 			}
-			catch (BadResponseException badRequestException)
+			catch (BadRequestException badRequestException)
 			{
 
 				HttpWebRequest request = badRequestException.Request;

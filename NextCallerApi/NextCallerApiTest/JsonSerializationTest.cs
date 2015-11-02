@@ -32,10 +32,10 @@ namespace NextCallerApiTest
 
 			Assert.AreEqual("Jerry", profiles[0].FirstName);
 			Assert.AreEqual("Seinfeld", profiles[0].LastName);
-			Assert.AreEqual("demo@nextcaller.com", profiles[0].Email);
+			Assert.AreEqual("jerry@example.org", profiles[0].Email);
 
 			Assert.IsNotNull(profiles[0].Addresses);
-			Assert.AreEqual(1, profiles[0].Addresses.Length);
+			Assert.AreEqual(2, profiles[0].Addresses.Length);
 			Assert.AreEqual("USA", profiles[0].Addresses[0].Country);
 
 			Assert.IsNotNull(profiles[0].Phones);
@@ -59,10 +59,10 @@ namespace NextCallerApiTest
 
 			Assert.AreEqual("Jerry", profile.FirstName);
 			Assert.AreEqual("Seinfeld", profile.LastName);
-			Assert.AreEqual("demo@nextcaller.com", profile.Email);
+			Assert.AreEqual("jerry@example.org", profile.Email);
 
 			Assert.IsNotNull(profile.Addresses);
-			Assert.AreEqual(1, profile.Addresses.Length);
+			Assert.AreEqual(2, profile.Addresses.Length);
 			Assert.AreEqual("USA", profile.Addresses[0].Country);
 
 			Assert.IsNotNull(profile.Phones);
@@ -127,34 +127,26 @@ namespace NextCallerApiTest
 
 
 			//Action
-			PlatformUser user = JsonSerializer.Deserialize<PlatformUser>(json);
+			PlatformAccount user = JsonSerializer.Deserialize<PlatformAccount>(json);
 
 
 			//Assert
 			Assert.IsNotNull(user);
 
-			Assert.AreEqual("2014­04­16T13:42:00", user.CreatedTime);
-			Assert.AreEqual(24, user.NumberOfOperations);
-			Assert.AreEqual("user12345", user.Username);
-			Assert.AreEqual("/api/v2/platform_users/user12345/", user.ResourceUri);
+            Assert.AreEqual("test_platform_username1", user.Id);
+            Assert.AreEqual("John", user.FirstName);
+            Assert.AreEqual("Doe", user.LastName);
+            Assert.AreEqual("NC*", user.CompanyName);
+            Assert.AreEqual("test1@test.com", user.Email);
+            Assert.AreEqual("/api/v2.1/accounts/test_platform_username1/", user.ResourceUri);
+            Assert.AreEqual(5, user.NumberOfOperations);
 
-			Assert.IsNotNull(user.TotalCalls);
-			Assert.AreEqual(3, user.TotalCalls.Count);
-			Assert.AreEqual(7, user.TotalCalls["201403"]);
-			Assert.AreEqual(12, user.TotalCalls["201404"]);
-			Assert.AreEqual(10, user.TotalCalls["201405"]);
+            Assert.IsNotNull(user.TotalOperations);
+			Assert.AreEqual(5, user.TotalOperations["2015-07"]);
 
-			Assert.IsNotNull(user.SuccessfulCalls);
-			Assert.AreEqual(3, user.SuccessfulCalls.Count);
-			Assert.AreEqual(6, user.SuccessfulCalls["201403"]);
-			Assert.AreEqual(10, user.SuccessfulCalls["201404"]);
-			Assert.AreEqual(8, user.SuccessfulCalls["201405"]);
 
-			Assert.IsNotNull(user.BillableCalls);
-			Assert.AreEqual(2, user.BillableCalls.Count);
-			Assert.AreEqual(1, user.BillableCalls["201404"]);
-			Assert.AreEqual(1, user.BillableCalls["201405"]);
-
+			Assert.IsNotNull(user.BilledOperations);
+			Assert.AreEqual(5, user.BilledOperations["2015-07"]);
 		}
 
 		[TestMethod]
@@ -163,72 +155,49 @@ namespace NextCallerApiTest
 			//Arrange
 			string json = Properties.Resources.JsonPlatformStatistics;
 
-
 			//Action
 			PlatformStatistics stats = JsonSerializer.Deserialize<PlatformStatistics>(json);
-
 
 			//Assert
 			Assert.IsNotNull(stats);
 
-			Assert.IsNotNull(stats.TotalPlatformCalls);
-			Assert.AreEqual(3, stats.TotalPlatformCalls.Count);
-			Assert.AreEqual(7, stats.TotalPlatformCalls["201403"]);
-			Assert.AreEqual(12, stats.TotalPlatformCalls["201404"]);
-			Assert.AreEqual(2, stats.TotalPlatformCalls["201405"]);
+			Assert.IsNotNull(stats.TotalPlatformOperations);
+			Assert.AreEqual(59, stats.TotalPlatformOperations["2015-07"]);
 
-			Assert.IsNotNull(stats.SuccessfulPlatformCalls);
-			Assert.AreEqual(3, stats.SuccessfulPlatformCalls.Count);
-			Assert.AreEqual(6, stats.SuccessfulPlatformCalls["201403"]);
-			Assert.AreEqual(10, stats.SuccessfulPlatformCalls["201404"]);
-			Assert.AreEqual(9, stats.SuccessfulPlatformCalls["201405"]);
-
-			Assert.IsNotNull(stats.BillablePlatformCalls);
-			Assert.AreEqual(2, stats.BillablePlatformCalls.Count);
-			Assert.AreEqual(1, stats.BillablePlatformCalls["201404"]);
-			Assert.AreEqual(1, stats.BillablePlatformCalls["201405"]);
+			Assert.IsNotNull(stats.BilledPlatformOperations);
+			Assert.AreEqual(59, stats.BilledPlatformOperations["2015-07"]);
 			
-			Assert.IsNotNull(stats.PlatformUsers);
-			Assert.AreEqual(2, stats.PlatformUsers.Length);
+			Assert.IsNotNull(stats.PlatformAccounts);
+			Assert.AreEqual(2, stats.PlatformAccounts.Length);
 
-			Assert.AreEqual("2014­03­16T10:40:12", stats.PlatformUsers[0].CreatedTime);
-			Assert.AreEqual(1, stats.PlatformUsers[0].NumberOfOperations);
-			Assert.AreEqual("pl2_un1", stats.PlatformUsers[0].Username);
-			Assert.AreEqual("/api/v2/platform_users/pl2_un2/", stats.PlatformUsers[0].ResourceUri);
+            Assert.AreEqual("test_platform_username1", stats.PlatformAccounts[0].Id);
+            Assert.AreEqual("John", stats.PlatformAccounts[0].FirstName);
+            Assert.AreEqual("Doe", stats.PlatformAccounts[0].LastName);
+            Assert.AreEqual("NC*", stats.PlatformAccounts[0].CompanyName);
+            Assert.AreEqual("test1@test.com", stats.PlatformAccounts[0].Email);
+            Assert.AreEqual("/api/v2.1/accounts/test_platform_username1/", stats.PlatformAccounts[0].ResourceUri);
+            Assert.AreEqual(5, stats.PlatformAccounts[0].NumberOfOperations);
 
-			Assert.IsNotNull(stats.PlatformUsers[0].TotalCalls);
-			Assert.AreEqual(1, stats.PlatformUsers[0].TotalCalls.Count);
-			Assert.AreEqual(2, stats.PlatformUsers[0].TotalCalls["201405"]);
+            Assert.IsNotNull(stats.PlatformAccounts[0].TotalOperations);
+            Assert.AreEqual(5, stats.PlatformAccounts[0].TotalOperations["2015-07"]);
 
-			Assert.IsNotNull(stats.PlatformUsers[0].SuccessfulCalls);
-			Assert.AreEqual(1, stats.PlatformUsers[0].SuccessfulCalls.Count);
-			Assert.AreEqual(1, stats.PlatformUsers[0].SuccessfulCalls["201405"]);
+            Assert.IsNotNull(stats.PlatformAccounts[0].BilledOperations);
+            Assert.AreEqual(5, stats.PlatformAccounts[0].BilledOperations["2015-07"]);
 
-			Assert.IsNotNull(stats.PlatformUsers[0].BillableCalls);
-			Assert.AreEqual(0, stats.PlatformUsers[0].BillableCalls.Count);
+            Assert.AreEqual("me", stats.PlatformAccounts[1].Id);
+            Assert.AreEqual("", stats.PlatformAccounts[1].FirstName);
+            Assert.AreEqual("", stats.PlatformAccounts[1].LastName);
+            Assert.AreEqual("", stats.PlatformAccounts[1].CompanyName);
+            Assert.AreEqual("", stats.PlatformAccounts[1].Email);
+            Assert.AreEqual("/api/v2.1/accounts/me/", stats.PlatformAccounts[1].ResourceUri);
+            Assert.AreEqual(4, stats.PlatformAccounts[1].NumberOfOperations);
 
-			Assert.AreEqual("2014­04­16T13:42:00", stats.PlatformUsers[1].CreatedTime);
-			Assert.AreEqual(24, stats.PlatformUsers[1].NumberOfOperations);
-			Assert.AreEqual("pl2_un2", stats.PlatformUsers[1].Username);
-			Assert.AreEqual("/api/v2/platform_users/pl2_un1/", stats.PlatformUsers[1].ResourceUri);
+            Assert.IsNotNull(stats.PlatformAccounts[1].TotalOperations);
+            Assert.AreEqual(4, stats.PlatformAccounts[1].TotalOperations["2015-07"]);
 
-			Assert.IsNotNull(stats.PlatformUsers[1].TotalCalls);
-			Assert.AreEqual(3, stats.PlatformUsers[1].TotalCalls.Count);
-			Assert.AreEqual(7, stats.PlatformUsers[1].TotalCalls["201403"]);
-			Assert.AreEqual(12, stats.PlatformUsers[1].TotalCalls["201404"]);
-			Assert.AreEqual(10, stats.PlatformUsers[1].TotalCalls["201405"]);
-
-			Assert.IsNotNull(stats.PlatformUsers[1].SuccessfulCalls);
-			Assert.AreEqual(3, stats.PlatformUsers[1].SuccessfulCalls.Count);
-			Assert.AreEqual(6, stats.PlatformUsers[1].SuccessfulCalls["201403"]);
-			Assert.AreEqual(10, stats.PlatformUsers[1].SuccessfulCalls["201404"]);
-			Assert.AreEqual(8, stats.PlatformUsers[1].SuccessfulCalls["201405"]);
-
-			Assert.IsNotNull(stats.PlatformUsers[1].BillableCalls);
-			Assert.AreEqual(2, stats.PlatformUsers[1].BillableCalls.Count);
-			Assert.AreEqual(1, stats.PlatformUsers[1].BillableCalls["201404"]);
-			Assert.AreEqual(1, stats.PlatformUsers[1].BillableCalls["201405"]);
-		}
+            Assert.IsNotNull(stats.PlatformAccounts[1].BilledOperations);
+            Assert.AreEqual(4, stats.PlatformAccounts[1].BilledOperations["2015-07"]);
+        }
 
 		[TestMethod]
 		public void JsonParse_NextCallerDocsErrorSample_ErrorSuccessfullyParsed()

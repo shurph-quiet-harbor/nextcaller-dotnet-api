@@ -67,7 +67,6 @@
     <Compile Include="JsonSerializationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlatformClientTest.cs" />
-    <Compile Include="ValidationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
