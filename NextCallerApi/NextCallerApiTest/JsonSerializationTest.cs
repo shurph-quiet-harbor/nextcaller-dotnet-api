@@ -83,7 +83,6 @@ namespace NextCallerApiTest
 						Country = "Russia",
 						City = "Omsk"
 					},
-				Phone1 = "2020327"
 			};
 
 
@@ -96,7 +95,6 @@ namespace NextCallerApiTest
 
 			Assert.IsTrue(json.Contains("\"first_name\":\"Ivan\""));
 			Assert.IsTrue(json.Contains("\"last_name\":\"Petrov\""));
-			Assert.IsTrue(json.Contains("\"phone1\":\"2020327\""));
 			Assert.IsTrue(json.Contains("\"shipping_address1\":{\"country\":\"Russia\",\"city\":\"Omsk\"}"));
 
 		}

@@ -31,9 +31,6 @@ namespace NextCallerApiSample.NextCallerClientExamples
 					Email = "clarkkent@supermail.com",
 					FirstName = "Clark",
 					LastName = "Kent",
-					Phone1 = "1234567890",
-					Phone2 = "2345678901",
-					Phone3 = "3456789012",
 					PrimaryAddress = new Address
 					{
 						Line1 = "223 Kryptonite Ave.",
