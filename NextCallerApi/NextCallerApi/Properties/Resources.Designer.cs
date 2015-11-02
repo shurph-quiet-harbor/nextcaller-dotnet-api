@@ -223,7 +223,7 @@ namespace NextCallerApi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://api.sandbox.devel.nextcaller.com/.
+        ///   Looks up a localized string similar to https://api.sandbox.nextcaller.com/.
         /// </summary>
         internal static string SandboxUrl {
             get {
@@ -241,7 +241,7 @@ namespace NextCallerApi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://api.devel.nextcaller.com/.
+        ///   Looks up a localized string similar to https://api.nextcaller.com/.
         /// </summary>
         internal static string WorkingUrl {
             get {

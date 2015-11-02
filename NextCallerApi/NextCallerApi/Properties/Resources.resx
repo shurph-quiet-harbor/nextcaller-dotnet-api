@@ -160,7 +160,7 @@
     <value>Nc-Account-Id</value>
   </data>
   <data name="SandboxUrl" xml:space="preserve">
-    <value>http://api.sandbox.devel.nextcaller.com/</value>
+    <value>https://api.sandbox.nextcaller.com/</value>
   </data>
   <data name="PageParameterName" xml:space="preserve">
     <value>page</value>
@@ -172,7 +172,7 @@
     <value>2.1</value>
   </data>
   <data name="WorkingUrl" xml:space="preserve">
-    <value>http://api.devel.nextcaller.com/</value>
+    <value>https://api.nextcaller.com/</value>
   </data>
   <data name="PaginationExceptionCode" xml:space="preserve">
     <value>559</value>
