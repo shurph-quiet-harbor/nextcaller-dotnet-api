@@ -100,24 +100,6 @@ namespace NextCallerApiTest
 		}
 
 		[TestMethod]
-		public void JsonParse_NextCallerDocsFraudLevelSample_FraudLevelSuccessfullyParsed()
-		{
-			//Arrange
-			string json = Properties.Resources.JsonFraudLevel;
-
-
-			//Action
-			FraudLevel fraudLevel = JsonSerializer.Deserialize<FraudLevel>(json);
-
-
-			//Assert
-			Assert.IsNotNull(fraudLevel);
-			Assert.AreEqual("low", fraudLevel.FraudRisk);
-			Assert.AreEqual("false", fraudLevel.Spoofed);
-
-		}
-
-		[TestMethod]
 		public void JsonParse_NextCallerDocsPlatformUserSampe_PlatformUserSuccessfullyParsed()
  		{
 			//Arrange

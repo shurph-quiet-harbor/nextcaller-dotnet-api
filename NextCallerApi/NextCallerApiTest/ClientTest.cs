@@ -162,69 +162,6 @@ namespace NextCallerApiTest
         }
 
         [TestMethod]
-        public void GetFraudLevel_ValidPhone_FraudLevelReturned()
-        {
-            //Arrange
-            const string PhoneNumber = "2020327000";
-            string jsonFraudLevel = Properties.Resources.JsonFraudLevel;
-
-            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()))
-                .Returns(jsonFraudLevel);
-
-
-            //Action
-            NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
-            string fraudLevel = client.GetFraudLevelJson(PhoneNumber);
-
-            //Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), null, It.IsAny<IEnumerable<Header>>()), Times.Once);
-
-            Assert.IsNotNull(fraudLevel);
-            Assert.AreEqual(jsonFraudLevel, fraudLevel);
-        }
-
-        [TestMethod]
-        public void AnalyzeCall_ValidData_FraudLevelReturned()
-        {
-            //Arrange
-            string jsonFraudLevel = Properties.Resources.JsonFraudLevel;
-
-            AnalyzeCallData data = new AnalyzeCallData
-            {
-                Ani = "12125551212",
-                Dnis = "18005551212",
-                Headers = new Dictionary<string, object>
-                {
-                    { "from", "\"John Smith\" <sip:12125551212@example.com>" },
-                    { "via", new List<string> { "SIP/2.0//UDP 1.1.1.1:5060;branch=z9hG4bK3fe1.9a945462b4c1880c5f6fdc0214a205ca.1"} }
-                },
-                Meta = new Dictionary<string, string>
-                {
-                    { "caller_id", "12125551212" },
-                    { "charge_number", "12125551212" },
-                    { "ani2", "0" },
-                    { "private", "true" }
-                }
-            };
-
-            Mock<IHttpTransport> httpTransportMock = new Mock<IHttpTransport>(MockBehavior.Strict);
-            httpTransportMock.Setup(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()))
-                .Returns(jsonFraudLevel);
-
-            //Action
-            NextCallerClient client = new NextCallerClient(httpTransportMock.Object);
-            string jsonData = JsonSerializer.Serialize(data);
-            string fraudLevel = client.AnalyzeCallJson(jsonData);
-
-            //Assert
-            httpTransportMock.Verify(httpTransport => httpTransport.Request(It.IsAny<string>(), It.IsAny<ContentType>(), It.IsIn("GET", "POST"), It.IsAny<string>(), It.IsAny<IEnumerable<Header>>()), Times.Once);
-
-            Assert.IsNotNull(fraudLevel);
-            Assert.AreEqual(jsonFraudLevel, fraudLevel);
-        }
-
-        [TestMethod]
 		public void PostProfile_ValidIdAndValidProfile_NoExceptionsThrown()
 		{
 			//Arrange

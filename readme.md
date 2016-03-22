@@ -85,19 +85,6 @@ API Items
     ProfileToPost profile - profile info to post
     string profileId - id of profile to update 
 
-## Get fraud level ##
-
-	string phone = "xxxx";
-    FraudLevel fraudLevel= client.GetFraudLevel(phone);
-    
-*Parameters*:
-    
-    string phone - phone number to check
-	
-*Returns*:
-
-	FraudLevel fraudLevel - fraudLevel for give phone number
-	
 NextCallerPlatformClient
 =====================
 
@@ -167,21 +154,6 @@ API Items
     string profileId - id of profile to update 
 	string platformUsername - platform username of a caller
 
-## Get fraud level ##
-
-	string phone = "xxxx";
-	string platformUsername = "platformUsername";
-    FraudLevel fraudLevel= client.GetFraudLevel(phone, platformUsername);
-    
-*Parameters*:
-    
-    string phone - phone number to check
-	string platformUsername - platform username of a caller
-	
-*Returns*:
-
-	FraudLevel fraudLevel - fraudLevel for give phone number
-	
 ## Get platform statistics ##
 
     PlatformStatistics stats= client.GetPlatformStatistics();

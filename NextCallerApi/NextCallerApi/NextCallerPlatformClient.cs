@@ -154,39 +154,6 @@ namespace NextCallerApi
             return JsonSerializer.ParseProfileList(response);
         }
 
-		/// <summary>
-		/// Gets fraud level for the particular phone number.
-		/// More info at: https://nextcaller.com/platform/documentation/v2.1/#/fraud-levels/curl.
-		/// </summary>
-		/// <param name="phone">Phone number.</param>
-        /// <param name="accountId">Platform account ID.</param>
-		/// <returns>Fraud level, associated with the given phone number.</returns>
-        public FraudLevel GetFraudLevel(string phone, string accountId = null)
-		{
-            Utility.EnsureParameterValid(!(phone == null), "phone");
-
-            string response = GetFraudLevelJson(phone, accountId);
-
-            return JsonSerializer.Deserialize<FraudLevel>(response);
-		}
-
-        /// <summary>
-        /// Retrives fraud level for given call data.
-        /// More information at: https://nextcaller.com/documentation/v2.1/#/fraud-levels/curl.
-        /// </summary>
-        /// <param name="callData">Call data to be posted.</param>
-        /// <param name="accountId">Platform account ID.</param>
-        /// <returns>Fraud level for given call data.</returns>
-        public FraudLevel AnalyzeCall(AnalyzeCallData callData, string accountId = null)
-        {
-            Utility.EnsureParameterValid(!(callData == null), "callData");
-
-            string jsonData = JsonSerializer.Serialize(callData);
-            string content = AnalyzeCallJson(jsonData);
-
-            return JsonSerializer.Deserialize<FraudLevel>(content);
-        }
-
         /// <summary>
         /// Updates profile with given ID.
         /// More info at: https://nextcaller.com/platform/documentation/v2.1/#/profiles/post-profile/curl.
@@ -318,39 +285,6 @@ namespace NextCallerApi
             string url = BuildUrl(phoneUrl, parameters.Concat(additional).ToArray());
 
             return httpTransport.Request(url, DefaultResponseType, headers: headers);
-        }
-
-		/// <summary>
-		/// Gets fraud level for the particular phone number.
-		/// More info at: https://nextcaller.com/platform/documentation/v2.1/#/fraud-levels/curl.
-		/// </summary>
-		/// <param name="phone">Phone number.</param>
-        /// <param name="accountId">Platform account ID.</param>
-		/// <returns>Fraud level, associated with the given phone number, in json.</returns>
-        public string GetFraudLevelJson(string phone, string accountId = null)
-		{
-            var headers = PrepareAccountIdHeader(accountId);
-
-            string url = BuildUrl(fraudUrl, new UrlParameter(phoneParameterName, phone),
-										  new UrlParameter(formatParameterName, DefaultResponseType.ToString()));
-
-			return httpTransport.Request(url, DefaultResponseType, headers: headers);
-		}
-
-        /// <summary>
-        /// Retrives fraud level for given call data in json format.
-        /// More information at: https://nextcaller.com/documentation/v2.1/#/fraud-levels/curl.
-        /// </summary>
-        /// <param name="callData">Call data to be posted.</param>
-        /// <param name="accountId">Platform account ID.</param>
-        /// <returns>Fraud level for given call data in json format.</returns>
-        public string AnalyzeCallJson(string callData, string accountId = null)
-        {
-            var headers = PrepareAccountIdHeader(accountId);
-
-            string url = BuildUrl(analyzeUrl, new UrlParameter(formatParameterName, PostContentType.ToString()));
-
-            return httpTransport.Request(url, PostContentType, "POST", callData ?? "", headers);
         }
 
         /// <summary>

@@ -82,18 +82,6 @@ namespace NextCallerApiTest.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;spoofed&quot;: &quot;false&quot;,
-        ///  &quot;fraud_risk&quot;: &quot;low&quot;
-        ///}.
-        /// </summary>
-        internal static string JsonFraudLevel {
-            get {
-                return ResourceManager.GetString("JsonFraudLevel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {
         ///  &quot;data&quot;: [
         ///    {
         ///      &quot;id&quot;: &quot;test_platform_username1&quot;,

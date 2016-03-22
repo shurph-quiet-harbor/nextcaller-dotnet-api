@@ -120,9 +120,6 @@
   <data name="FormatUrlParameterName" xml:space="preserve">
     <value>format</value>
   </data>
-  <data name="FraudPath" xml:space="preserve">
-    <value>fraud/</value>
-  </data>
   <data name="PhonePath" xml:space="preserve">
     <value>records/</value>
   </data>
@@ -176,8 +173,5 @@
   </data>
   <data name="PaginationExceptionCode" xml:space="preserve">
     <value>559</value>
-  </data>
-  <data name="AnalyzePath" xml:space="preserve">
-    <value>analyze/</value>
   </data>
 </root>

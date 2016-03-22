@@ -131,12 +131,6 @@
     }
 }</value>
   </data>
-  <data name="JsonFraudLevel" xml:space="preserve">
-    <value>{
-  "spoofed": "false",
-  "fraud_risk": "low"
-}</value>
-  </data>
   <data name="JsonPlatformStatistics" xml:space="preserve">
     <value>{
   "data": [
