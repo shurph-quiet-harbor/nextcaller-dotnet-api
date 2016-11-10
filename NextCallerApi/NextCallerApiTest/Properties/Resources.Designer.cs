@@ -148,19 +148,27 @@ namespace NextCallerApiTest.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///            &quot;id&quot;: &quot;97d949a413f4ea8b85e9586e1f2d9a&quot;,
-        ///            &quot;first_name&quot;: &quot;Jerry&quot;,
-        ///            &quot;first_pronounced&quot;: &quot;JER-ee&quot;,
-        ///            &quot;middle_name&quot;: &quot;Allen&quot;,
-        ///            &quot;last_name&quot;: &quot;Seinfeld&quot;,
-        ///            &quot;name&quot;: &quot;Jerry Allen Seinfeld&quot;,
-        ///            &quot;phone&quot;: [
-        ///                {
-        ///                    &quot;number&quot;: &quot;2125558383&quot;,
-        ///                    &quot;line_type&quot;: &quot;Mobile&quot;,
-        ///                    &quot;carrier&quot;: &quot;Verizon Wireless&quot;,
-        ///                    &quot;resource_uri&quot;: &quot;/v2.1/records/2125558383/&quot;
-        ///         [rest of string was truncated]&quot;;.
+        ///  &quot;id&quot;: &quot;97d949a413f4ea8b85e9586e1f2d9a&quot;,
+        ///  &quot;first_name&quot;: &quot;Jerry&quot;,
+        ///  &quot;first_pronounced&quot;: &quot;JER-ee&quot;,
+        ///  &quot;middle_name&quot;: &quot;Allen&quot;,
+        ///  &quot;last_name&quot;: &quot;Seinfeld&quot;,
+        ///  &quot;name&quot;: &quot;Jerry Allen Seinfeld&quot;,
+        ///  &quot;phone&quot;: [
+        ///    {
+        ///      &quot;number&quot;: &quot;2125558383&quot;,
+        ///      &quot;line_type&quot;: &quot;Mobile&quot;,
+        ///      &quot;carrier&quot;: &quot;Verizon Wireless&quot;,
+        ///      &quot;resource_uri&quot;: &quot;/v2.1/records/2125558383/&quot;
+        ///    }
+        ///  ],
+        ///  &quot;address&quot;: [
+        ///    {
+        ///      &quot;city&quot;: &quot;New York&quot;,
+        ///      &quot;extended_zip&quot;: &quot;2344&quot;,
+        ///      &quot;country&quot;: &quot;USA&quot;,
+        ///      &quot;line1&quot;: &quot;129 West 81st Street&quot;,
+        ///      &quot;l [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string JsonProfile {
             get {
@@ -170,20 +178,26 @@ namespace NextCallerApiTest.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///    &quot;records&quot;: [
+        ///  &quot;records&quot;: [
+        ///    {
+        ///      &quot;id&quot;: &quot;97d949a413f4ea8b85e9586e1f2d9a&quot;,
+        ///      &quot;first_name&quot;: &quot;Jerry&quot;,
+        ///      &quot;first_pronounced&quot;: &quot;JER-ee&quot;,
+        ///      &quot;middle_name&quot;: &quot;Allen&quot;,
+        ///      &quot;last_name&quot;: &quot;Seinfeld&quot;,
+        ///      &quot;name&quot;: &quot;Jerry Allen Seinfeld&quot;,
+        ///      &quot;phone&quot;: [
         ///        {
-        ///            &quot;id&quot;: &quot;97d949a413f4ea8b85e9586e1f2d9a&quot;,
-        ///            &quot;first_name&quot;: &quot;Jerry&quot;,
-        ///            &quot;first_pronounced&quot;: &quot;JER-ee&quot;,
-        ///            &quot;middle_name&quot;: &quot;Allen&quot;,
-        ///            &quot;last_name&quot;: &quot;Seinfeld&quot;,
-        ///            &quot;name&quot;: &quot;Jerry Allen Seinfeld&quot;,
-        ///            &quot;phone&quot;: [
-        ///                {
-        ///                    &quot;number&quot;: &quot;2125558383&quot;,
-        ///                    &quot;line_type&quot;: &quot;Mobile&quot;,
-        ///                    &quot;carrier&quot;: &quot;Verizon Wireless&quot;,
-        ///                    &quot;resource_uri&quot;: &quot;/v2.1/r [rest of string was truncated]&quot;;.
+        ///          &quot;number&quot;: &quot;2125558383&quot;,
+        ///          &quot;line_type&quot;: &quot;Mobile&quot;,
+        ///          &quot;carrier&quot;: &quot;Verizon Wireless&quot;,
+        ///          &quot;resource_uri&quot;: &quot;/v2.1/records/2125558383/&quot;
+        ///        }
+        ///      ],
+        ///      &quot;address&quot;: [
+        ///        {
+        ///          &quot;city&quot;: &quot;New York&quot;,
+        ///          &quot;e [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string JsonProfiles {
             get {

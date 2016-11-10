@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Collections.Generic;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,9 +17,9 @@ namespace NextCallerApiTest
 		[TestMethod]
 		public void JsonParse_NextCallerDocsProfileSample_OneProfileSuccessfullyParsed()
 		{
-			//Arrange
-			//json response from https://dev.nextcaller.com/documentation/get-profile/#get-profile-json-1
-			string json = Properties.Resources.JsonProfiles;
+            //Arrange
+            //json response from https://nextcaller.com/documentation/v2.1/#/profiles/curl
+            string json = Properties.Resources.JsonProfiles;
 
 
 			//Action
@@ -38,7 +38,12 @@ namespace NextCallerApiTest
 			Assert.AreEqual(2, profiles[0].Addresses.Length);
 			Assert.AreEqual("USA", profiles[0].Addresses[0].Country);
 
-			Assert.IsNotNull(profiles[0].Phones);
+            Assert.IsNotNull(profiles[0].Addresses[0].HomeData);
+            Assert.AreEqual("New York", profiles[0].Addresses[0].HomeData["region_name"]);
+            Assert.AreEqual("04/10/2011", profiles[0].Addresses[0].HomeData["last_sold_date"]);
+            Assert.AreEqual((long)2012, profiles[0].Addresses[0].HomeData["tax_assessment_year"]);
+
+            Assert.IsNotNull(profiles[0].Phones);
 			Assert.AreEqual(1, profiles[0].Phones.Length);
 			Assert.AreEqual("2125558383", profiles[0].Phones[0].Number);
 		}
@@ -65,7 +70,12 @@ namespace NextCallerApiTest
 			Assert.AreEqual(2, profile.Addresses.Length);
 			Assert.AreEqual("USA", profile.Addresses[0].Country);
 
-			Assert.IsNotNull(profile.Phones);
+            Assert.IsNotNull(profile.Addresses[0].HomeData);
+            Assert.AreEqual("New York", profile.Addresses[0].HomeData["region_name"]);
+            Assert.AreEqual("04/10/2011", profile.Addresses[0].HomeData["last_sold_date"]);
+            Assert.AreEqual((long)2012, profile.Addresses[0].HomeData["tax_assessment_year"]);
+
+            Assert.IsNotNull(profile.Phones);
 			Assert.AreEqual(1, profile.Phones.Length);
 			Assert.AreEqual("2125558383", profile.Phones[0].Number);
 		}
